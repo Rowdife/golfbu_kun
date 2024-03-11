@@ -17,25 +17,21 @@ class NavTap extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => onTap(),
-        child: Container(
-          child: Column(
-            children: [
-              FaIcon(
-                icon,
-                color: isSelected ? Colors.white : Colors.grey.shade600,
-              ),
-              Text(
-                tapName,
-                style: TextStyle(
-                  color: isSelected ? Colors.white : Colors.grey.shade600,
-                ),
-              )
-            ],
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Column(
+        children: [
+          FaIcon(
+            icon,
+            color: isSelected ? Colors.white : Colors.grey.shade600,
           ),
-        ),
+          Text(
+            tapName,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.grey.shade600,
+            ),
+          )
+        ],
       ),
     );
   }

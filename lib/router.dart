@@ -1,12 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/common/main_navigation/screen/main_navigation_screen.dart';
+import 'package:golfbu_kun/features/authentication/screens/onboarding_screen.dart';
+import 'package:golfbu_kun/features/authentication/screens/sign_up_screen.dart';
 
 final routeProvider = Provider(
   (ref) {
     return GoRouter(
       initialLocation: "/home",
       routes: [
+        GoRoute(
+          name: OnboardingScreen.routeName,
+          path: "/",
+          builder: (context, state) => const OnboardingScreen(),
+        ),
+        GoRoute(
+          name: SignUpScreen.routeName,
+          path: SignUpScreen.routeURL,
+          builder: (context, state) => const SignUpScreen(),
+        ),
         GoRoute(
           name: MainNavigationScreen.routeName,
           path: "/:tab(home|score|calendar|chat)",
