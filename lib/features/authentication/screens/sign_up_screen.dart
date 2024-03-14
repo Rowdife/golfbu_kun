@@ -64,142 +64,137 @@ class SignUpScreen extends ConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-          children: [
-            Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Gap(10),
-                  DropdownMenu(
-                      onSelected: (newValue) {
-                        formData["university"] = newValue;
-                      },
-                      label: const Text(
-                        "大学",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      dropdownMenuEntries: university),
-                  const Gap(10),
-                  DropdownMenu(
-                      onSelected: (newValue) {
-                        formData["position"] = newValue;
-                      },
-                      label: const Text(
-                        "役職",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      dropdownMenuEntries: position),
-                  const Gap(10),
-                  DropdownMenu(
-                      onSelected: (newValue) {
-                        formData["sex"] = newValue;
-                      },
-                      label: const Text(
-                        "性別",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      dropdownMenuEntries: sex),
-                  const Gap(10),
-                  const Text("お名前をフルネームでご入力ください。(例: Ishikawa Ryo)"),
-                  const Gap(10),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      errorStyle: TextStyle(color: Colors.cyanAccent),
-                    ),
-                    validator: (value) {
-                      if (value != null && value.isEmpty) {
-                        return "名前を入力してください";
-                      }
-                      return null;
-                    },
-                    onSaved: (newValue) {
-                      if (newValue != null) {
-                        formData["name"] = newValue;
-                      }
-                    },
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(10),
+              DropdownMenu(
+                  onSelected: (newValue) {
+                    formData["university"] = newValue;
+                  },
+                  label: const Text(
+                    "大学",
+                    style: TextStyle(color: Colors.white),
                   ),
-                  const Gap(10),
-                  const Text("学生番号をご入力ください。IDとしてご利用いただきます。"),
-                  const Gap(10),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      errorStyle: TextStyle(color: Colors.cyanAccent),
-                    ),
-                    validator: (value) {
-                      if (value != null && value.isEmpty) {
-                        return "学生番号を入力してください";
-                      }
-                      return null;
-                    },
-                    onSaved: (newValue) {
-                      if (newValue != null) {
-                        formData["stuId"] = newValue;
-                      }
-                    },
+                  dropdownMenuEntries: university),
+              const Gap(10),
+              DropdownMenu(
+                  onSelected: (newValue) {
+                    formData["position"] = newValue;
+                  },
+                  label: const Text(
+                    "役職",
+                    style: TextStyle(color: Colors.white),
                   ),
-                  const Gap(10),
-                  const Text("パスワードをご入力ください"),
-                  const Gap(10),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      errorStyle: TextStyle(color: Colors.cyanAccent),
-                    ),
-                    validator: (value) {
-                      if (value != null && value.isEmpty) {
-                        return "パスワードを入力してください";
-                      }
-                      return null;
-                    },
-                    obscureText: true,
-                    onChanged: (newValue) {
-                      passwordConfirmation["pw1"] = newValue;
-                    },
-                    onSaved: (newValue) {
-                      if (newValue != null) {
-                        formData["password"] = newValue;
-                      }
-                    },
+                  dropdownMenuEntries: position),
+              const Gap(10),
+              DropdownMenu(
+                  onSelected: (newValue) {
+                    formData["sex"] = newValue;
+                  },
+                  label: const Text(
+                    "性別",
+                    style: TextStyle(color: Colors.white),
                   ),
-                  const Gap(10),
-                  const Text("もう一度パスワードをご入力ください"),
-                  const Gap(10),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      errorStyle: TextStyle(color: Colors.cyanAccent),
-                    ),
-                    validator: (value) {
-                      if (value != null && value.isEmpty) {
-                        return "パスワードを入力してください";
-                      }
-                      if (passwordConfirmation["pw1"] !=
-                          passwordConfirmation["pw2"]) {
-                        return "全項目と同じパスワードを入力してください";
-                      }
-                      return null;
-                    },
-                    obscureText: true,
-                    onChanged: (newValue) {
-                      passwordConfirmation["pw2"] = newValue;
-                    },
-                    onSaved: (newValue) {
-                      if (newValue != null) {
-                        formData["passwordConfirm"] = newValue;
-                      }
-                    },
-                  ),
-                  const Gap(30),
-                  Center(
-                    child: GestureDetector(
-                        onTap: () => onSignUpTap(context),
-                        child: const AuthButton(
-                            color: Colors.green, text: "会員登録")),
-                  ),
-                ],
+                  dropdownMenuEntries: sex),
+              const Gap(10),
+              const Text("お名前をフルネームでご入力ください。(例: Ishikawa Ryo)"),
+              const Gap(10),
+              TextFormField(
+                decoration: const InputDecoration(
+                  errorStyle: TextStyle(color: Colors.cyanAccent),
+                ),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return "名前を入力してください";
+                  }
+                  return null;
+                },
+                onSaved: (newValue) {
+                  if (newValue != null) {
+                    formData["name"] = newValue;
+                  }
+                },
               ),
-            ),
-          ],
+              const Gap(10),
+              const Text("学生番号をご入力ください。IDとしてご利用いただきます。"),
+              const Gap(10),
+              TextFormField(
+                decoration: const InputDecoration(
+                  errorStyle: TextStyle(color: Colors.cyanAccent),
+                ),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return "学生番号を入力してください";
+                  }
+                  return null;
+                },
+                onSaved: (newValue) {
+                  if (newValue != null) {
+                    formData["stuId"] = newValue;
+                  }
+                },
+              ),
+              const Gap(10),
+              const Text("パスワードをご入力ください"),
+              const Gap(10),
+              TextFormField(
+                decoration: const InputDecoration(
+                  errorStyle: TextStyle(color: Colors.cyanAccent),
+                ),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return "パスワードを入力してください";
+                  }
+                  return null;
+                },
+                obscureText: true,
+                onChanged: (newValue) {
+                  passwordConfirmation["pw1"] = newValue;
+                },
+                onSaved: (newValue) {
+                  if (newValue != null) {
+                    formData["password"] = newValue;
+                  }
+                },
+              ),
+              const Gap(10),
+              const Text("もう一度パスワードをご入力ください"),
+              const Gap(10),
+              TextFormField(
+                decoration: const InputDecoration(
+                  errorStyle: TextStyle(color: Colors.cyanAccent),
+                ),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return "パスワードを入力してください";
+                  }
+                  if (passwordConfirmation["pw1"] !=
+                      passwordConfirmation["pw2"]) {
+                    return "全項目と同じパスワードを入力してください";
+                  }
+                  return null;
+                },
+                obscureText: true,
+                onChanged: (newValue) {
+                  passwordConfirmation["pw2"] = newValue;
+                },
+                onSaved: (newValue) {
+                  if (newValue != null) {
+                    formData["passwordConfirm"] = newValue;
+                  }
+                },
+              ),
+              const Gap(30),
+              Center(
+                child: GestureDetector(
+                    onTap: () => onSignUpTap(context),
+                    child: const AuthButton(color: Colors.green, text: "会員登録")),
+              ),
+            ],
+          ),
         ),
       ),
     );

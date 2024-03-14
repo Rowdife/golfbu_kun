@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:golfbu_kun/features/authentication/screens/login_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/sign_up_screen.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
 
@@ -12,6 +13,10 @@ class OnboardingScreen extends ConsumerWidget {
 
   void _onSignUpTap(BuildContext context) {
     context.pushNamed(SignUpScreen.routeName);
+  }
+
+  void _onLoginTap(BuildContext context) {
+    context.pushNamed(LoginScreen.routeName);
   }
 
   @override
@@ -53,9 +58,12 @@ class OnboardingScreen extends ConsumerWidget {
                     ),
                   ),
                   const Gap(30),
-                  const AuthButton(
-                    color: Colors.blueAccent,
-                    text: "ログイン",
+                  GestureDetector(
+                    onTap: () => _onLoginTap(context),
+                    child: const AuthButton(
+                      color: Colors.blueAccent,
+                      text: "ログイン",
+                    ),
                   ),
                 ],
               ),
