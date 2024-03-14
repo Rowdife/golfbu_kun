@@ -58,6 +58,7 @@ class SignUpScreen extends ConsumerWidget {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("会員登録"),
       ),

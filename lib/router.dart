@@ -3,11 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/common/main_navigation/screen/main_navigation_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/onboarding_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/sign_up_screen.dart';
+import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart';
 
 final routeProvider = Provider(
   (ref) {
     return GoRouter(
-      initialLocation: "/home",
+      initialLocation: "/",
       routes: [
         GoRoute(
           name: OnboardingScreen.routeName,
@@ -27,6 +28,11 @@ final routeProvider = Provider(
             return MainNavigationScreen(tab: tab);
           },
         ),
+        GoRoute(
+          name: ScoreCardAddScreen.routeName,
+          path: ScoreCardAddScreen.routeUrl,
+          builder: (context, state) => const ScoreCardAddScreen(),
+        )
       ],
     );
   },
