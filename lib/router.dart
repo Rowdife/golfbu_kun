@@ -10,6 +10,7 @@ import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart
 
 final routeProvider = Provider(
   (ref) {
+    ref.watch(authState);
     return GoRouter(
       initialLocation: "/home",
       redirect: (context, state) {
@@ -20,7 +21,7 @@ final routeProvider = Provider(
               state.subloc != LoginScreen.routeURL) {
             return "/";
           } else {
-            return "/home";
+            return null;
           }
         }
         return null;
