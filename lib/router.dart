@@ -5,6 +5,7 @@ import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/authentication/screens/login_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/onboarding_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/sign_up_screen.dart';
+import 'package:golfbu_kun/features/profile/screens/setting_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart';
 
 final routeProvider = Provider(
@@ -13,13 +14,16 @@ final routeProvider = Provider(
       initialLocation: "/home",
       redirect: (context, state) {
         final isLoggedIn = ref.read(authRepo).isLoggedIn;
-        if (state.subloc != OnboardingScreen.routeURL &&
-            state.subloc != SignUpScreen.routeURL &&
-            state.subloc != LoginScreen.routeURL) {
-          return "/";
-        } else {
-          return null;
+        if (!isLoggedIn) {
+          if (state.subloc != OnboardingScreen.routeURL &&
+              state.subloc != SignUpScreen.routeURL &&
+              state.subloc != LoginScreen.routeURL) {
+            return "/";
+          } else {
+            return "/home";
+          }
         }
+        return null;
       },
       routes: [
         GoRoute(
@@ -39,7 +43,7 @@ final routeProvider = Provider(
         ),
         GoRoute(
           name: MainNavigationScreen.routeName,
-          path: "/:tab(home|score|calendar|chat)",
+          path: "/:tab(home|score|calendar|chat|profile)",
           builder: (context, state) {
             final tab = state.params["tab"]!;
             return MainNavigationScreen(tab: tab);
@@ -49,6 +53,11 @@ final routeProvider = Provider(
           name: ScoreCardAddScreen.routeName,
           path: ScoreCardAddScreen.routeUrl,
           builder: (context, state) => const ScoreCardAddScreen(),
+        ),
+        GoRoute(
+          name: SettingScreen.routeName,
+          path: SettingScreen.routeURL,
+          builder: (context, state) => const SettingScreen(),
         )
       ],
     );

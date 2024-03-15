@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/common/main_navigation/widgets/nav_tap.dart';
 import 'package:golfbu_kun/features/league_relations/screen/chat_screen.dart';
+import 'package:golfbu_kun/features/profile/screens/profile_screen.dart';
 import 'package:golfbu_kun/features/schedule_management/screen/calendar_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_screen.dart';
@@ -25,6 +26,7 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
     "score",
     "calendar",
     "chat",
+    "profile",
   ];
 
   late int _selectedIndex = _tabs.indexOf(widget.tab);
@@ -56,6 +58,10 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
           Offstage(
             offstage: _selectedIndex != 3,
             child: const ChatScreen(),
+          ),
+          Offstage(
+            offstage: _selectedIndex != 4,
+            child: const ProfileScreen(),
           ),
         ],
       ),
@@ -89,6 +95,12 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
               icon: FontAwesomeIcons.comment,
               isSelected: _selectedIndex == 3,
               onTap: () => _onTap(3),
+            ),
+            NavTap(
+              tapName: 'Profile',
+              icon: FontAwesomeIcons.user,
+              isSelected: _selectedIndex == 4,
+              onTap: () => _onTap(4),
             ),
           ],
         ),

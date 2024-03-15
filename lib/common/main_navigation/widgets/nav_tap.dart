@@ -17,21 +17,25 @@ class NavTap extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return GestureDetector(
-      onTap: () => onTap(),
-      child: Column(
-        children: [
-          FaIcon(
-            icon,
-            color: isSelected ? Colors.white : Colors.grey.shade600,
-          ),
-          Text(
-            tapName,
-            style: TextStyle(
+    return Expanded(
+      child: InkWell(
+        onTap: () => onTap(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // Column 내용에 맞게 크기 조절
+          mainAxisAlignment: MainAxisAlignment.center, // 세로 방향 중앙 정렬
+          children: [
+            FaIcon(
+              icon,
               color: isSelected ? Colors.white : Colors.grey.shade600,
             ),
-          )
-        ],
+            Text(
+              tapName,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.grey.shade600,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
