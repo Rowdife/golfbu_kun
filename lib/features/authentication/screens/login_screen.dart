@@ -37,7 +37,7 @@ class LoginScreen extends ConsumerWidget {
             children: [
               const Gap(10),
               const Text(
-                "学生番号兼IDをご入力ください。",
+                "メールアドレスをご入力ください。",
                 style: TextStyle(fontSize: 18),
               ),
               const Gap(20),
@@ -47,13 +47,13 @@ class LoginScreen extends ConsumerWidget {
                 ),
                 validator: (value) {
                   if (value != null && value.isEmpty) {
-                    return "学生番号を入力してください";
+                    return "メールアドレスを入力してください";
                   }
                   return null;
                 },
                 onSaved: (newValue) {
                   if (newValue != null) {
-                    formData["stuId"] = newValue;
+                    formData["email"] = newValue;
                   }
                 },
               ),

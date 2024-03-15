@@ -1,17 +1,24 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/common/main_navigation/screen/main_navigation_screen.dart';
+import 'package:golfbu_kun/features/authentication/vms/sign_up_vm.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
 
-class SignUpScreen extends ConsumerWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   static const routeName = "SignUp";
   static const routeURL = "/signup";
   const SignUpScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+  @override
+  Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     Map<String, String> formData = {};
@@ -49,12 +56,16 @@ class SignUpScreen extends ConsumerWidget {
         if (formKey.currentState != null) {
           if (formKey.currentState!.validate()) {
             formKey.currentState!.save();
-            print(formData);
+            ref.read(signUpForm.notifier).state = {
+              "email": formData["email"],
+              "password": formData["passwordConfirm"]
+            };
+            print(ref.read(signUpForm.notifier).state);
             // fire base 로 여기에 loginWithId 구현 예정. 임시로 홈 화면에 보내주도록 함.
-            context.go("/home");
           }
         }
       }
+      ref.read(signUpProvider.notifier).signUp();
     }
 
     return Scaffold(
@@ -119,7 +130,7 @@ class SignUpScreen extends ConsumerWidget {
                 },
               ),
               const Gap(10),
-              const Text("学生番号をご入力ください。IDとしてご利用いただきます。"),
+              const Text("メールアドレスをご入力ください。IDとしてご利用いただきます。"),
               const Gap(10),
               TextFormField(
                 decoration: const InputDecoration(
@@ -127,13 +138,15 @@ class SignUpScreen extends ConsumerWidget {
                 ),
                 validator: (value) {
                   if (value != null && value.isEmpty) {
-                    return "学生番号を入力してください";
+                    return "メールアドレスを入力してください";
+                  } else if (!EmailValidator.validate(value!)) {
+                    return "メールアドレスを正しく入力してください";
                   }
                   return null;
                 },
                 onSaved: (newValue) {
                   if (newValue != null) {
-                    formData["stuId"] = newValue;
+                    formData["email"] = newValue;
                   }
                 },
               ),
@@ -147,6 +160,8 @@ class SignUpScreen extends ConsumerWidget {
                 validator: (value) {
                   if (value != null && value.isEmpty) {
                     return "パスワードを入力してください";
+                  } else if (value!.length < 6) {
+                    return "6文字以上";
                   }
                   return null;
                 },

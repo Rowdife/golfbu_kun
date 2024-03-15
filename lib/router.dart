@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/common/main_navigation/screen/main_navigation_screen.dart';
+import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/authentication/screens/login_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/onboarding_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/sign_up_screen.dart';
@@ -9,7 +10,17 @@ import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart
 final routeProvider = Provider(
   (ref) {
     return GoRouter(
-      initialLocation: "/",
+      initialLocation: "/home",
+      redirect: (context, state) {
+        final isLoggedIn = ref.read(authRepo).isLoggedIn;
+        if (state.subloc != OnboardingScreen.routeURL &&
+            state.subloc != SignUpScreen.routeURL &&
+            state.subloc != LoginScreen.routeURL) {
+          return "/";
+        } else {
+          return null;
+        }
+      },
       routes: [
         GoRoute(
           name: OnboardingScreen.routeName,

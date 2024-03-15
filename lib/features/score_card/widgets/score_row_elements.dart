@@ -145,6 +145,12 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
               },
               items: const [
                 DropdownMenuItem(
+                  value: "nomiss",
+                  child: Text(
+                    "ワンパット",
+                  ),
+                ),
+                DropdownMenuItem(
                   value: "Left",
                   child: Text(
                     "左外し",
@@ -299,25 +305,25 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
                   ),
                 ),
                 DropdownMenuItem(
-                  value: "miss",
+                  value: "chipping",
                   child: Text(
                     "チーピン",
                   ),
                 ),
                 DropdownMenuItem(
-                  value: "miss",
+                  value: "top",
                   child: Text(
                     "トップ",
                   ),
                 ),
                 DropdownMenuItem(
-                  value: "miss",
+                  value: "tenpura",
                   child: Text(
                     "天ぷら",
                   ),
                 ),
                 DropdownMenuItem(
-                  value: "miss",
+                  value: "duff",
                   child: Text(
                     "ダフリ",
                   ),
