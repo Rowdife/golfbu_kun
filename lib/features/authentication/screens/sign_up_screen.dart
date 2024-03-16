@@ -57,6 +57,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           if (formKey.currentState!.validate()) {
             formKey.currentState!.save();
             ref.read(signUpForm.notifier).state = {
+              "university": formData["university"],
+              "position": formData["position"],
+              "sex": formData["sex"],
+              "name": formData["name"],
               "email": formData["email"],
               "password": formData["passwordConfirm"]
             };
@@ -65,7 +69,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           }
         }
       }
-      ref.read(signUpProvider.notifier).signUp();
+      ref.read(signUpProvider.notifier).signUp(context);
     }
 
     return Scaffold(

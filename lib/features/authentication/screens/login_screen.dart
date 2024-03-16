@@ -1,7 +1,9 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:golfbu_kun/features/authentication/vms/log_in_vm.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -20,7 +22,10 @@ class LoginScreen extends ConsumerWidget {
           formKey.currentState!.save();
           print(formData);
           // fire base 로 여기에 loginWithId 구현 예정. 임시로 홈 화면에 보내주도록 함.
-          context.go("/home");
+          ref.read(loginProvider.notifier).login(
+              email: formData["email"]!,
+              password: formData["password"],
+              context: context);
         }
       }
     }
@@ -48,6 +53,8 @@ class LoginScreen extends ConsumerWidget {
                 validator: (value) {
                   if (value != null && value.isEmpty) {
                     return "メールアドレスを入力してください";
+                  } else if (!EmailValidator.validate(value!)) {
+                    return "メールアドレスを正しく入力してください";
                   }
                   return null;
                 },

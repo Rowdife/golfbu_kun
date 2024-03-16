@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
   static const routeName = "Setting";
@@ -39,6 +40,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                       ),
                       CupertinoActionSheetAction(
                         onPressed: () => {
+                          ref.read(authRepo).signOut(),
                           context.go("/"),
                         },
                         isDestructiveAction: true,
