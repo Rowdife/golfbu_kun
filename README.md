@@ -1,16 +1,13 @@
 # golfbu_kun
 
-A new Flutter project.
+![cutegolfball](https://github.com/Rowdife/golfbu_kun/assets/76625609/2b0c23e4-6879-4a70-b8b2-aca3f8723d6c)
 
-## Getting Started
+ゴルフ部の内部SNS、チームスコアマネジメント、スケジュールマネジメントを助けるアプリです。
 
-This project is a starting point for a Flutter application.
+2024年3月末にAppStoreに登録するのが目標です。
+人生初のアプリ開発なので開発方法論については知識が皆無で、お恥ずかしながらcommitのルールもガバガバです。
 
-A few resources to get you started if this is your first Flutter project:
+使用したライブラリー
+Front: Flutter
+Back: Firebase
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
