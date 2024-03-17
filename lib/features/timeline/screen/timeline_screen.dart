@@ -27,7 +27,9 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
     );
   }
 
-  Future<void> _onRefresh() async {}
+  Future<void> _onRefresh() async {
+    return ref.read(timelineProvider.notifier).refresh();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,6 @@ class PostVideoModel {
   final String uploaderName;
   final String fileUrl;
   final String uploaderUid;
-
   final int comments;
   final int createdAt;
 
@@ -16,8 +15,9 @@ class PostVideoModel {
     required this.createdAt,
   });
 
-  PostVideoModel.fromJson(Map<String, dynamic> json)
-      : description = json["description"],
+  PostVideoModel.fromJson({
+    required Map<String, dynamic> json,
+  })  : description = json["description"],
         uploaderName = json["uploaderName"],
         fileUrl = json["fileUrl"],
         uploaderUid = json["uploaderUid"],
