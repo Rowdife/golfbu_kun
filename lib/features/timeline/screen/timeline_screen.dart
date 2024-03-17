@@ -67,6 +67,7 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
                       final videoData = videos[index];
                       return TimelinePost(
                         videoData: videoData,
+                        index: index,
                       );
                     },
                   ),
