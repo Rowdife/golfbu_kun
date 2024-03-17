@@ -7,6 +7,7 @@ import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_choice_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_question_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_video_screen.dart';
+import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 
 import 'package:golfbu_kun/features/timeline/widgets/timeline_post.dart';
 
@@ -26,6 +27,8 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
     );
   }
 
+  Future<void> _onRefresh() async {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,20 +42,32 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
             ),
           ],
         ),
-        body: ListView.separated(
-          itemCount: 5,
-          separatorBuilder: (context, index) => const Divider(
-            height: 20,
-            thickness: 0,
-            color: Colors.transparent,
-          ),
-          itemBuilder: (context, index) {
-            return TimelinePost(
-                videoURL: "以後FirebaseのStorageのURLに変更する",
-                caption: "右腋を締めることを意識してます。",
-                date: DateTime.now(),
-                userName: "4年 パク・シヒョン");
-          },
-        ));
+        body: ref.watch(timelineProvider).when(
+            loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+            error: (error, stackTrace) => Center(
+                  child: Text(
+                    '動画をロードできません $error',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+            data: (videos) => RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: ListView.separated(
+                    itemCount: videos.length,
+                    separatorBuilder: (context, index) => const Divider(
+                      height: 20,
+                      thickness: 0,
+                      color: Colors.transparent,
+                    ),
+                    itemBuilder: (context, index) {
+                      final videoData = videos[index];
+                      return TimelinePost(
+                        videoData: videoData,
+                      );
+                    },
+                  ),
+                )));
   }
 }

@@ -1,22 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_comment_screen.dart';
 import 'package:video_player/video_player.dart';
 
 class TimelinePost extends ConsumerStatefulWidget {
   const TimelinePost({
     super.key,
-    required this.videoURL,
-    required this.userName,
-    required this.caption,
-    required this.date,
+    required this.videoData,
   });
-  final String videoURL;
-  final String userName;
-  final String caption;
-  final DateTime date;
+
+  final PostVideoModel videoData;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _TimelinePostState();
@@ -25,16 +23,17 @@ class TimelinePost extends ConsumerStatefulWidget {
 class _TimelinePostState extends ConsumerState<TimelinePost>
     with SingleTickerProviderStateMixin {
   late VideoPlayerController _videoPlayerController;
-  late final AnimationController _animationController;
-
-  final Duration _animationDuration = const Duration(milliseconds: 200);
 
   bool _isPlaying = false;
 
   void _initVideoPlayer() async {
-    _videoPlayerController =
-        VideoPlayerController.asset("assets/videos/golf_swing.MOV");
-    await _videoPlayerController.initialize();
+    try {
+      _videoPlayerController =
+          VideoPlayerController.network(widget.videoData.fileUrl);
+      await _videoPlayerController.initialize();
+    } catch (e) {
+      print(widget.videoData.fileUrl);
+    }
   }
 
   void _onTogglePlay() {
@@ -63,13 +62,6 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
   void initState() {
     super.initState();
     _initVideoPlayer();
-    _animationController = AnimationController(
-      vsync: this,
-      lowerBound: 1.0,
-      upperBound: 1.5,
-      value: 1.0,
-      duration: _animationDuration,
-    );
   }
 
   @override
@@ -99,7 +91,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                 ),
                 const Gap(10),
                 Text(
-                  widget.userName,
+                  widget.videoData.uploaderName,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -136,11 +128,11 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
               ),
             ),
             Container(
-              child:
-                  Text("posted at ${widget.date.toString().substring(0, 16)}"),
+              child: Text(
+                  "posted at ${DateTime.fromMillisecondsSinceEpoch(widget.videoData.createdAt).toString().substring(0, 16)}"),
             ),
             Container(
-              child: Text(widget.caption),
+              child: Text(widget.videoData.description),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -155,7 +147,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                         size: 30,
                       ),
                     ),
-                    const Text("1"),
+                    Text("${widget.videoData.comments}"),
                   ],
                 ),
               ],

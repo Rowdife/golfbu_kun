@@ -18,26 +18,38 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
   }
 
   Future<void> uploadVideo(
-      File video, String description, BuildContext context) async {
+    File video,
+    String description,
+    BuildContext context,
+  ) async {
+    print("upload video pressed");
     final user = ref.read(authRepo).user;
-    final profile = ref.read(profileProvider).value;
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(
-      () async {
-        final task = await _repository.uploadVideo(video, user!.uid);
-        if (task.metadata != null) {
-          _repository.saveVideo(PostVideoModel(
-              description: description,
-              fileUrl: await task.ref.getDownloadURL(),
-              uploaderUid: user.uid,
-              comments: 0,
-              createdAt: DateTime.now().millisecondsSinceEpoch,
-              uploaderName: profile!.name,
-              thumbnailUrl: ""));
-        }
-        context.push("/home");
-      },
-    );
+    final profile = ref.watch(profileProvider);
+    profile.whenData((profile) async {
+      print(profile);
+      state = const AsyncValue.loading();
+      print("user and profile loaded");
+      state = await AsyncValue.guard(
+        () async {
+          final task = await _repository.uploadVideo(video, user!.uid);
+
+          if (task.metadata != null) {
+            await _repository.saveVideo(
+              PostVideoModel(
+                description: description,
+                fileUrl: await task.ref.getDownloadURL(),
+                uploaderUid: user.uid,
+                comments: 0,
+                createdAt: DateTime.now().millisecondsSinceEpoch,
+                uploaderName: profile.name,
+              ),
+            );
+          }
+          context.pop();
+          context.pop();
+        },
+      );
+    });
   }
 }
 

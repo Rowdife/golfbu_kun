@@ -66,10 +66,14 @@ class _TimelineUploadScreenState
   }
 
   void _onUploadPressed() {
-    _formKey.currentState!.save();
-    ref
-        .read(uploadVideoProvider.notifier)
-        .uploadVideo(File(widget.video.path), description, context);
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      ref.read(uploadVideoProvider.notifier).uploadVideo(
+            File(widget.video.path),
+            description,
+            context,
+          );
+    }
   }
 
   @override

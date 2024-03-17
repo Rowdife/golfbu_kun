@@ -67,8 +67,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               "email": formData["email"],
               "password": formData["passwordConfirm"]
             };
-            print(ref.read(signUpForm.notifier).state);
-            // fire base 로 여기에 loginWithId 구현 예정. 임시로 홈 화면에 보내주도록 함.
           }
         }
       }

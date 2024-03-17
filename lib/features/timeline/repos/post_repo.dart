@@ -18,6 +18,13 @@ class PostRepository {
   Future<void> saveVideo(PostVideoModel data) async {
     await _db.collection("videos").add(data.toJson());
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos() {
+    return _db
+        .collection("videos")
+        .orderBy("createdAt", descending: true)
+        .get();
+  }
 }
 
 final postRepo = Provider((ref) => PostRepository());
