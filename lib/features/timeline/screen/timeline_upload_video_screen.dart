@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:golfbu_kun/features/timeline/vms/upload_video_vm.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
@@ -64,11 +65,28 @@ class _TimelineUploadScreenState
     }
   }
 
+  void _onUploadPressed() {
+    _formKey.currentState!.save();
+    ref
+        .read(uploadVideoProvider.notifier)
+        .uploadVideo(File(widget.video.path), description, context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text("upload video"),
+          actions: [
+            IconButton(
+              onPressed: ref.watch(uploadVideoProvider).isLoading
+                  ? () {}
+                  : _onUploadPressed,
+              icon: ref.watch(uploadVideoProvider).isLoading
+                  ? const CircularProgressIndicator()
+                  : const FaIcon(FontAwesomeIcons.upload),
+            ),
+          ],
         ),
         body: _videoPlayerController.value.isInitialized && underFiveSeconds
             ? Stack(
