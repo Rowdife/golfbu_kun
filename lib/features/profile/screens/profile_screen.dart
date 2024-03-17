@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
-import 'package:golfbu_kun/features/profile/screens/setting_screen.dart';
-import 'package:golfbu_kun/features/profile/widgets/profile_menu.dart';
+import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
+import 'package:golfbu_kun/features/profile/widgets/profile_info_element.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
+  static const routeName = "profileinfo";
+  static const routeURL = "/profileinfo";
   const ProfileScreen({super.key});
 
   @override
@@ -14,46 +14,39 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  void _onSettingTap(BuildContext context) {
-    context.pushNamed(SettingScreen.routeName);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          children: [
-            DefaultTextStyle(
-              style: const TextStyle(fontSize: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return ref.watch(profileProvider).when(
+        error: (error, stackTrace) => Center(
+              child: Text(error.toString()),
+            ),
+        loading: () => const Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
+        data: (data) => Scaffold(
+              appBar: AppBar(
+                title: const Text("プロフィール情報"),
+              ),
+              body: ListView(
                 children: [
-                  const ProfileMenu(
-                    icon: FontAwesomeIcons.solidUser,
-                    text: 'プロフィール情報',
+                  ProfileInfoElement(
+                    category: '所属大学',
+                    info: data.university,
                   ),
-                  const ProfileMenu(
-                    icon: FontAwesomeIcons.golfBallTee,
-                    text: "スイングアーカイブ",
+                  ProfileInfoElement(
+                    category: '名前',
+                    info: data.name,
                   ),
-                  GestureDetector(
-                    onTap: () => _onSettingTap(context),
-                    child: const ProfileMenu(
-                      icon: FontAwesomeIcons.gear,
-                      text: "設定",
-                    ),
+                  ProfileInfoElement(
+                    category: '役職',
+                    info: data.position,
+                  ),
+                  ProfileInfoElement(
+                    category: '性別',
+                    info: data.sex,
                   ),
                 ],
               ),
-            )
-          ],
-        ),
-      ),
-    );
+            ));
   }
 }

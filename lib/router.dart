@@ -5,8 +5,11 @@ import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/authentication/screens/login_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/onboarding_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/sign_up_screen.dart';
+import 'package:golfbu_kun/features/profile/screens/profile_screen.dart';
 import 'package:golfbu_kun/features/profile/screens/setting_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart';
+import 'package:golfbu_kun/features/timeline/screen/timeline_upload_question_screen.dart';
+import 'package:golfbu_kun/features/timeline/screen/timeline_upload_video_screen.dart';
 
 final routeProvider = Provider(
   (ref) {
@@ -59,7 +62,17 @@ final routeProvider = Provider(
           name: SettingScreen.routeName,
           path: SettingScreen.routeURL,
           builder: (context, state) => const SettingScreen(),
-        )
+        ),
+        GoRoute(
+          name: ProfileScreen.routeName,
+          path: ProfileScreen.routeURL,
+          builder: (context, state) => const ProfileScreen(),
+        ),
+        GoRoute(
+          name: TimelineUploadQuestionScreen.routeName,
+          path: TimelineUploadQuestionScreen.routeUrl,
+          builder: (context, state) => const TimelineUploadQuestionScreen(),
+        ),
       ],
     );
   },

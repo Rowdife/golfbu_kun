@@ -58,6 +58,12 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                 ),
               ),
             ),
+            Theme(
+              data: ThemeData(
+                  listTileTheme:
+                      const ListTileThemeData(textColor: Colors.white)),
+              child: const AboutListTile(),
+            ),
           ],
         ),
       ),

@@ -2,15 +2,26 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/profile/models/profile_model.dart';
 import 'package:golfbu_kun/features/profile/repos/profile_repo.dart';
 
 class ProfilesViewModel extends AsyncNotifier<ProfileModel> {
-  late final UserRepository _repository;
+  late final AuthenticationRepository _authRepo;
+  late final ProfileRepository _profileRepo;
 
   @override
-  FutureOr<ProfileModel> build() {
-    _repository = ref.read(userRepo);
+  FutureOr<ProfileModel> build() async {
+    _authRepo = ref.read(authRepo);
+    _profileRepo = ref.read(profileRepo);
+
+    if (_authRepo.isLoggedIn) {
+      final profile = await _profileRepo.findProfile(_authRepo.user!.uid);
+      if (profile != null) {
+        return ProfileModel.fromJson(profile);
+      }
+    }
+
     return ProfileModel.empty();
   }
 
@@ -32,7 +43,7 @@ class ProfilesViewModel extends AsyncNotifier<ProfileModel> {
       email: credential.user!.email ?? "",
     );
 
-    await _repository.createProfile(profile);
+    await _profileRepo.createProfile(profile);
     state = AsyncValue.data(profile);
   }
 }

@@ -7,7 +7,7 @@ void showFirebaseErrorSnack(
 ) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text((error as FirebaseException).message ?? "Undefined Error"),
+      content: Text(error.toString() ?? "Undefined Error"),
     ),
   );
 }
