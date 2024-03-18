@@ -25,7 +25,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     Map<String, String> passwordConfirmation = {};
 
     List<DropdownMenuEntry<dynamic>> university = [
-      const DropdownMenuEntry(value: "青山学院大学", label: "青山学院大学")
+      const DropdownMenuEntry(value: ["青山学院大学", "agu"], label: "青山学院大学")
     ];
 
     List<DropdownMenuEntry<dynamic>> position = [
@@ -61,6 +61,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             formKey.currentState!.save();
             ref.read(signUpForm.notifier).state = {
               "university": formData["university"],
+              "universityId": formData["universityId"],
               "position": formData["position"],
               "sex": formData["sex"],
               "name": formData["name"],
@@ -93,7 +94,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   const Gap(10),
                   DropdownMenu(
                       onSelected: (newValue) {
-                        formData["university"] = newValue;
+                        formData["university"] = newValue[0];
+                        formData["universityId"] = newValue[1];
                       },
                       label: const Text(
                         "大学",

@@ -50,7 +50,7 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
                 ),
             error: (error, stackTrace) => Center(
                   child: Text(
-                    '動画をロードできません $error',
+                    '投稿をロードできません $error',
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),

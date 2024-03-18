@@ -23,8 +23,10 @@ class SignUpViewModel extends AsyncNotifier<void> {
         final userCredential = await _authRepo.signUp(
           email: form["email"],
           password: form["password"],
+          universityId: form["universityId"],
         );
         final university = form["university"];
+        final universityId = form["universityId"];
         final position = form["position"];
         final sex = form["sex"];
         final name = form["name"];
@@ -32,6 +34,7 @@ class SignUpViewModel extends AsyncNotifier<void> {
         await profile.createProfile(
             credential: userCredential,
             university: university,
+            universityId: universityId,
             position: position,
             sex: sex,
             name: name);

@@ -18,7 +18,8 @@ class ProfilesViewModel extends AsyncNotifier<ProfileModel> {
     state = const AsyncValue.loading();
 
     if (_authRepo.isLoggedIn) {
-      final profile = await _profileRepo.findProfile(_authRepo.user!.uid);
+      final profile = await _profileRepo.findProfile(
+          uid: _authRepo.user!.uid, universityId: _authRepo.user!.displayName);
       if (profile != null) {
         return ProfileModel.fromJson(profile);
       }
@@ -30,6 +31,7 @@ class ProfilesViewModel extends AsyncNotifier<ProfileModel> {
   Future<void> createProfile({
     required UserCredential credential,
     required String university,
+    required String universityId,
     required String position,
     required String sex,
     required String name,
@@ -39,6 +41,7 @@ class ProfilesViewModel extends AsyncNotifier<ProfileModel> {
     final profile = ProfileModel(
       uid: credential.user!.uid,
       university: university,
+      universityId: universityId,
       position: position,
       sex: sex,
       name: name,

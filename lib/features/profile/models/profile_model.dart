@@ -1,6 +1,7 @@
 class ProfileModel {
   final String uid;
   final String university;
+  final String universityId;
   final String position;
   final String sex;
   final String name;
@@ -13,11 +14,13 @@ class ProfileModel {
     required this.sex,
     required this.name,
     required this.email,
+    required this.universityId,
   });
 
   ProfileModel.empty()
       : uid = "",
         university = "",
+        universityId = "",
         position = "",
         sex = "",
         name = "",
@@ -26,6 +29,7 @@ class ProfileModel {
   ProfileModel.fromJson(Map<String, dynamic> json)
       : uid = json["uid"],
         university = json["university"],
+        universityId = json["universityId"],
         position = json["position"],
         sex = json["sex"],
         email = json["email"],
@@ -35,6 +39,7 @@ class ProfileModel {
     return {
       "uid": uid,
       "university": university,
+      "universityId": universityId,
       "position": position,
       "sex": sex,
       "name": name,

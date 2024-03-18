@@ -97,6 +97,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
           ),
           alignment: Alignment.center,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Gap(10),
               Row(
@@ -120,7 +121,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
               ),
               const Gap(10),
               Container(
-                height: size.height * 0.65,
+                height: size.height * 0.6,
                 width: size.width * 0.9,
                 color: Colors.grey.shade900,
                 child: Stack(
@@ -147,26 +148,43 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                 ),
               ),
               Container(
-                child: Text(
-                    "posted at ${DateTime.fromMillisecondsSinceEpoch(widget.videoData.createdAt).toString().substring(0, 16)}"),
+                child: Text(DateTime.fromMillisecondsSinceEpoch(
+                        widget.videoData.createdAt)
+                    .toString()
+                    .substring(0, 16)),
               ),
               Container(
-                child: Text(widget.videoData.description),
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.09),
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 0.5,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(5))),
+                child: Text(
+                  widget.videoData.description,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w500),
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Column(
+                  Row(
                     children: [
                       IconButton(
                         onPressed: () => _onCommentTap(context),
                         icon: const FaIcon(
                           FontAwesomeIcons.solidComment,
                           color: Colors.white,
-                          size: 30,
+                          size: 20,
                         ),
                       ),
-                      Text("${widget.videoData.comments}"),
+                      Text(
+                        "${widget.videoData.comments}",
+                      ),
                     ],
                   ),
                 ],
