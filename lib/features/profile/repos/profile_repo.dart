@@ -17,7 +17,6 @@ class ProfileRepository {
 
   Future<Map<String, dynamic>?> findProfile({
     required String uid,
-    required String? universityId,
   }) async {
     final doc = await _db.collection("university").doc(uid).get();
     return doc.data();
