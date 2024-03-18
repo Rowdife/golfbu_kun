@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/profile/screens/profile_screen.dart';
 import 'package:golfbu_kun/features/profile/screens/setting_screen.dart';
@@ -46,10 +47,12 @@ class _ProfileNavigationScreenState
                       text: 'プロフィール情報',
                     ),
                   ),
+                  const Gap(20),
                   const ProfileMenu(
                     icon: FontAwesomeIcons.golfBallTee,
                     text: "スイングアーカイブ",
                   ),
+                  const Gap(20),
                   GestureDetector(
                     onTap: () => _onSettingTap(context),
                     child: const ProfileMenu(

@@ -13,23 +13,27 @@ class ProfileMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Gap(20),
-        Row(
-          children: [
-            const Gap(10),
-            FaIcon(
-              icon,
-              color: Colors.white,
-            ),
-            const Gap(10),
-            Text(text),
-          ],
+    return Container(
+      height: 80,
+      decoration: BoxDecoration(
+          color: Colors.black38,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5),
+          ),
+          border: Border.all(color: Colors.white, width: 0.5)),
+      child: Center(
+        child: ListTile(
+          leading: FaIcon(
+            icon,
+            color: Colors.white,
+            size: 30,
+          ),
+          title: Text(
+            text,
+            style: const TextStyle(color: Colors.white, fontSize: 24),
+          ),
         ),
-        const Gap(20),
-        const Divider(),
-      ],
+      ),
     );
   }
 }

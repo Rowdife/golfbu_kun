@@ -23,6 +23,14 @@ class ScoreButton extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: color,
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.white24,
+            offset: Offset(0, 0),
+            blurRadius: 10.0,
+            spreadRadius: 1.0,
+          ),
+        ],
       ),
       child: Stack(
         alignment: Alignment.center,

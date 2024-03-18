@@ -94,6 +94,14 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Colors.black87,
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.white12,
+                offset: Offset(0, 0),
+                blurRadius: 10.0,
+                spreadRadius: 1.0,
+              ),
+            ],
           ),
           alignment: Alignment.center,
           child: Column(
@@ -126,10 +134,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                 color: Colors.grey.shade900,
                 child: Stack(
                   children: [
-                    GestureDetector(
-                      onTap: _onTogglePlay,
-                      child: VideoPlayer(_videoPlayerController),
-                    ),
+                    VideoPlayer(_videoPlayerController),
                     Positioned(
                       child: Container(
                         padding: const EdgeInsets.only(top: 40),
@@ -142,6 +147,15 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                                   color: Colors.white,
                                 ),
                               ),
+                      ),
+                    ),
+                    Positioned(
+                      child: GestureDetector(
+                        onTap: _onTogglePlay,
+                        child: Container(
+                          decoration:
+                              const BoxDecoration(color: Colors.transparent),
+                        ),
                       ),
                     ),
                   ],

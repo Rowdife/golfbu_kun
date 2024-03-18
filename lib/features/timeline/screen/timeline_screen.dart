@@ -65,9 +65,14 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
                     ),
                     itemBuilder: (context, index) {
                       final videoData = videos[index];
-                      return TimelinePost(
-                        videoData: videoData,
-                        index: index,
+                      return Column(
+                        children: [
+                          const Gap(10),
+                          TimelinePost(
+                            videoData: videoData,
+                            index: index,
+                          ),
+                        ],
                       );
                     },
                   ),
