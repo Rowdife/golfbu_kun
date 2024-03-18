@@ -17,9 +17,21 @@ class ProfileRepository {
 
   Future<Map<String, dynamic>?> findProfile({
     required String uid,
+    required String? universityId,
   }) async {
-    final doc = await _db.collection("university").doc(uid).get();
+    final doc = await _db
+        .collection("university")
+        .doc(universityId)
+        .collection(universityId!)
+        .doc(uid)
+        .get();
     return doc.data();
+  }
+
+  Future<void> deleteProfile({
+    required String uid,
+  }) async {
+    await _db.collection("university").doc(uid).delete();
   }
 }
 

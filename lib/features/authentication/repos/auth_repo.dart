@@ -12,12 +12,19 @@ class AuthenticationRepository {
   Future<UserCredential> signUp({
     required String email,
     required String password,
+    required String universityId,
   }) async {
     final UserCredential userCredential =
         await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+
+    User? user = userCredential.user;
+    if (user != null) {
+      await user.updateDisplayName(universityId);
+      await user.reload();
+    }
 
     return userCredential;
   }
@@ -31,6 +38,10 @@ class AuthenticationRepository {
       email: email,
       password: password,
     );
+  }
+
+  Future<void> deleteAccount() async {
+    await user!.delete();
   }
 }
 

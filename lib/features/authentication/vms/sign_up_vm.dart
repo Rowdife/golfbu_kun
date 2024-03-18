@@ -21,9 +21,9 @@ class SignUpViewModel extends AsyncNotifier<void> {
     state = await AsyncValue.guard(
       () async {
         final userCredential = await _authRepo.signUp(
-          email: form["email"],
-          password: form["password"],
-        );
+            email: form["email"],
+            password: form["password"],
+            universityId: form["universityId"]);
         final university = form["university"];
         final universityId = form["universityId"];
         final position = form["position"];

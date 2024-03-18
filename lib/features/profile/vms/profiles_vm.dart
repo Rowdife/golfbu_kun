@@ -19,8 +19,7 @@ class ProfilesViewModel extends AsyncNotifier<ProfileModel> {
 
     if (_authRepo.isLoggedIn) {
       final profile = await _profileRepo.findProfile(
-        uid: _authRepo.user!.uid,
-      );
+          uid: _authRepo.user!.uid, universityId: _authRepo.user!.displayName);
       if (profile != null) {
         return ProfileModel.fromJson(profile);
       }
