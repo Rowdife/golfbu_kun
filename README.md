@@ -9,7 +9,8 @@
 
 現在実装したScreen別進捗度
 
-Timeline Screen ✅
+Timeline Screen ✅　　
+
 スイング動画
 Create✅
 Read✅
