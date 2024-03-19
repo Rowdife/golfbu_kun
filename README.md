@@ -9,30 +9,29 @@
 
 現在実装したScreen別進捗度
 
-Timeline Screen ✅　　
+Timeline Screen ✅  
 -スイング動画  
-*Create✅  
-*Read✅  
-*Update  
-*Delete  
-
-スイング動画コメント  
-Create✅  
-Read✅  
-Update  
-Delete  
+  *Create✅  
+  *Read✅  
+  *Update  
+  *Delete  
+-スイング動画コメント  
+  *Create✅  
+  *Read✅  
+  *Update  
+  *Delete  
   
-部内告知アナウンス機能 in Progress
-スコア登録機能 in Progress
-部内日程管理機能 in Progress
+部内告知アナウンス機能 in Progress  
+スコア登録機能 in Progress  
+部内日程管理機能 in Progress  
 
-Profile Screen
-  プロフィール情報
-    Read ✅
-    Update
-  アカウント
-    Delete ✅
-  ログアウト ✅
+Profile Screen  
+-プロフィール情報  
+  *Read ✅  
+  *Update  
+  *アカウント  
+  *Delete ✅  
+  *ログアウト ✅  
 
 使用したライブラリー
 Front: Flutter
