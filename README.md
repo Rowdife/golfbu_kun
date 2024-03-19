@@ -10,17 +10,17 @@
 現在実装したScreen別進捗度
 
 Timeline Screen ✅　　
--スイング動画
-*Create✅
-*Read✅
-*Update
+-スイング動画  
+*Create✅  
+*Read✅  
+*Update  
 *Delete  
 
-スイング動画コメント
-Create✅
-Read✅
-Update
-Delete
+スイング動画コメント  
+Create✅  
+Read✅  
+Update  
+Delete  
   
 部内告知アナウンス機能 in Progress
 スコア登録機能 in Progress
