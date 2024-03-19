@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
+import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_comment_screen.dart';
+import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -14,9 +16,11 @@ class TimelinePost extends ConsumerStatefulWidget {
     super.key,
     required this.videoData,
     required this.index,
+    required this.videoId,
   });
 
   final PostVideoModel videoData;
+  final String videoId;
   final int index;
 
   @override
@@ -53,11 +57,18 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
     }
   }
 
-  void _onCommentTap(BuildContext context) {
+  Future<void> _onCommentTap(BuildContext context) async {
+    final comments = await ref
+        .read(uploadVideoCommentProvider.notifier)
+        .fetchCommentsByVideoId(widget.videoId);
+
     showModalBottomSheet(
       context: context,
       scrollControlDisabledMaxHeightRatio: 0.8,
-      builder: (context) => const TimelineCommentScreen(),
+      builder: (context) => TimelineCommentScreen(
+        videoId: widget.videoId,
+        comments: comments,
+      ),
     );
   }
 
@@ -119,7 +130,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                   ),
                   const Gap(10),
                   Text(
-                    widget.videoData.uploaderName,
+                    "${widget.videoData.uploaderGrade} ${widget.videoData.uploaderName}",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,

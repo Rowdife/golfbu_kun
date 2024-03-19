@@ -43,10 +43,20 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       const DropdownMenuEntry(value: "無回答", label: "無回答"),
     ];
 
+    List<DropdownMenuEntry<dynamic>> grade = [
+      const DropdownMenuEntry(value: "1年", label: "1年"),
+      const DropdownMenuEntry(value: "2年", label: "2年"),
+      const DropdownMenuEntry(value: "3年", label: "3年"),
+      const DropdownMenuEntry(value: "4年", label: "4年"),
+      const DropdownMenuEntry(value: "5年", label: "5年"),
+      const DropdownMenuEntry(value: "6年", label: "6年"),
+    ];
+
     void onSignUpTap(BuildContext context) {
       bool allMenuesAreSelected = formData["university"] != null &&
           formData["position"] != null &&
-          formData["sex"] != null;
+          formData["sex"] != null &&
+          formData["grade"] != null;
 
 // 大学、役職、性別のメニューを全て選択させてから　FormをSaveする。
       if (!allMenuesAreSelected) {
@@ -63,6 +73,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               "university": formData["university"],
               "universityId": formData["universityId"],
               "position": formData["position"],
+              "grade": formData["grade"],
               "sex": formData["sex"],
               "name": formData["name"],
               "email": formData["email"],
@@ -93,35 +104,49 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 children: [
                   const Gap(10),
                   DropdownMenu(
-                      onSelected: (newValue) {
-                        formData["university"] = newValue[0];
-                        formData["universityId"] = newValue[1];
-                      },
-                      label: const Text(
-                        "大学",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      dropdownMenuEntries: university),
+                    onSelected: (newValue) {
+                      formData["university"] = newValue[0];
+                      formData["universityId"] = newValue[1];
+                    },
+                    label: const Text(
+                      "大学",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    dropdownMenuEntries: university,
+                  ),
                   const Gap(10),
                   DropdownMenu(
-                      onSelected: (newValue) {
-                        formData["position"] = newValue;
-                      },
-                      label: const Text(
-                        "役職",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      dropdownMenuEntries: position),
+                    onSelected: (newValue) {
+                      formData["position"] = newValue;
+                    },
+                    label: const Text(
+                      "役職",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    dropdownMenuEntries: position,
+                  ),
                   const Gap(10),
                   DropdownMenu(
-                      onSelected: (newValue) {
-                        formData["sex"] = newValue;
-                      },
-                      label: const Text(
-                        "性別",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      dropdownMenuEntries: sex),
+                    onSelected: (newValue) {
+                      formData["sex"] = newValue;
+                    },
+                    label: const Text(
+                      "性別",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    dropdownMenuEntries: sex,
+                  ),
+                  const Gap(10),
+                  DropdownMenu(
+                    onSelected: (newValue) {
+                      formData["grade"] = newValue;
+                    },
+                    label: const Text(
+                      "学年",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    dropdownMenuEntries: grade,
+                  ),
                   const Gap(10),
                   const Text("お名前をフルネームでご入力ください。(例: Ishikawa Ryo)"),
                   const Gap(10),

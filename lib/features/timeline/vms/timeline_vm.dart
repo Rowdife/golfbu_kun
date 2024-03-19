@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
+import 'package:golfbu_kun/features/profile/repos/profile_repo.dart';
+import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
 import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
 
@@ -9,12 +12,14 @@ class TimelineViewModel extends AsyncNotifier<List<PostVideoModel>> {
   List<PostVideoModel> _list = [];
 
   Future<List<PostVideoModel>> _fetchVideos() async {
-    final result = await _repository.fetchVideos();
+    final user = ref.read(authRepo).user;
+    final result = await _repository.fetchVideos(user!.displayName);
     final videos = result.docs.map(
       (doc) => PostVideoModel.fromJson(
         json: doc.data(),
       ),
     );
+    videos.toList().forEach((video) {});
     return videos.toList();
   }
 
@@ -26,9 +31,13 @@ class TimelineViewModel extends AsyncNotifier<List<PostVideoModel>> {
   }
 
   Future<void> refresh() async {
-    final videos = await _fetchVideos();
-    _list = videos;
-    state = AsyncValue.data(videos);
+    try {
+      final videos = await _fetchVideos();
+      _list = videos;
+      state = AsyncValue.data(videos); // 상태 갱신
+    } catch (e, s) {
+      state = AsyncValue.error(e, s); // 에러 처리
+    }
   }
 }
 

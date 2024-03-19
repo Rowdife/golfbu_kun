@@ -27,6 +27,8 @@ class SignUpViewModel extends AsyncNotifier<void> {
         final university = form["university"];
         final universityId = form["universityId"];
         final position = form["position"];
+        final grade = form["grade"];
+
         final sex = form["sex"];
         final name = form["name"];
 
@@ -35,6 +37,7 @@ class SignUpViewModel extends AsyncNotifier<void> {
             university: university,
             universityId: universityId,
             position: position,
+            grade: grade,
             sex: sex,
             name: name);
       },

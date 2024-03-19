@@ -8,6 +8,7 @@ import 'package:golfbu_kun/features/timeline/screen/timeline_upload_choice_scree
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_question_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_video_screen.dart';
 import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
+import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
 
 import 'package:golfbu_kun/features/timeline/widgets/timeline_post.dart';
 
@@ -19,6 +20,8 @@ class TimelineScreen extends ConsumerStatefulWidget {
 }
 
 class _TimelineScreenState extends ConsumerState<TimelineScreen> {
+  List videoIds = [];
+
   void _onUploadTap(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -28,7 +31,21 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   }
 
   Future<void> _onRefresh() async {
-    return ref.read(timelineProvider.notifier).refresh();
+    await ref.read(timelineProvider.notifier).refresh();
+    _fetchVideoIds();
+  }
+
+  Future<void> _fetchVideoIds() async {
+    videoIds = await ref
+        .read(uploadVideoCommentProvider.notifier)
+        .fetchVideoIdForComment();
+    print(videoIds);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchVideoIds();
   }
 
   @override
@@ -65,13 +82,18 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
                     ),
                     itemBuilder: (context, index) {
                       final videoData = videos[index];
+                      final videoId =
+                          index < videoIds.length ? videoIds[index] : null;
+                      print(index);
                       return Column(
                         children: [
                           const Gap(10),
-                          TimelinePost(
-                            videoData: videoData,
-                            index: index,
-                          ),
+                          if (videoId != null)
+                            TimelinePost(
+                              videoData: videoData,
+                              index: index,
+                              videoId: videoId,
+                            ),
                         ],
                       );
                     },

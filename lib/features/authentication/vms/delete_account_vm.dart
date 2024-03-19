@@ -15,9 +15,10 @@ class DeleteAccountViewModel extends AsyncNotifier<void> {
   }
 
   Future<void> deleteAccount() async {
-    final uid = _authRepo.user!.uid;
+    final user = _authRepo.user;
     await _authRepo.deleteAccount();
-    await _profileRepository.deleteProfile(uid: uid);
+    await _profileRepository.deleteProfile(
+        uid: user!.uid, universityId: user.displayName);
   }
 }
 

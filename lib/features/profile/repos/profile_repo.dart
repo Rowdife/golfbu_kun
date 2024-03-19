@@ -10,7 +10,7 @@ class ProfileRepository {
     _db
         .collection("university")
         .doc(profile.universityId)
-        .collection(profile.universityId)
+        .collection("users")
         .doc(profile.uid)
         .set(profile.toJson());
   }
@@ -22,7 +22,7 @@ class ProfileRepository {
     final doc = await _db
         .collection("university")
         .doc(universityId)
-        .collection(universityId!)
+        .collection("users")
         .doc(uid)
         .get();
     return doc.data();
@@ -30,8 +30,14 @@ class ProfileRepository {
 
   Future<void> deleteProfile({
     required String uid,
+    required String? universityId,
   }) async {
-    await _db.collection("university").doc(uid).delete();
+    await _db
+        .collection("university")
+        .doc(universityId)
+        .collection("users")
+        .doc(uid)
+        .delete();
   }
 }
 

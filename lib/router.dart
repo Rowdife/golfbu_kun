@@ -47,7 +47,7 @@ final routeProvider = Provider(
         ),
         GoRoute(
           name: MainNavigationScreen.routeName,
-          path: "/:tab(home|score|calendar|chat|profile)",
+          path: "/:tab(home|announce|score|calendar|profile)",
           builder: (context, state) {
             final tab = state.params["tab"]!;
             return MainNavigationScreen(tab: tab);

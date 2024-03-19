@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/common/main_navigation/widgets/nav_tap.dart';
+import 'package:golfbu_kun/features/announcement/view/announcement_screen.dart';
 import 'package:golfbu_kun/features/league_relations/screen/chat_screen.dart';
 import 'package:golfbu_kun/features/profile/screens/profile_nav_screen.dart';
 import 'package:golfbu_kun/features/schedule_management/screen/calendar_screen.dart';
@@ -23,9 +24,9 @@ class MainNavigationScreen extends ConsumerStatefulWidget {
 class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
   final List<String> _tabs = [
     "home",
+    "announce",
     "score",
     "calendar",
-    "chat",
     "profile",
   ];
 
@@ -49,15 +50,15 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
           ),
           Offstage(
             offstage: _selectedIndex != 1,
-            child: const ScoreCardScreen(),
+            child: const AnnounceScreen(),
           ),
           Offstage(
             offstage: _selectedIndex != 2,
-            child: const CalendarScreen(),
+            child: const ScoreCardScreen(),
           ),
           Offstage(
             offstage: _selectedIndex != 3,
-            child: const ChatScreen(),
+            child: const CalendarScreen(),
           ),
           Offstage(
             offstage: _selectedIndex != 4,
@@ -79,20 +80,20 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
               onTap: () => _onTap(0),
             ),
             NavTap(
-              tapName: 'Score',
-              icon: FontAwesomeIcons.chartColumn,
+              tapName: 'Announce',
+              icon: FontAwesomeIcons.bullhorn,
               isSelected: _selectedIndex == 1,
               onTap: () => _onTap(1),
             ),
             NavTap(
-              tapName: 'Calendar',
-              icon: FontAwesomeIcons.calendar,
+              tapName: 'Score',
+              icon: FontAwesomeIcons.chartColumn,
               isSelected: _selectedIndex == 2,
               onTap: () => _onTap(2),
             ),
             NavTap(
-              tapName: 'Chat',
-              icon: FontAwesomeIcons.comment,
+              tapName: 'Calendar',
+              icon: FontAwesomeIcons.calendar,
               isSelected: _selectedIndex == 3,
               onTap: () => _onTap(3),
             ),

@@ -3,6 +3,7 @@ class ProfileModel {
   final String university;
   final String universityId;
   final String position;
+  final String grade;
   final String sex;
   final String name;
   final String email;
@@ -11,6 +12,7 @@ class ProfileModel {
     required this.uid,
     required this.university,
     required this.position,
+    required this.grade,
     required this.sex,
     required this.name,
     required this.email,
@@ -21,6 +23,7 @@ class ProfileModel {
       : uid = "",
         university = "",
         universityId = "",
+        grade = "",
         position = "",
         sex = "",
         name = "",
@@ -31,6 +34,7 @@ class ProfileModel {
         university = json["university"],
         universityId = json["universityId"],
         position = json["position"],
+        grade = json["grade"],
         sex = json["sex"],
         email = json["email"],
         name = json["name"];
@@ -41,6 +45,7 @@ class ProfileModel {
       "university": university,
       "universityId": universityId,
       "position": position,
+      "grade": grade,
       "sex": sex,
       "name": name,
       "email": email,

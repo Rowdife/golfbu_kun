@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 import 'package:golfbu_kun/features/timeline/vms/upload_video_vm.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';

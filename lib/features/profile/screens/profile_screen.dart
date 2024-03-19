@@ -34,6 +34,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     info: data.university,
                   ),
                   ProfileInfoElement(
+                    category: '学年',
+                    info: data.grade,
+                  ),
+                  ProfileInfoElement(
                     category: '名前',
                     info: data.name,
                   ),
