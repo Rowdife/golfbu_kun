@@ -15,15 +15,15 @@ class UploadVideoCommentViewModel extends AsyncNotifier<List<String>> {
     _repository = ref.read(postRepo);
     _authRepo = ref.read(authRepo);
 
-    final result = await _repository.fetchVideos(_authRepo.user!.displayName);
+    final result = await _repository.fetchVideos();
     final videoIds = result.docs.map((doc) => doc.id).toList();
 
     return videoIds;
   }
 
+  //지금 가장 큰 문제는 fetvideoIdFormComment가 딱 두개의 비디오만 가져오고 있다는 것이다.
   Future<List<String>> fetchVideoIdForComment() async {
-    final result =
-        await ref.read(postRepo).fetchVideos(_authRepo.user!.displayName);
+    final result = await ref.read(postRepo).fetchVideos();
 
     final videoIds = result.docs.map((doc) => doc.id).toList();
 

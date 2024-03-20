@@ -20,7 +20,7 @@ class TimelineScreen extends ConsumerStatefulWidget {
 }
 
 class _TimelineScreenState extends ConsumerState<TimelineScreen> {
-  List videoIds = [];
+  final ScrollController _scrollController = ScrollController();
 
   void _onUploadTap(BuildContext context) {
     Navigator.of(context).push(
@@ -32,22 +32,31 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
 
   Future<void> _onRefresh() async {
     await ref.read(timelineProvider.notifier).refresh();
-    _fetchVideoIds();
   }
 
-  Future<void> _fetchVideoIds() async {
-    videoIds = await ref
-        .read(uploadVideoCommentProvider.notifier)
-        .fetchVideoIdForComment();
+  void fetchNextVideos() {
+    ref.read(timelineProvider.notifier).fetchNextVideos();
   }
 
   @override
   void initState() {
     super.initState();
-    _fetchVideoIds();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        fetchNextVideos();
+      }
+    });
+    // _fetchVideoIds();
     if (mounted) {
       _onRefresh();
     }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -64,22 +73,24 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
         ],
       ),
       body: ref.watch(timelineProvider).when(
-            loading: () {
-              const Center(
-                child: CircularProgressIndicator(),
-              );
-              return null;
-            },
-            error: (error, stackTrace) => Center(
-              child: Text(
-                '投稿をロードできません $error',
-                style: const TextStyle(color: Colors.white),
+          loading: () {
+            const Center(
+              child: CircularProgressIndicator(),
+            );
+            return null;
+          },
+          error: (error, stackTrace) => Center(
+                child: Text(
+                  '投稿をロードできません $error',
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
-            ),
-            data: (videos) => RefreshIndicator(
+          data: (videos) {
+            return RefreshIndicator(
               onRefresh: _onRefresh,
               child: ListView.separated(
                 itemCount: videos.length,
+                controller: _scrollController,
                 separatorBuilder: (context, index) => const Divider(
                   height: 20,
                   thickness: 0,
@@ -87,24 +98,20 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
                 ),
                 itemBuilder: (context, index) {
                   final videoData = videos[index];
-                  final videoId =
-                      index < videoIds.length ? videoIds[index] : null;
 
                   return Column(
                     children: [
                       const Gap(10),
-                      if (videoId != null)
-                        TimelinePost(
-                          videoData: videoData,
-                          index: index,
-                          videoId: videoId,
-                        ),
+                      TimelinePost(
+                        videoData: videoData,
+                        index: index,
+                      ),
                     ],
                   );
                 },
               ),
-            ),
-          ),
+            );
+          }),
     );
   }
 }

@@ -31,28 +31,35 @@ class PostRepository {
     return videoId;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos(
-      String? universityId) async {
-    final videos = await _db
+  Future<void> deleteVideo({
+    required String videoId,
+  }) async {
+    final universityId = _authRepo.user!.displayName;
+    await _db
+        .collection("university")
+        .doc(universityId)
+        .collection("videos")
+        .doc(videoId)
+        .delete();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos({
+    int? lastItemCreatedAt,
+  }) {
+    final universityId = _authRepo.user!.displayName;
+
+    final query = _db
         .collection("university")
         .doc(universityId)
         .collection("videos")
         .orderBy("createdAt", descending: true)
-        .get();
+        .limit(5);
 
-    return videos;
-  }
-
-  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideosDescendingFalse(
-      String? universityId) async {
-    final videos = await _db
-        .collection("university")
-        .doc(universityId)
-        .collection("videos")
-        .orderBy("createdAt", descending: false)
-        .get();
-
-    return videos;
+    if (lastItemCreatedAt == null) {
+      return query.get();
+    } else {
+      return query.startAfter([lastItemCreatedAt]).get();
+    }
   }
 
 // comment　関連

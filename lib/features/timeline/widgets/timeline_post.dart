@@ -16,11 +16,9 @@ class TimelinePost extends ConsumerStatefulWidget {
     super.key,
     required this.videoData,
     required this.index,
-    required this.videoId,
   });
 
   final PostVideoModel videoData;
-  final String videoId;
   final int index;
 
   @override
@@ -56,8 +54,9 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
       });
     }
   }
+//videoData.createdAt 으로 Comment가져오기.
 
-  Future<void> _onCommentTap(BuildContext context) async {
+  /*  Future<void> _onCommentTap(BuildContext context) async {
     final comments = await ref
         .read(uploadVideoCommentProvider.notifier)
         .fetchCommentsByVideoId(widget.videoId);
@@ -70,7 +69,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
         comments: comments,
       ),
     );
-  }
+  } */
 
   @override
   void initState() {
@@ -200,7 +199,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () => _onCommentTap(context),
+                        onPressed: () => {},
                         icon: const FaIcon(
                           FontAwesomeIcons.solidComment,
                           color: Colors.white,

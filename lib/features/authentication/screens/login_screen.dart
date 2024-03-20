@@ -20,8 +20,7 @@ class LoginScreen extends ConsumerWidget {
       if (formKey.currentState != null) {
         if (formKey.currentState!.validate()) {
           formKey.currentState!.save();
-          print(formData);
-          // fire base 로 여기에 loginWithId 구현 예정. 임시로 홈 화면에 보내주도록 함.
+
           ref.read(loginProvider.notifier).login(
               email: formData["email"]!,
               password: formData["password"],
