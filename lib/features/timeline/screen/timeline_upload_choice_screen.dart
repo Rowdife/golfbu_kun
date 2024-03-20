@@ -94,7 +94,7 @@ class _TimelineUploadChoiceScreenState
                       Column(
                         children: [
                           const Text(
-                              "５秒以内の動画だけアップロードできます。\n自分で7秒以内の動画に編集してください。"),
+                              "５秒以内の動画だけアップロードできます。\n自分で5秒以内の動画に編集してください。"),
                           const Gap(10),
                           GestureDetector(
                             onTap: () => _onUploadVideoTap(context),

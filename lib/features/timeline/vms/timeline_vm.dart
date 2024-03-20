@@ -26,18 +26,16 @@ class TimelineViewModel extends AsyncNotifier<List<PostVideoModel>> {
   @override
   FutureOr<List<PostVideoModel>> build() async {
     _repository = ref.read(postRepo);
+    state = const AsyncValue.loading();
     _list = await _fetchVideos();
+    state = AsyncValue.data(_list);
     return _list;
   }
 
   Future<void> refresh() async {
-    try {
-      final videos = await _fetchVideos();
-      _list = videos;
-      state = AsyncValue.data(videos); // 상태 갱신
-    } catch (e, s) {
-      state = AsyncValue.error(e, s); // 에러 처리
-    }
+    final videos = await _fetchVideos();
+    _list = videos;
+    state = AsyncValue.data(videos);
   }
 }
 

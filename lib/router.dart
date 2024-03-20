@@ -10,13 +10,14 @@ import 'package:golfbu_kun/features/profile/screens/setting_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_question_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_video_screen.dart';
+import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 
 final routeProvider = Provider(
   (ref) {
     ref.watch(authState);
     return GoRouter(
       initialLocation: "/home",
-      redirect: (context, state) {
+      redirect: (context, state) async {
         final isLoggedIn = ref.read(authRepo).isLoggedIn;
         if (!isLoggedIn) {
           if (state.subloc != OnboardingScreen.routeURL &&

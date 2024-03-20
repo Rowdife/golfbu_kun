@@ -39,65 +39,72 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
     videoIds = await ref
         .read(uploadVideoCommentProvider.notifier)
         .fetchVideoIdForComment();
-    print(videoIds);
   }
 
   @override
   void initState() {
     super.initState();
     _fetchVideoIds();
+    if (mounted) {
+      _onRefresh();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade900,
-        appBar: AppBar(
-          title: const Text("Timeline"),
-          actions: [
-            IconButton(
-              onPressed: () => _onUploadTap(context),
-              icon: const FaIcon(FontAwesomeIcons.upload),
-            ),
-          ],
-        ),
-        body: ref.watch(timelineProvider).when(
-            loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
+      backgroundColor: Colors.grey.shade900,
+      appBar: AppBar(
+        title: const Text("Timeline"),
+        actions: [
+          IconButton(
+            onPressed: () => _onUploadTap(context),
+            icon: const FaIcon(FontAwesomeIcons.upload),
+          ),
+        ],
+      ),
+      body: ref.watch(timelineProvider).when(
+            loading: () {
+              const Center(
+                child: CircularProgressIndicator(),
+              );
+              return null;
+            },
             error: (error, stackTrace) => Center(
-                  child: Text(
-                    '投稿をロードできません $error',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
+              child: Text(
+                '投稿をロードできません $error',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
             data: (videos) => RefreshIndicator(
-                  onRefresh: _onRefresh,
-                  child: ListView.separated(
-                    itemCount: videos.length,
-                    separatorBuilder: (context, index) => const Divider(
-                      height: 20,
-                      thickness: 0,
-                      color: Colors.transparent,
-                    ),
-                    itemBuilder: (context, index) {
-                      final videoData = videos[index];
-                      final videoId =
-                          index < videoIds.length ? videoIds[index] : null;
-                      print(index);
-                      return Column(
-                        children: [
-                          const Gap(10),
-                          if (videoId != null)
-                            TimelinePost(
-                              videoData: videoData,
-                              index: index,
-                              videoId: videoId,
-                            ),
-                        ],
-                      );
-                    },
-                  ),
-                )));
+              onRefresh: _onRefresh,
+              child: ListView.separated(
+                itemCount: videos.length,
+                separatorBuilder: (context, index) => const Divider(
+                  height: 20,
+                  thickness: 0,
+                  color: Colors.transparent,
+                ),
+                itemBuilder: (context, index) {
+                  final videoData = videos[index];
+                  final videoId =
+                      index < videoIds.length ? videoIds[index] : null;
+
+                  return Column(
+                    children: [
+                      const Gap(10),
+                      if (videoId != null)
+                        TimelinePost(
+                          videoData: videoData,
+                          index: index,
+                          videoId: videoId,
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+    );
   }
 }

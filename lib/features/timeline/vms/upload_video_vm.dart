@@ -10,6 +10,7 @@ import 'package:golfbu_kun/features/profile/repos/profile_repo.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
 import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
+import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 
 class UploadVideoViewModel extends AsyncNotifier<void> {
   late final PostRepository _repository;
@@ -54,6 +55,7 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
           }
           context.pop();
           context.pop();
+          ref.read(timelineProvider.notifier).refresh();
         },
       );
     }
