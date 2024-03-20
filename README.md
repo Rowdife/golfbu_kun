@@ -33,6 +33,9 @@ Profile Screen
   *Delete ✅  
   *ログアウト ✅  
 
+  作成完了した画面のScreenshots:
+  https://github.com/Rowdife/golfbu_kun/tree/master/preview_screenshots
+
 使用したライブラリー
 Front: Flutter
 Back: Firebase
