@@ -10,11 +10,11 @@ import 'package:golfbu_kun/features/timeline/widgets/timeline_comment.dart';
 class TimelineCommentScreen extends ConsumerStatefulWidget {
   const TimelineCommentScreen({
     super.key,
-    required this.videoId,
     required this.comments,
+    required this.createdAt,
   });
   // comment をアップロードする時に必要
-  final String videoId;
+  final int createdAt;
   // commentsをItemBuildする時に必要
   final List<PostCommentModel> comments;
 
@@ -37,15 +37,14 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
       _textEditingController.text = "";
       final profile = await ref.read(profileProvider.notifier).fetchProfile();
       ref.read(uploadVideoCommentProvider.notifier).uploadVideoComment(
-            comment: PostCommentModel(
-              uploaderName: profile.name,
-              uploaderGrade: profile.grade,
-              text: text,
-              createdAt: DateTime.now().toString().substring(0, 16),
-              createdAtUnix: DateTime.now().millisecondsSinceEpoch,
-            ),
-            videoId: widget.videoId,
-          );
+          comment: PostCommentModel(
+            uploaderName: profile.name,
+            uploaderGrade: profile.grade,
+            text: text,
+            createdAt: DateTime.now().toString().substring(0, 16),
+            createdAtUnix: DateTime.now().millisecondsSinceEpoch,
+          ),
+          createdAt: widget.createdAt);
     }
   }
 

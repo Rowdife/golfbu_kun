@@ -65,24 +65,30 @@ class PostRepository {
 // comment　関連
   Future<void> saveVideoComment({
     required PostCommentModel comment,
-    required String videoId,
-    required String universityId,
+    required int createdAt,
   }) async {
-    await _db
+    final universityId = _authRepo.user!.displayName;
+    final querySnapshot = await _db
         .collection("university")
         .doc(universityId)
         .collection("videos")
-        .doc(videoId)
-        .collection("comments")
-        .add(comment.toJson());
+        .where("createdAt", isEqualTo: createdAt)
+        .get();
 
-    DocumentReference videoRef = _db
-        .collection("university")
-        .doc(universityId)
-        .collection("videos")
-        .doc(videoId);
+    if (querySnapshot.docs.isNotEmpty) {
+      final videoDoc = querySnapshot.docs.first;
+      final videoId = videoDoc.id;
 
-    await videoRef.update({'comments': FieldValue.increment(1)});
+      await _db
+          .collection("university")
+          .doc(universityId)
+          .collection("videos")
+          .doc(videoId)
+          .collection("comments")
+          .add(comment.toJson());
+
+      await videoDoc.reference.update({'comments': FieldValue.increment(1)});
+    }
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> fetchCommentIds({
@@ -96,6 +102,23 @@ class PostRepository {
         .doc(videoId)
         .collection("comments")
         .get();
+  }
+
+  Future<List<PostCommentModel>> fetchCommentsByCreatedAt(
+      {required int createdAt}) async {
+    final universityId = _authRepo.user!.displayName;
+    final query = await _db
+        .collection("university")
+        .doc(universityId)
+        .collection("videos")
+        .where("createdAt", isEqualTo: createdAt)
+        .get();
+    final commentsQuery =
+        await query.docs.first.reference.collection("comments").get();
+    final commets = commentsQuery.docs.map((doc) => doc.data());
+    final postComments =
+        commets.map((json) => PostCommentModel.fromJson(json: json));
+    return postComments.toList();
   }
 
   Future<List<PostCommentModel>> fetchCommentsByVideoId({

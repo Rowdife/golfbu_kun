@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/profile/repos/profile_repo.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
+import 'package:golfbu_kun/features/timeline/models/post_comment_model.dart';
 import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
 import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
 
@@ -39,6 +40,12 @@ class TimelineViewModel extends AsyncNotifier<List<PostVideoModel>> {
         await _fetchVideos(lastItemCreatedAt: _list.last.createdAt);
     _list = [..._list, ...nextVideosData];
     state = AsyncValue.data(_list);
+  }
+
+  Future<List<PostCommentModel>> fetchComments({required int createdAt}) async {
+    final comments =
+        await _repository.fetchCommentsByCreatedAt(createdAt: createdAt);
+    return comments;
   }
 
   Future<void> refresh() async {

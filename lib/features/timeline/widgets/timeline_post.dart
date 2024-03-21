@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
 import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_comment_screen.dart';
+import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -56,20 +57,24 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
   }
 //videoData.createdAt 으로 Comment가져오기.
 
-  /*  Future<void> _onCommentTap(BuildContext context) async {
+  Future<void> _onCommentTap(BuildContext context) async {
     final comments = await ref
-        .read(uploadVideoCommentProvider.notifier)
-        .fetchCommentsByVideoId(widget.videoId);
+        .read(timelineProvider.notifier)
+        .fetchComments(createdAt: widget.videoData.createdAt);
 
+    if (comments == null) {
+      print(comments);
+      return;
+    }
     showModalBottomSheet(
       context: context,
       scrollControlDisabledMaxHeightRatio: 0.8,
       builder: (context) => TimelineCommentScreen(
-        videoId: widget.videoId,
+        createdAt: widget.videoData.createdAt,
         comments: comments,
       ),
     );
-  } */
+  }
 
   @override
   void initState() {
@@ -199,7 +204,9 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () => {},
+                        onPressed: () async {
+                          _onCommentTap(context);
+                        },
                         icon: const FaIcon(
                           FontAwesomeIcons.solidComment,
                           color: Colors.white,
