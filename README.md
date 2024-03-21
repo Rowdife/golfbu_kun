@@ -14,7 +14,7 @@ Timeline Screen ✅
   *Create✅  
   *Read✅  
   *Update  
-  *Delete  
+  *Delete  ✅
 -スイング動画コメント  
   *Create✅  
   *Read✅  
