@@ -13,9 +13,10 @@ class PostRepository {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final AuthenticationRepository _authRepo = AuthenticationRepository();
 // video 関連
-  UploadTask uploadVideo(File video, String uid) {
-    final fileRef = _storage.ref().child(
-        "/videos/$uid/${DateTime.now().millisecondsSinceEpoch.toString()}");
+  UploadTask uploadVideo(
+      {required File video, required String uid, required int createdAt}) {
+    final fileRef =
+        _storage.ref().child("/videos/$uid/${createdAt.toString()}");
     return fileRef.putFile(video);
   }
 
@@ -31,16 +32,23 @@ class PostRepository {
     return videoId;
   }
 
-  Future<void> deleteVideo({
-    required String videoId,
-  }) async {
+  Future<void> deleteVideo({required int createdAt}) async {
     final universityId = _authRepo.user!.displayName;
-    await _db
+    final userId = _authRepo.user!.uid;
+    final snapshot = await _db
         .collection("university")
         .doc(universityId)
         .collection("videos")
-        .doc(videoId)
-        .delete();
+        .where("createdAt", isEqualTo: createdAt)
+        .get();
+    await snapshot.docs.first.reference.delete();
+    await _storage.ref().child("videos/$userId/$createdAt").delete();
+  }
+
+  Future<void> deleteAllVideos() async {
+    final userId = _authRepo.user!.uid;
+    final allVideos = _storage.ref().child("videos/$userId");
+    print(allVideos);
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos({

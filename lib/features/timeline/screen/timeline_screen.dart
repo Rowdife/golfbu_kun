@@ -105,6 +105,7 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
                       TimelinePost(
                         videoData: videoData,
                         index: index,
+                        keyValue: ValueKey(videoData.createdAt),
                       ),
                     ],
                   );
