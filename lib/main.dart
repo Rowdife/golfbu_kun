@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
+import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
 import 'package:golfbu_kun/firebase_options.dart';
 import 'package:golfbu_kun/router.dart';
 

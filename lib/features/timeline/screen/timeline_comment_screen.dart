@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 import 'package:golfbu_kun/features/timeline/models/post_comment_model.dart';
 import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
@@ -46,6 +47,7 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
           ),
           createdAt: widget.createdAt);
     }
+    context.pop();
   }
 
   @override

@@ -42,6 +42,7 @@ class AuthenticationRepository {
 
   Future<void> deleteAccount() async {
     await user!.delete();
+    await signOut();
   }
 }
 

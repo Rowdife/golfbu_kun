@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/profile/repos/profile_repo.dart';
 import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
@@ -17,13 +19,15 @@ class DeleteAccountViewModel extends AsyncNotifier<void> {
     _postRepository = ref.read(postRepo);
   }
 
-  Future<void> deleteAccount() async {
+  Future<void> deleteAccount(BuildContext context) async {
     final user = _authRepo.user;
+
+    await _postRepository.deleteAllVideosInStorage();
+    await _postRepository.deleteAllVideosInDB();
     await _profileRepository.deleteProfile(
         uid: user!.uid, universityId: user.displayName);
-    await _postRepository.deleteAllVideos();
     await _authRepo.deleteAccount();
-    await _authRepo.signOut();
+    context.go("/");
   }
 }
 

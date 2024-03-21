@@ -19,6 +19,7 @@ class SignUpScreen extends ConsumerStatefulWidget {
 class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
+    bool isButtonDisabled = false;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     Map<String, String> formData = {};
@@ -79,6 +80,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               "email": formData["email"],
               "password": formData["passwordConfirm"]
             };
+            setState(() {
+              isButtonDisabled = true;
+            });
           }
         }
       }
@@ -248,7 +252,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     child: GestureDetector(
                         onTap: () => onSignUpTap(context),
                         child: const AuthButton(
-                            color: Colors.green, text: "会員登録")),
+                          color: Colors.green,
+                          text: "会員登録",
+                        )),
                   ),
                 ],
               ),

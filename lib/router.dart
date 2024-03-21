@@ -14,7 +14,6 @@ import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 
 final routeProvider = Provider(
   (ref) {
-    ref.watch(authState);
     return GoRouter(
       initialLocation: "/home",
       redirect: (context, state) async {

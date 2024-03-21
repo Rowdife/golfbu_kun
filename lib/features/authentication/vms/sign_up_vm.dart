@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 import 'package:golfbu_kun/utils.dart';
@@ -43,7 +44,10 @@ class SignUpViewModel extends AsyncNotifier<void> {
       },
     );
     if (state.hasError) {
-      showFirebaseErrorSnack(context, state.error);
+      const errorSnack = SnackBar(content: Text("該当するメールアドレスはすでに登録されています"));
+      ScaffoldMessenger.of(context).showSnackBar(errorSnack);
+    } else {
+      context.go("/home");
     }
   }
 }

@@ -89,7 +89,10 @@ class LoginScreen extends ConsumerWidget {
               const Gap(50),
               GestureDetector(
                   onTap: () => onLoginTap(context),
-                  child: const AuthButton(color: Colors.green, text: "ログイン"))
+                  child: const AuthButton(
+                    color: Colors.green,
+                    text: "ログイン",
+                  ))
             ],
           ),
         ),

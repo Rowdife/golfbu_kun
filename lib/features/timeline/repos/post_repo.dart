@@ -45,7 +45,7 @@ class PostRepository {
     await _storage.ref().child("videos/$userId/$createdAt").delete();
   }
 
-  Future<void> deleteAllVideos() async {
+  Future<void> deleteAllVideosInStorage() async {
     final userId = _authRepo.user!.uid;
     final allVideosRef = _storage.ref().child("videos/$userId");
     try {
@@ -61,6 +61,28 @@ class PostRepository {
     } catch (e) {
       print("You don't have any. I'll do nothing.");
       return;
+    }
+  }
+
+  Future<void> deleteAllVideosInDB() async {
+    final userId = _authRepo.user!.uid;
+
+    final snapshot = await _db
+        .collection("university")
+        .doc(_authRepo.user!.displayName)
+        .collection("videos")
+        .where("uploaderUid", isEqualTo: userId)
+        .get();
+    for (final doc in snapshot.docs) {
+      // Delete all documents in the subcollection
+      final subcollectionSnapshot =
+          await doc.reference.collection('subcollection').get();
+      for (final subdoc in subcollectionSnapshot.docs) {
+        await subdoc.reference.delete();
+      }
+
+      // Delete the document
+      await doc.reference.delete();
     }
   }
 
