@@ -47,8 +47,21 @@ class PostRepository {
 
   Future<void> deleteAllVideos() async {
     final userId = _authRepo.user!.uid;
-    final allVideos = _storage.ref().child("videos/$userId");
-    print(allVideos);
+    final allVideosRef = _storage.ref().child("videos/$userId");
+    try {
+      final allVideos = await allVideosRef.listAll();
+      if (allVideos.items.isNotEmpty) {
+        print("You have some videos so I'll delete it.");
+        for (final Reference ref in allVideos.items) {
+          await ref.delete();
+        }
+      } else {
+        print("You don't have any. I'll do nothing.");
+      }
+    } catch (e) {
+      print("You don't have any. I'll do nothing.");
+      return;
+    }
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos({

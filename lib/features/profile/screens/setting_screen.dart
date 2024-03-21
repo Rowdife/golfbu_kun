@@ -57,7 +57,6 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           CupertinoActionSheetAction(
             onPressed: () => {
               ref.read(deleteAccountProvider.notifier).deleteAccount(),
-              context.go("/"),
             },
             isDestructiveAction: true,
             child: const Text("アカウント削除"),
