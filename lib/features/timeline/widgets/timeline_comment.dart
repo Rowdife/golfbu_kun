@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
+import 'package:golfbu_kun/features/timeline/models/post_comment_model.dart';
+import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
+import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
+import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
 
 class TimelineComment extends ConsumerWidget {
-  const TimelineComment({
-    super.key,
-    required this.grade,
-    required this.name,
-    required this.createdAt,
-    required this.text,
-  });
+  const TimelineComment(
+      {super.key, required this.comment, required this.videoCreatedAt});
 
-  final String grade, name, createdAt, text;
+  final PostCommentModel comment;
+  final int videoCreatedAt;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,14 +41,46 @@ class TimelineComment extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "$grade $name",
+                    "${comment.uploaderGrade} ${comment.uploaderName}",
                     style: const TextStyle(
                       color: Colors.white,
                     ),
                   ),
-                  Text(
-                    createdAt,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                  Row(
+                    children: [
+                      Text(
+                        comment.createdAt,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                      if (comment.uploaderUid == ref.read(authRepo).user!.uid)
+                        PopupMenuButton<String>(
+                          icon: const Icon(
+                            Icons.more_vert,
+                            color: Colors.white,
+                          ),
+                          onSelected: (value) async {
+                            switch (value) {
+                              case 'Delete':
+                                ref
+                                    .read(uploadVideoCommentProvider.notifier)
+                                    .deleteVideoComment(
+                                        videoCreatedAt: videoCreatedAt,
+                                        commentCreatedAtUnix:
+                                            comment.createdAtUnix);
+                                context.pop();
+                                break;
+                            }
+                          },
+                          itemBuilder: (BuildContext context) =>
+                              <PopupMenuEntry<String>>[
+                            const PopupMenuItem<String>(
+                              value: 'Delete',
+                              child: Text('Delete'),
+                            ),
+                          ],
+                        )
+                    ],
                   ),
                 ],
               ),
@@ -63,7 +97,7 @@ class TimelineComment extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
-                text,
+                comment.text,
                 style: const TextStyle(
                   color: Colors.black,
                 ),

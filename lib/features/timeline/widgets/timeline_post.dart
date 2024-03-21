@@ -93,7 +93,6 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
 
   @override
   Widget build(BuildContext context) {
-    print(widget.videoData.fileUrl);
     final size = MediaQuery.of(context).size;
 
     return VisibilityDetector(
