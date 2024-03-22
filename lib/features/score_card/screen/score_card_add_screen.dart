@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
-import 'package:golfbu_kun/features/score_card/courses/sevenhundred.dart';
-import 'package:golfbu_kun/features/score_card/courses/suginosato.dart';
+import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
+import 'package:golfbu_kun/features/score_card/widgets/score_card_by_course.dart';
+import 'package:golfbu_kun/features/score_card/courses/vms/score_card_vm.dart';
+import 'package:golfbu_kun/features/score_card/screen/score_card_add_course_screen.dart';
 
 class ScoreCardAddScreen extends ConsumerStatefulWidget {
   static const routeName = "addscore";
@@ -16,22 +18,31 @@ class ScoreCardAddScreen extends ConsumerStatefulWidget {
 }
 
 class _ScoreCardAddScreenState extends ConsumerState<ScoreCardAddScreen> {
-  void _onSevenhundredTap(BuildContext context) {
+  void _onCourseTap(BuildContext context, ScoreCardcourseModel course) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const Sevenhundred(),
+        builder: (context) => ScoreCardByCourse(course),
       ),
     );
   }
 
-  void _onSuginosatoTap(BuildContext context) {
-    Navigator.push(
-      context,
+  void _addNewCourse(BuildContext context) {
+    Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const Suginosato(),
+        builder: (context) => const ScoreCardAddcourseScreen(),
       ),
     );
+  }
+
+  void _fetchCourses() {
+    ref.read(scoreCardCourseProvider.notifier).fetchCourses();
+  }
+
+  @override
+  void initState() {
+    _fetchCourses();
+    super.initState();
   }
 
   @override
@@ -41,46 +52,71 @@ class _ScoreCardAddScreenState extends ConsumerState<ScoreCardAddScreen> {
       appBar: AppBar(
         title: const Text("スコアを登録"),
       ),
-      body: Column(
-        children: [
-          const Gap(20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
+      body: ref.watch(scoreCardCourseProvider).when(
+            data: (courses) {
+              return Center(
+                child: Container(
                   color: Colors.black54,
                   width: size.width * 0.8,
                   height: size.height * 0.8,
-                  child: ListView(
+                  child: Column(
                     children: [
-                      GestureDetector(
-                        onTap: () => _onSevenhundredTap(context),
-                        child: const ListTile(
-                          iconColor: Colors.white,
-                          title: Text(
-                            "セブンハンドレッドクラブ",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          trailing: FaIcon(FontAwesomeIcons.chevronRight),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: courses.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              onTap: () =>
+                                  _onCourseTap(context, courses[index]),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    courses[index].courseName,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  if (courses[index].description != null)
+                                    Text(
+                                      courses[index].description!,
+                                      style: const TextStyle(
+                                          color: Colors.grey, fontSize: 12),
+                                    )
+                                ],
+                              ),
+                              trailing: const FaIcon(
+                                FontAwesomeIcons.chevronRight,
+                                color: Colors.white,
+                              ),
+                            );
+                          },
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => _onSuginosatoTap(context),
-                        child: const ListTile(
-                          iconColor: Colors.white,
-                          title: Text(
-                            "杉の郷カントリークラブ",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          trailing: FaIcon(FontAwesomeIcons.chevronRight),
+                        onTap: () => _addNewCourse(context),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FaIcon(
+                              FontAwesomeIcons.plus,
+                              color: Colors.white,
+                            ),
+                            Gap(10),
+                            Text(
+                              "新しいコースを追加",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
                         ),
                       ),
+                      const Gap(30)
                     ],
-                  )),
-            ],
+                  ),
+                ),
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) => Center(child: Text(error.toString())),
           ),
-        ],
-      ),
     );
   }
 }

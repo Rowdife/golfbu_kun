@@ -8,8 +8,8 @@ class ScoreRowElements extends StatefulWidget {
     required this.parNumber,
   });
 
-  final String holeNumber;
-  final String parNumber;
+  final int holeNumber;
+  final int parNumber;
 
   @override
   State<ScoreRowElements> createState() => _ScoreRowElementsState();
@@ -30,7 +30,7 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             width: 40,
             child: Center(
               child: Text(
-                widget.holeNumber,
+                "${widget.holeNumber + 1}",
                 style: const TextStyle(fontSize: 29),
               ),
             ),
@@ -40,49 +40,92 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             width: 40,
             child: Center(
               child: Text(
-                widget.parNumber,
+                "${widget.parNumber}",
                 style: const TextStyle(fontSize: 29),
               ),
             ),
           ),
           const Gap(35),
-          const SizedBox(
+          SizedBox(
             width: 45,
             height: 45,
             child: Center(
-              child: TextField(
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.center,
-                maxLength: 1,
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  counterText: "",
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.all(4),
-                ),
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 28,
+              child: SizedBox(
+                height: 100,
+                child: TextFormField(
+                  onSaved: (stroke) {
+                    if (stroke != null) {
+                      print(stroke);
+                    }
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "入力必須";
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  maxLength: 1,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    counterText: "",
+                    border: const OutlineInputBorder(),
+                    contentPadding: const EdgeInsets.all(4),
+                    errorStyle: const TextStyle(fontSize: 0.01),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 1,
+                        style: BorderStyle.solid,
+                      ),
+                    ),
+                  ),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 28,
+                  ),
                 ),
               ),
             ),
           ),
           const Gap(28),
-          const SizedBox(
+          SizedBox(
             width: 45,
             height: 45,
             child: Center(
-              child: TextField(
+              child: TextFormField(
+                onSaved: (putt) {
+                  if (putt != null) {
+                    print(putt);
+                  }
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "入力必須";
+                  }
+                  return null;
+                },
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 maxLength: 1,
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   counterText: "",
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.all(4),
+                  border: const OutlineInputBorder(),
+                  contentPadding: const EdgeInsets.all(4),
+                  errorStyle: const TextStyle(fontSize: 0.01),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 28,
                 ),
@@ -94,6 +137,11 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             width: 140,
             height: 60,
             child: DropdownButtonFormField(
+              onSaved: (puttRemained) {
+                if (puttRemained != null) {
+                  print(puttRemained);
+                }
+              },
               iconEnabledColor: Colors.white,
               dropdownColor: Colors.grey.shade900,
               style: const TextStyle(color: Colors.white),
@@ -106,7 +154,7 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
                 DropdownMenuItem(
                   value: "pin",
                   child: Text(
-                    "2.5ヤード以内",
+                    "1ピン以内",
                   ),
                 ),
                 DropdownMenuItem(
@@ -135,6 +183,11 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             width: 120,
             height: 60,
             child: DropdownButtonFormField(
+              onSaved: (puttMissed) {
+                if (puttMissed != null) {
+                  print(puttMissed);
+                }
+              },
               iconEnabledColor: Colors.white,
               dropdownColor: Colors.grey.shade900,
               style: const TextStyle(color: Colors.white),
@@ -170,6 +223,11 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             width: 120,
             height: 60,
             child: DropdownButtonFormField(
+              onSaved: (teeShotClub) {
+                if (teeShotClub != null) {
+                  print(teeShotClub);
+                }
+              },
               iconEnabledColor: Colors.white,
               dropdownColor: Colors.grey.shade900,
               style: const TextStyle(color: Colors.white),
@@ -277,6 +335,11 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             width: 110,
             height: 60,
             child: DropdownButtonFormField(
+              onSaved: (teeShotResult) {
+                if (teeShotResult != null) {
+                  print(teeShotResult);
+                }
+              },
               iconEnabledColor: Colors.white,
               dropdownColor: Colors.grey.shade900,
               style: const TextStyle(color: Colors.white),
@@ -334,21 +397,26 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
           const Gap(30),
           const Text("残り"),
           const Gap(5),
-          const SizedBox(
+          SizedBox(
             width: 100,
             height: 45,
             child: Center(
-              child: TextField(
+              child: TextFormField(
+                onSaved: (parOnShotDistance) {
+                  if (parOnShotDistance != null) {
+                    print(parOnShotDistance);
+                  }
+                },
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.number,
                 maxLength: 3,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   fillColor: Colors.white,
                   counterText: "",
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.all(4),
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 28,
                 ),
@@ -366,24 +434,30 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
                   setState(() {
                     _guardBunker = !_guardBunker;
                   });
+                  print(_guardBunker);
                 }),
           ),
           const Gap(92),
-          const SizedBox(
+          SizedBox(
             width: 45,
             height: 45,
             child: Center(
-              child: TextField(
+              child: TextFormField(
+                onSaved: (ob) {
+                  if (ob != null) {
+                    print(ob);
+                  }
+                },
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 maxLength: 1,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   fillColor: Colors.white,
                   counterText: "",
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.all(4),
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 28,
                 ),
@@ -391,21 +465,26 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             ),
           ),
           const Gap(7),
-          const SizedBox(
+          SizedBox(
             width: 45,
             height: 45,
             child: Center(
-              child: TextField(
+              child: TextFormField(
+                onSaved: (hazard) {
+                  if (hazard != null) {
+                    print(hazard);
+                  }
+                },
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 maxLength: 1,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   fillColor: Colors.white,
                   counterText: "",
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.all(4),
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 28,
                 ),
@@ -413,21 +492,26 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             ),
           ),
           const Gap(30),
-          const SizedBox(
+          SizedBox(
             width: 45,
             height: 45,
             child: Center(
-              child: TextField(
+              child: TextFormField(
+                onSaved: (penalty) {
+                  if (penalty != null) {
+                    print(penalty);
+                  }
+                },
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 maxLength: 1,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   fillColor: Colors.white,
                   counterText: "",
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.all(4),
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 28,
                 ),
