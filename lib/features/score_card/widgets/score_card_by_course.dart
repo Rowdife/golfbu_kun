@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
+import 'package:golfbu_kun/features/score_card/courses/repos/score_card_repo.dart';
+import 'package:golfbu_kun/features/score_card/courses/vms/score_card_vm.dart';
+import 'package:golfbu_kun/features/score_card/models/score_card_model.dart';
 import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
+import 'package:golfbu_kun/features/score_card/widgets/score_card_preview.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_categories.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_int_with_underline.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_row_elements.dart';
@@ -33,6 +37,14 @@ class _ScoreCardByCourseState extends ConsumerState<ScoreCardByCourse> {
         return;
       }
     }
+    final scorecard =
+        ref.read(scoreCardCourseProvider.notifier).previewScoreCard();
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ScoreCardPreview(scorecard: scorecard),
+      ),
+    );
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
@@ -36,10 +37,14 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
   bool _isPlaying = false;
 
   void _initVideoPlayer() async {
-    _videoPlayerController =
-        VideoPlayerController.network(widget.videoData.fileUrl);
-    await _videoPlayerController.initialize();
-    setState(() {});
+    try {
+      _videoPlayerController =
+          VideoPlayerController.network(widget.videoData.fileUrl);
+      await _videoPlayerController.initialize();
+      setState(() {});
+    } on PlatformException catch (e) {
+      print('動画読み込みに失敗しました: ${e.message}');
+    }
   }
 
   void _onTogglePlay() {

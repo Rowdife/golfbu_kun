@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:golfbu_kun/features/score_card/courses/vms/score_card_vm.dart';
 
-class ScoreRowElements extends StatefulWidget {
+class ScoreRowElements extends ConsumerStatefulWidget {
   const ScoreRowElements({
     super.key,
     required this.holeNumber,
@@ -12,12 +14,26 @@ class ScoreRowElements extends StatefulWidget {
   final int parNumber;
 
   @override
-  State<ScoreRowElements> createState() => _ScoreRowElementsState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ScoreRowElementsState();
 }
 
-class _ScoreRowElementsState extends State<ScoreRowElements> {
+class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
   String _puttTotheHole = "";
   bool _guardBunker = false;
+  final Map<String, dynamic> _scoreData = {
+    "stroke": 0,
+    "putt": 0,
+    "puttRemained": "",
+    "puttMissed": "",
+    "teeShotClub": "",
+    "teeShotResult": "",
+    "parOnShotDistance": 0,
+    "guardBunker": false,
+    "ob": 0,
+    "hazard": 0,
+    "penalty": 0,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +71,15 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
                 child: TextFormField(
                   onSaved: (stroke) {
                     if (stroke != null) {
-                      print(stroke);
+                      _scoreData["stroke"] = stroke;
                     }
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "入力必須";
+                    }
+                    if (int.tryParse(value) == null) {
+                      return 'Please enter a valid number';
                     }
                     return null;
                   },
@@ -98,12 +117,15 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
               child: TextFormField(
                 onSaved: (putt) {
                   if (putt != null) {
-                    print(putt);
+                    _scoreData["putt"] = putt;
                   }
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "入力必須";
+                  }
+                  if (int.tryParse(value) == null) {
+                    return 'Please enter a valid number';
                   }
                   return null;
                 },
@@ -139,7 +161,7 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             child: DropdownButtonFormField(
               onSaved: (puttRemained) {
                 if (puttRemained != null) {
-                  print(puttRemained);
+                  _scoreData["puttRemained"] = puttRemained;
                 }
               },
               iconEnabledColor: Colors.white,
@@ -185,7 +207,7 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             child: DropdownButtonFormField(
               onSaved: (puttMissed) {
                 if (puttMissed != null) {
-                  print(puttMissed);
+                  _scoreData["puttMissed"] = puttMissed;
                 }
               },
               iconEnabledColor: Colors.white,
@@ -225,7 +247,7 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             child: DropdownButtonFormField(
               onSaved: (teeShotClub) {
                 if (teeShotClub != null) {
-                  print(teeShotClub);
+                  _scoreData["teeShotClub"] = teeShotClub;
                 }
               },
               iconEnabledColor: Colors.white,
@@ -337,7 +359,7 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
             child: DropdownButtonFormField(
               onSaved: (teeShotResult) {
                 if (teeShotResult != null) {
-                  print(teeShotResult);
+                  _scoreData["teeShotResult"] = teeShotResult;
                 }
               },
               iconEnabledColor: Colors.white,
@@ -404,7 +426,7 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
               child: TextFormField(
                 onSaved: (parOnShotDistance) {
                   if (parOnShotDistance != null) {
-                    print(parOnShotDistance);
+                    _scoreData["parOnShotDistance"] = parOnShotDistance;
                   }
                 },
                 textAlign: TextAlign.center,
@@ -434,7 +456,7 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
                   setState(() {
                     _guardBunker = !_guardBunker;
                   });
-                  print(_guardBunker);
+                  _scoreData["guardBunker"] = _guardBunker;
                 }),
           ),
           const Gap(92),
@@ -445,7 +467,7 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
               child: TextFormField(
                 onSaved: (ob) {
                   if (ob != null) {
-                    print(ob);
+                    _scoreData["ob"] = ob;
                   }
                 },
                 keyboardType: TextInputType.number,
@@ -472,7 +494,7 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
               child: TextFormField(
                 onSaved: (hazard) {
                   if (hazard != null) {
-                    print(hazard);
+                    _scoreData["hazard"] = hazard;
                   }
                 },
                 keyboardType: TextInputType.number,
@@ -499,8 +521,11 @@ class _ScoreRowElementsState extends State<ScoreRowElements> {
               child: TextFormField(
                 onSaved: (penalty) {
                   if (penalty != null) {
-                    print(penalty);
+                    _scoreData["penalty"] = penalty;
                   }
+                  final scorecard = ref.read(scoreCardForm.notifier).state;
+                  scorecard
+                      .addAll({"hole${widget.holeNumber + 1}": _scoreData});
                 },
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
