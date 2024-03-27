@@ -13,23 +13,20 @@ Timeline Screen ✅
 -スイング動画  
   *Create✅  
   *Read✅  
-  *Update  
-  *Delete  ✅
+  *Delete✅
 -スイング動画コメント  
   *Create✅  
   *Read✅  
-  *Update  
-  *Delete  
+  *Delete✅
   
 部内告知アナウンス機能 in Progress  
 スコア登録機能 in Progress  
-部内日程管理機能 in Progress  
+部内日程管理機能 ✅
 
 Profile Screen  
 -プロフィール情報  
   *Read ✅  
-  *Update  
-  *アカウント  
+-アカウント  
   *Delete ✅  
   *ログアウト ✅  
 
