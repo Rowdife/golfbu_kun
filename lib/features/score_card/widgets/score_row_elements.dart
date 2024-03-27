@@ -19,7 +19,8 @@ class ScoreRowElements extends ConsumerStatefulWidget {
 }
 
 class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
-  String _puttTotheHole = "";
+  final String _puttTotheHole = "";
+
   bool _guardBunker = false;
   final Map<String, dynamic> _scoreData = {
     "stroke": 0,
@@ -168,31 +169,33 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               dropdownColor: Colors.grey.shade900,
               style: const TextStyle(color: Colors.white),
               onChanged: (String? value) {
-                setState(() {
-                  _puttTotheHole = value!;
-                });
+                setState(() {});
               },
               items: const [
                 DropdownMenuItem(
-                  value: "pin",
+                  // Change the type of DropdownMenuItem to int
+                  value: "pin", // Change the value type to int
                   child: Text(
                     "1ピン以内",
                   ),
                 ),
                 DropdownMenuItem(
-                  value: "short",
+                  // Change the type of DropdownMenuItem to int
+                  value: "short", // Change the value type to int
                   child: Text(
                     "５ヤード以内",
                   ),
                 ),
                 DropdownMenuItem(
-                  value: "middle",
+                  // Change the type of DropdownMenuItem to int
+                  value: "middle", // Change the value type to int
                   child: Text(
                     "10ヤード以内",
                   ),
                 ),
                 DropdownMenuItem(
-                  value: "long",
+                  // Change the type of DropdownMenuItem to int
+                  value: "long", // Change the value type to int
                   child: Text(
                     "10ヤード以上",
                   ),
@@ -214,9 +217,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               dropdownColor: Colors.grey.shade900,
               style: const TextStyle(color: Colors.white),
               onChanged: (String? value) {
-                setState(() {
-                  _puttTotheHole = value!;
-                });
+                setState(() {});
               },
               items: const [
                 DropdownMenuItem(
@@ -226,13 +227,13 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                   ),
                 ),
                 DropdownMenuItem(
-                  value: "Left",
+                  value: "left",
                   child: Text(
                     "左外し",
                   ),
                 ),
                 DropdownMenuItem(
-                  value: "Right",
+                  value: "right",
                   child: Text(
                     "右外し",
                   ),
@@ -254,9 +255,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               dropdownColor: Colors.grey.shade900,
               style: const TextStyle(color: Colors.white),
               onChanged: (String? value) {
-                setState(() {
-                  _puttTotheHole = value!;
-                });
+                setState(() {});
               },
               items: const [
                 DropdownMenuItem(
@@ -366,9 +365,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               dropdownColor: Colors.grey.shade900,
               style: const TextStyle(color: Colors.white),
               onChanged: (String? value) {
-                setState(() {
-                  _puttTotheHole = value!;
-                });
+                setState(() {});
               },
               items: const [
                 DropdownMenuItem(

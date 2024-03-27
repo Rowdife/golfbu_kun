@@ -2,10 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
-import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
 import 'package:golfbu_kun/firebase_options.dart';
 import 'package:golfbu_kun/router.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +14,7 @@ void main() async {
   );
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await initializeDateFormatting('ja_JP');
 
   runApp(
     ProviderScope(

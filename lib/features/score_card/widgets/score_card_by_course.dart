@@ -42,7 +42,8 @@ class _ScoreCardByCourseState extends ConsumerState<ScoreCardByCourse> {
 
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => ScoreCardPreview(scorecard: scorecard),
+        builder: (context) =>
+            ScoreCardPreview(scorecard: scorecard, course: widget.course),
       ),
     );
   }

@@ -88,7 +88,7 @@ class ScoreCategories extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Text(
-                "To the hole",
+                "Putt remained",
                 style: TextStyle(fontSize: 24),
               ),
             ),
