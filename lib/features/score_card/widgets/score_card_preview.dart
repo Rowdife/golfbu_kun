@@ -24,7 +24,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
   @override
   Widget build(BuildContext context) {
     final scorecard = widget.scorecard.scorecard;
-    print(scorecard);
+    final course = widget.course;
 
     List<String> puttRemained = [];
     for (int i = 1; i <= 18; i++) {
@@ -47,6 +47,12 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     double rightPercentage = (rightCount / puttMissedCount) * 100;
     double noMissPercentage = (noMissCount / puttMissedCount) * 100;
 
+    List<String> puttDistance = [];
+    for (int i = 1; i <= 18; i++) {
+      String putt = widget.scorecard.scorecard['hole$i']?['puttDistance'];
+      puttDistance.add(putt);
+    }
+
     List<String> teeShotClub = [];
     for (int i = 1; i <= 18; i++) {
       String shot = widget.scorecard.scorecard['hole$i']?['teeShotClub'];
@@ -64,7 +70,11 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
       String shot = widget.scorecard.scorecard['hole$i']?['parOnShotDistance'];
       parOnShotDistance.add(shot);
     }
-
+    List<String> parOnShotClub = [];
+    for (int i = 1; i <= 18; i++) {
+      String shot = widget.scorecard.scorecard['hole$i']?['parOnShotClub'];
+      parOnShotClub.add(shot);
+    }
     List<bool> guardBunker = [];
     for (int i = 1; i <= 18; i++) {
       bool? shot = widget.scorecard.scorecard['hole$i']?['guardBunker'];
@@ -113,6 +123,25 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     double widthAndHeight = MediaQuery.of(context).size.width / 10;
     double totalScoreWidth = MediaQuery.of(context).size.width / 6;
     double totalScoreHeight = 100;
+    int parOnCount = 0;
+    for (int i = 1; i <= 18; i++) {
+      int stroke = int.parse(scorecard['hole$i']?['stroke']);
+      int putt = int.parse(scorecard['hole$i']?['putt']);
+      if (stroke - putt <= course.parValues[i - 1] - 2) {
+        parOnCount += 1;
+      }
+    }
+    int birdieChanceCount = 0;
+    for (int i = 1; i <= 18; i++) {
+      int stroke = int.parse(scorecard['hole$i']?['stroke']);
+      int putt = int.parse(scorecard['hole$i']?['putt']);
+      if (stroke - putt <= course.parValues[i - 1] - 2) {
+        if (scorecard['hole$i']?['puttRemained'] == 'pin' ||
+            scorecard['hole$i']?['puttRemained'] == 'short') {
+          birdieChanceCount += 1;
+        }
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -121,6 +150,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
               children: [
@@ -536,8 +566,19 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                 ),
               ],
             ),
-            Text(
-                "パッとミスの傾向 \n左外し:$leftPercentage% \n右外し:$rightPercentage% \nカップイン:$noMissPercentage%"),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "パッとミスの傾向 \n左外し:$leftPercentage% \n右外し:$rightPercentage% \nカップイン:$noMissPercentage%",
+                ),
+                Text("パーオン $parOnCount / 18ホール"),
+                Text("パーオン率:${" ${parOnCount / 18 * 100}".substring(0, 5)}%"),
+                Text("バーディチャンス $birdieChanceCount / 18ホール(5m以内バーディパット)"),
+                Text(
+                    "バーディチャンス率: ${"${birdieChanceCount / 18 * 100}".substring(0, 5)}%"),
+              ],
+            ),
           ],
         ),
       ),

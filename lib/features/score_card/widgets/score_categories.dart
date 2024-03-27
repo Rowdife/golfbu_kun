@@ -92,7 +92,7 @@ class ScoreCategories extends StatelessWidget {
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            const Gap(10),
+            const Gap(40),
             Container(
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
@@ -104,7 +104,23 @@ class ScoreCategories extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Text(
-                "Putt missed",
+                "Putt L/R",
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            const Gap(30),
+            Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                  width: 1,
+                  style: BorderStyle.solid,
+                ),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: const Text(
+                "Putt distance",
                 style: TextStyle(fontSize: 24),
               ),
             ),
@@ -152,7 +168,23 @@ class ScoreCategories extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Text(
-                "Par on shot distance",
+                "Par on distance",
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            const Gap(10),
+            Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                  width: 1,
+                  style: BorderStyle.solid,
+                ),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: const Text(
+                "Par on shot club",
                 style: TextStyle(fontSize: 24),
               ),
             ),

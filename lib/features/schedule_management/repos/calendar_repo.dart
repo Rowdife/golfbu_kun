@@ -41,6 +41,20 @@ class CalendarRepository {
         .map((doc) => CalendarEventModel.fromJson(doc.data()))
         .toList();
   }
+
+  Future<void> deleteSchedule(int createdAt) async {
+    final universityId = _auth.currentUser!.displayName;
+    final snapshot = await _db
+        .collection('university')
+        .doc(universityId)
+        .collection('calendar')
+        .where('createdAt', isEqualTo: createdAt)
+        .get();
+    if (snapshot.docs.isNotEmpty) {
+      final doc = snapshot.docs.first;
+      await doc.reference.delete();
+    }
+  }
 }
 
 final calendarProvider = Provider<CalendarRepository>((ref) {

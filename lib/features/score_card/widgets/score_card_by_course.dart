@@ -226,7 +226,6 @@ class _ScoreCardByCourseState extends ConsumerState<ScoreCardByCourse> {
                                     parNumber: widget.course.parValues[i],
                                   ),
                                 ),
-                                const Gap(20),
                               ],
                             ),
                           Padding(

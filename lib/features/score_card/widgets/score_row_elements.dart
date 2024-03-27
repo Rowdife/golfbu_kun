@@ -27,19 +27,25 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
     "putt": 0,
     "puttRemained": "",
     "puttMissed": "",
+    "puttDistance": "",
     "teeShotClub": "",
     "teeShotResult": "",
-    "parOnShotDistance": 0,
+    "parOnShotDistance": "",
+    "parOnShotClub": "",
     "guardBunker": false,
-    "ob": 0,
-    "hazard": 0,
-    "penalty": 0,
+    "ob": "",
+    "hazard": "",
+    "penalty": "",
   };
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 1600,
+    return Container(
+      color: widget.holeNumber % 2 == 0
+          ? Colors.grey.shade900
+          : Colors.grey.shade800,
+      width: 2000,
+      height: 80,
       child: Row(
         children: [
           const Gap(30),
@@ -155,7 +161,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               ),
             ),
           ),
-          const Gap(10),
+          const Gap(40),
           SizedBox(
             width: 140,
             height: 60,
@@ -203,7 +209,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               ],
             ),
           ),
-          const Gap(30),
+          const Gap(40),
           SizedBox(
             width: 120,
             height: 60,
@@ -236,6 +242,44 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                   value: "right",
                   child: Text(
                     "右外し",
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Gap(40),
+          SizedBox(
+            width: 130,
+            height: 60,
+            child: DropdownButtonFormField(
+              onSaved: (putt) {
+                if (putt != null) {
+                  _scoreData["puttDistance"] = putt;
+                }
+              },
+              iconEnabledColor: Colors.white,
+              dropdownColor: Colors.grey.shade900,
+              style: const TextStyle(color: Colors.white),
+              onChanged: (String? value) {
+                setState(() {});
+              },
+              items: const [
+                DropdownMenuItem(
+                  value: "nomiss",
+                  child: Text(
+                    "半径1m以内",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "short",
+                  child: Text(
+                    "ショート",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "long",
+                  child: Text(
+                    "ロング",
                   ),
                 ),
               ],
@@ -444,6 +488,116 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
           ),
           const Gap(5),
           const Text("ヤード"),
+          const Gap(30),
+          SizedBox(
+            width: 120,
+            height: 60,
+            child: DropdownButtonFormField(
+              onSaved: (parOnShotClub) {
+                if (parOnShotClub != null) {
+                  _scoreData["parOnShotClub"] = parOnShotClub;
+                }
+              },
+              iconEnabledColor: Colors.white,
+              dropdownColor: Colors.grey.shade900,
+              style: const TextStyle(color: Colors.white),
+              onChanged: (String? value) {
+                setState(() {});
+              },
+              items: const [
+                DropdownMenuItem(
+                  value: "1w",
+                  child: Text(
+                    "1w",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "3w",
+                  child: Text(
+                    "3w",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "5w",
+                  child: Text(
+                    "1w",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "2i",
+                  child: Text(
+                    "2i",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "3i",
+                  child: Text(
+                    "3i",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "4i",
+                  child: Text(
+                    "4i",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "5i",
+                  child: Text(
+                    "5i",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "6i",
+                  child: Text(
+                    "6i",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "7i",
+                  child: Text(
+                    "7i",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "8i",
+                  child: Text(
+                    "8i",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "9i",
+                  child: Text(
+                    "9i",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "pw",
+                  child: Text(
+                    "PW",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "sw",
+                  child: Text(
+                    "SW",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "lw",
+                  child: Text(
+                    "LW",
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "pt",
+                  child: Text(
+                    "pt",
+                  ),
+                ),
+              ],
+            ),
+          ),
           const Gap(130),
           Transform.scale(
             scale: 2,

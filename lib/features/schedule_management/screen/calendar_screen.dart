@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
+import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/schedule_management/models/calendar_event_model.dart';
 import 'package:golfbu_kun/features/schedule_management/repos/calendar_repo.dart';
 import 'package:golfbu_kun/features/schedule_management/widgets/schedule_upload_widget.dart';
@@ -17,6 +19,7 @@ class CalendarScreen extends ConsumerStatefulWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
+  String _uid = "";
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   final DateTime _today = DateTime.now();
@@ -65,6 +68,30 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     }
   }
 
+  void _deleteSchedule(int createdAt) async {
+    await ref.read(calendarProvider).deleteSchedule(createdAt);
+    _getTodaySchedule();
+    _getAllSchedule();
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text(
+                "スケジュールを削除しました",
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.grey.shade900,
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ));
+  }
+
   Future<void> _getAllSchedule() async {
     final allSchedule = await ref.read(calendarProvider).getAllSchedule();
     final jsonList = allSchedule.map((event) => event.toJson()).toList();
@@ -85,11 +112,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     super.initState();
     _getAllSchedule();
     _getTodaySchedule();
+    _uid = ref.read(authRepo).user!.uid;
   }
 
   @override
   Widget build(BuildContext context) {
-    print(_todayEventsList);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Calendar'),
@@ -247,35 +274,47 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     itemCount: _selectedEventsList.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: _selectedEventsList[index].eventColor,
-                            shape: BoxShape.circle,
+                          leading: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: _selectedEventsList[index].eventColor,
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                        ),
-                        title: Text(
-                          _selectedEventsList[index].title,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Text(
-                              _selectedEventsList[index].description!,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              "${_selectedEventsList[index].scheduleStartTime} ~ ${_selectedEventsList[index].scheduleEndTime}",
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                        trailing: Text(
-                          _selectedEventsList[index].uploaderName,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      );
+                          title: Row(
+                            children: [
+                              Text(
+                                _selectedEventsList[index].title,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              const Gap(20),
+                              Text(
+                                "${_selectedEventsList[index].scheduleStartTime} ~ ${_selectedEventsList[index].scheduleEndTime}",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                          subtitle: Row(
+                            children: [
+                              Text(
+                                "uploaded by ${_selectedEventsList[index].uploaderName}",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                          trailing: (index < _selectedEventsList.length &&
+                                  _selectedEventsList[index].uploaderId == _uid)
+                              ? IconButton(
+                                  onPressed: () => _deleteSchedule(
+                                    _selectedEventsList[index].createdAt,
+                                  ),
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : null);
                     },
                   ),
                 Text("${_today.toString().substring(0, 10)}のスケジュール"),
@@ -285,43 +324,48 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     itemCount: _todayEventsList.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: _todayEventsList[index].eventColor,
-                            shape: BoxShape.circle,
+                          leading: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: _todayEventsList[index].eventColor,
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                        ),
-                        title: Text(
-                          _todayEventsList[index].title,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Text(
-                              _todayEventsList[index].description!,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              "${_todayEventsList[index].scheduleStartTime} ~ ${_todayEventsList[index].scheduleEndTime}",
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                        trailing: Text(
-                          _todayEventsList[index].uploaderName,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      );
+                          title: Row(
+                            children: [
+                              Text(
+                                _todayEventsList[index].title,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              const Gap(20),
+                              Text(
+                                "${_todayEventsList[index].scheduleStartTime} ~ ${_todayEventsList[index].scheduleEndTime}",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                          subtitle: Row(
+                            children: [
+                              Text(
+                                "uploaded by ${_todayEventsList[index].uploaderName}",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                          trailing: (index < _todayEventsList.length &&
+                                  _todayEventsList[index].uploaderId == _uid)
+                              ? IconButton(
+                                  onPressed: () => _deleteSchedule(
+                                    _todayEventsList[index].createdAt,
+                                  ),
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : null);
                     },
-                  ),
-                if (_todayEventsList.isEmpty)
-                  const Center(
-                    child: Text(
-                      "スケジュールがありません",
-                      style: TextStyle(color: Colors.white),
-                    ),
                   ),
               ],
             ),
