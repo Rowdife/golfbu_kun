@@ -156,7 +156,7 @@ class ScoreCategories extends StatelessWidget {
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            const Gap(10),
+            const Gap(25),
             Container(
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(

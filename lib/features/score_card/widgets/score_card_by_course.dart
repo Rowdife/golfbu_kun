@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
 import 'package:golfbu_kun/features/score_card/courses/repos/score_card_repo.dart';
@@ -28,6 +29,7 @@ class _ScoreCardByCourseState extends ConsumerState<ScoreCardByCourse> {
   String? selectedWeather = "晴れ"; // Added
   int? maxWindPerSecond = 1; // Added
   String? selectedTemperature = "ちょうどいい"; // Added
+  String date = DateTime.now().toString().substring(0, 10); // Added
 
   void _onPreviewTap(BuildContext context) {
     for (GlobalKey<FormState> formkey in formKeys) {
@@ -42,8 +44,14 @@ class _ScoreCardByCourseState extends ConsumerState<ScoreCardByCourse> {
 
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>
-            ScoreCardPreview(scorecard: scorecard, course: widget.course),
+        builder: (context) => ScoreCardPreview(
+          scorecard: scorecard,
+          course: widget.course,
+          weather: selectedWeather!,
+          wind: maxWindPerSecond!,
+          temperature: selectedTemperature!,
+          date: date,
+        ),
       ),
     );
   }
@@ -95,6 +103,53 @@ class _ScoreCardByCourseState extends ConsumerState<ScoreCardByCourse> {
                           Row(
                             children: [
                               const Gap(20),
+                              GestureDetector(
+                                onTap: () async {
+                                  final selectedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2021),
+                                    lastDate: DateTime(2030),
+                                    builder: (context, child) => Theme(
+                                        data: ThemeData.dark(), child: child!),
+                                  );
+                                  if (selectedDate != null) {
+                                    setState(() {
+                                      date = selectedDate
+                                          .toString()
+                                          .substring(0, 10);
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  width: 80,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade800,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      "日付選択",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Gap(20),
+                              Text("プレイ日: $date"),
+                            ],
+                          ),
+                          const Gap(20),
+                          Row(
+                            children: [
+                              const Gap(20),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -112,6 +167,13 @@ class _ScoreCardByCourseState extends ConsumerState<ScoreCardByCourse> {
                                         value: '晴れ',
                                         child: Text(
                                           '晴れ',
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: '曇り',
+                                        child: Text(
+                                          '曇り',
                                           style: TextStyle(fontSize: 20),
                                         ),
                                       ),

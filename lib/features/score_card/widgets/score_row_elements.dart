@@ -161,9 +161,9 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               ),
             ),
           ),
-          const Gap(40),
+          const Gap(20),
           SizedBox(
-            width: 140,
+            width: 160,
             height: 60,
             child: DropdownButtonFormField(
               onSaved: (puttRemained) {
@@ -182,28 +182,28 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                   // Change the type of DropdownMenuItem to int
                   value: "pin", // Change the value type to int
                   child: Text(
-                    "1ピン以内",
+                    "1ピン以内(2.5m)",
                   ),
                 ),
                 DropdownMenuItem(
                   // Change the type of DropdownMenuItem to int
                   value: "short", // Change the value type to int
                   child: Text(
-                    "５ヤード以内",
+                    "５m以内",
                   ),
                 ),
                 DropdownMenuItem(
                   // Change the type of DropdownMenuItem to int
                   value: "middle", // Change the value type to int
                   child: Text(
-                    "10ヤード以内",
+                    "10m以内",
                   ),
                 ),
                 DropdownMenuItem(
                   // Change the type of DropdownMenuItem to int
                   value: "long", // Change the value type to int
                   child: Text(
-                    "10ヤード以上",
+                    "10m以上",
                   ),
                 ),
               ],
@@ -397,7 +397,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
           ),
           const Gap(30),
           SizedBox(
-            width: 110,
+            width: 120,
             height: 60,
             child: DropdownButtonFormField(
               onSaved: (teeShotResult) {
@@ -411,50 +411,83 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               onChanged: (String? value) {
                 setState(() {});
               },
-              items: const [
-                DropdownMenuItem(
-                  value: "fw",
-                  child: Text(
-                    "Fairway",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "left",
-                  child: Text(
-                    "左",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "right",
-                  child: Text(
-                    "右",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "chipping",
-                  child: Text(
-                    "チーピン",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "top",
-                  child: Text(
-                    "トップ",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "tenpura",
-                  child: Text(
-                    "天ぷら",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "duff",
-                  child: Text(
-                    "ダフリ",
-                  ),
-                ),
-              ],
+              items: widget.parNumber != 3
+                  ? const [
+                      DropdownMenuItem(
+                        value: "fw",
+                        child: Text(
+                          "Fairway",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "left",
+                        child: Text(
+                          "左",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "right",
+                        child: Text(
+                          "右",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "chipping",
+                        child: Text(
+                          "チーピン",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "top",
+                        child: Text(
+                          "トップ",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "tenpura",
+                        child: Text(
+                          "天ぷら",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "duff",
+                        child: Text(
+                          "ダフリ",
+                        ),
+                      ),
+                    ]
+                  : [
+                      const DropdownMenuItem(
+                        value: "greenOn",
+                        child: Text(
+                          "on green",
+                        ),
+                      ),
+                      const DropdownMenuItem(
+                        value: "greenShort",
+                        child: Text(
+                          "ショート",
+                        ),
+                      ),
+                      const DropdownMenuItem(
+                        value: "greenOver",
+                        child: Text(
+                          "オーバー",
+                        ),
+                      ),
+                      const DropdownMenuItem(
+                        value: "greenLeft",
+                        child: Text(
+                          "グリーン左",
+                        ),
+                      ),
+                      const DropdownMenuItem(
+                        value: "greenRight",
+                        child: Text(
+                          "グリーン右",
+                        ),
+                      ),
+                    ],
             ),
           ),
           const Gap(30),
@@ -492,111 +525,115 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
           SizedBox(
             width: 120,
             height: 60,
-            child: DropdownButtonFormField(
-              onSaved: (parOnShotClub) {
-                if (parOnShotClub != null) {
-                  _scoreData["parOnShotClub"] = parOnShotClub;
-                }
-              },
-              iconEnabledColor: Colors.white,
-              dropdownColor: Colors.grey.shade900,
-              style: const TextStyle(color: Colors.white),
-              onChanged: (String? value) {
-                setState(() {});
-              },
-              items: const [
-                DropdownMenuItem(
-                  value: "1w",
-                  child: Text(
-                    "1w",
+            child: widget.parNumber == 3
+                ? const Center(
+                    child: Text("Par3は入力不要"),
+                  )
+                : DropdownButtonFormField(
+                    onSaved: (parOnShotClub) {
+                      if (parOnShotClub != null) {
+                        _scoreData["parOnShotClub"] = parOnShotClub;
+                      }
+                    },
+                    iconEnabledColor: Colors.white,
+                    dropdownColor: Colors.grey.shade900,
+                    style: const TextStyle(color: Colors.white),
+                    onChanged: (String? value) {
+                      setState(() {});
+                    },
+                    items: const [
+                      DropdownMenuItem(
+                        value: "1w",
+                        child: Text(
+                          "1w",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "3w",
+                        child: Text(
+                          "3w",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "5w",
+                        child: Text(
+                          "1w",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "2i",
+                        child: Text(
+                          "2i",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "3i",
+                        child: Text(
+                          "3i",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "4i",
+                        child: Text(
+                          "4i",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "5i",
+                        child: Text(
+                          "5i",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "6i",
+                        child: Text(
+                          "6i",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "7i",
+                        child: Text(
+                          "7i",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "8i",
+                        child: Text(
+                          "8i",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "9i",
+                        child: Text(
+                          "9i",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "pw",
+                        child: Text(
+                          "PW",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "sw",
+                        child: Text(
+                          "SW",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "lw",
+                        child: Text(
+                          "LW",
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: "pt",
+                        child: Text(
+                          "pt",
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                DropdownMenuItem(
-                  value: "3w",
-                  child: Text(
-                    "3w",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "5w",
-                  child: Text(
-                    "1w",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "2i",
-                  child: Text(
-                    "2i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "3i",
-                  child: Text(
-                    "3i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "4i",
-                  child: Text(
-                    "4i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "5i",
-                  child: Text(
-                    "5i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "6i",
-                  child: Text(
-                    "6i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "7i",
-                  child: Text(
-                    "7i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "8i",
-                  child: Text(
-                    "8i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "9i",
-                  child: Text(
-                    "9i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "pw",
-                  child: Text(
-                    "PW",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "sw",
-                  child: Text(
-                    "SW",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "lw",
-                  child: Text(
-                    "LW",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "pt",
-                  child: Text(
-                    "pt",
-                  ),
-                ),
-              ],
-            ),
           ),
           const Gap(130),
           Transform.scale(
