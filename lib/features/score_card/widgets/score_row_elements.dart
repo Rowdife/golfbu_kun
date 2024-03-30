@@ -19,7 +19,56 @@ class ScoreRowElements extends ConsumerStatefulWidget {
 }
 
 class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
-  final String _puttTotheHole = "";
+  List<DropdownMenuItem<String>> golfclubs = [
+    const DropdownMenuItem(
+      value: "driver",
+      child: Text(
+        "driver",
+      ),
+    ),
+    const DropdownMenuItem(
+      value: "wood",
+      child: Text(
+        "wood",
+      ),
+    ),
+    const DropdownMenuItem(
+      value: "ut",
+      child: Text(
+        "ut",
+      ),
+    ),
+    const DropdownMenuItem(
+      value: "longiron",
+      child: Text(
+        "long iron",
+      ),
+    ),
+    const DropdownMenuItem(
+      value: "middleiron",
+      child: Text(
+        "middle iron",
+      ),
+    ),
+    const DropdownMenuItem(
+      value: "shortiron",
+      child: Text(
+        "short iron",
+      ),
+    ),
+    const DropdownMenuItem(
+      value: "wedge",
+      child: Text(
+        "wedge",
+      ),
+    ),
+    const DropdownMenuItem(
+      value: "putter",
+      child: Text(
+        "putter",
+      ),
+    ),
+  ];
 
   bool _guardBunker = false;
   final Map<String, dynamic> _scoreData = {
@@ -287,7 +336,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
           ),
           const Gap(30),
           SizedBox(
-            width: 120,
+            width: 130,
             height: 60,
             child: DropdownButtonFormField(
               onSaved: (teeShotClub) {
@@ -301,98 +350,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               onChanged: (String? value) {
                 setState(() {});
               },
-              items: const [
-                DropdownMenuItem(
-                  value: "1w",
-                  child: Text(
-                    "1w",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "3w",
-                  child: Text(
-                    "3w",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "5w",
-                  child: Text(
-                    "1w",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "2i",
-                  child: Text(
-                    "2i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "3i",
-                  child: Text(
-                    "3i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "4i",
-                  child: Text(
-                    "4i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "5i",
-                  child: Text(
-                    "5i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "6i",
-                  child: Text(
-                    "6i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "7i",
-                  child: Text(
-                    "7i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "8i",
-                  child: Text(
-                    "8i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "9i",
-                  child: Text(
-                    "9i",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "pw",
-                  child: Text(
-                    "PW",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "sw",
-                  child: Text(
-                    "SW",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "lw",
-                  child: Text(
-                    "LW",
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: "pt",
-                  child: Text(
-                    "pt",
-                  ),
-                ),
-              ],
+              items: golfclubs,
             ),
           ),
           const Gap(30),
@@ -523,7 +481,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
           const Text("ヤード"),
           const Gap(30),
           SizedBox(
-            width: 120,
+            width: 130,
             height: 60,
             child: widget.parNumber == 3
                 ? const Center(
@@ -541,98 +499,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                     onChanged: (String? value) {
                       setState(() {});
                     },
-                    items: const [
-                      DropdownMenuItem(
-                        value: "1w",
-                        child: Text(
-                          "1w",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "3w",
-                        child: Text(
-                          "3w",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "5w",
-                        child: Text(
-                          "1w",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "2i",
-                        child: Text(
-                          "2i",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "3i",
-                        child: Text(
-                          "3i",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "4i",
-                        child: Text(
-                          "4i",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "5i",
-                        child: Text(
-                          "5i",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "6i",
-                        child: Text(
-                          "6i",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "7i",
-                        child: Text(
-                          "7i",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "8i",
-                        child: Text(
-                          "8i",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "9i",
-                        child: Text(
-                          "9i",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "pw",
-                        child: Text(
-                          "PW",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "sw",
-                        child: Text(
-                          "SW",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "lw",
-                        child: Text(
-                          "LW",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "pt",
-                        child: Text(
-                          "pt",
-                        ),
-                      ),
-                    ],
+                    items: golfclubs,
                   ),
           ),
           const Gap(130),

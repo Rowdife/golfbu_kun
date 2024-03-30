@@ -317,7 +317,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               : null);
                     },
                   ),
-                Text("${_today.toString().substring(0, 10)}のスケジュール"),
+                const Text("今日のスケジュール"),
                 if (_todayEventsList.isNotEmpty)
                   ListView.builder(
                     shrinkWrap: true,

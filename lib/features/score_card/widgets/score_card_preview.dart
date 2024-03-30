@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_model.dart';
 import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
+import 'package:golfbu_kun/features/score_card/widgets/score_card_data_tile.dart';
 
 class ScoreCardPreview extends ConsumerStatefulWidget {
   const ScoreCardPreview({
@@ -111,30 +112,10 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int puttRemainedCount =
         puttRemained.where((putt) => putt.isNotEmpty).length;
     int teeShotClubCount = teeShotClub.where((shot) => shot.isNotEmpty).length;
-    int teeShotResultCount = teeShotResult
-        .where((shot) =>
-            shot.isNotEmpty &&
-            shot != 'greenOn' &&
-            shot != 'greenOver' &&
-            shot != 'greenShort' &&
-            shot != 'greenLeft' &&
-            shot != 'greenRight')
-        .length;
 
-    int parThreeTeeShotCount = teeShotResult
-        .where((shot) =>
-            shot.isNotEmpty &&
-            (shot == 'greenOn' ||
-                shot == 'greenOver' ||
-                shot == 'greenShort' ||
-                shot == 'greenLeft' ||
-                shot == 'greenRight'))
-        .length;
-
-    print(parThreeTeeShotCount);
     int parOnShotDistanceCount =
         parOnShotDistance.where((shot) => shot.isNotEmpty).length;
-    int guardBunkerCount = guardBunker.where((shot) => shot).length;
+
     int obCount = ob.where((shot) => shot.isNotEmpty).length;
     int hazardCount = hazard.where((shot) => shot.isNotEmpty).length;
     int penaltyCount = penalty.where((shot) => shot.isNotEmpty).length;
@@ -212,7 +193,16 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     }
     double par5AverageScore = par5TotalScore / par5Count;
 
-    // teeShot分析
+    // teeShotResult分析
+    int teeShotResultCount = teeShotResult
+        .where((shot) =>
+            shot.isNotEmpty &&
+            shot != 'greenOn' &&
+            shot != 'greenOver' &&
+            shot != 'greenShort' &&
+            shot != 'greenLeft' &&
+            shot != 'greenRight')
+        .length;
     int teeShotFairwayCount =
         teeShotResult.where((shot) => shot == 'fw').length;
     int teeShotLeftCount = teeShotResult.where((shot) => shot == 'left').length;
@@ -226,14 +216,118 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
             shot == 'duff')
         .length;
 
-    double teeShotFairwayPercentage =
-        (teeShotFairwayCount / teeShotResultCount) * 100;
-    double teeShotLeftPercentage =
-        (teeShotLeftCount / teeShotResultCount) * 100;
-    double teeShotRightPercentage =
-        (teeShotRightCount / teeShotResultCount) * 100;
-    double teeShotCriticalMissPercentage =
-        (teeShotCriticalMissCount / teeShotResultCount) * 100;
+    String teeShotFairwayPercentage =
+        ((teeShotFairwayCount / teeShotResultCount) * 100).toStringAsFixed(1);
+    String teeShotLeftPercentage =
+        (teeShotLeftCount / teeShotResultCount * 100).toStringAsFixed(1);
+    String teeShotRightPercentage =
+        (teeShotRightCount / teeShotResultCount * 100).toStringAsFixed(1);
+    String teeShotCriticalMissPercentage =
+        (teeShotCriticalMissCount / teeShotResultCount * 100)
+            .toStringAsFixed(1);
+
+    //teeShot Club分析
+    int teeShotDriverCount = 0;
+    int teeShotDriverFwCount = 0;
+    int teeShotWoodCount = 0;
+    int teeShotWoodFwCount = 0;
+    int teeShotUtCount = 0;
+    int teeShotUtFwCount = 0;
+    int teeShotIronCount = 0;
+    int teeShotIronFwCount = 0;
+
+    for (int i = 1; i <= 18; i++) {
+      if (course.parValues[i - 1] != 3) {
+        if (teeShotClub[i - 1] == 'driver') {
+          teeShotDriverCount += 1;
+          if (teeShotResult[i - 1] == 'fw') {
+            teeShotDriverFwCount += 1;
+          }
+        }
+        if (teeShotClub[i - 1] == 'wood') {
+          teeShotWoodCount += 1;
+          if (teeShotResult[i - 1] == 'fw') {
+            teeShotWoodFwCount += 1;
+          }
+        }
+        if (teeShotClub[i - 1] == 'ut') {
+          teeShotUtCount += 1;
+          if (teeShotResult[i - 1] == 'fw') {
+            teeShotUtFwCount += 1;
+          }
+        }
+        if (teeShotClub[i - 1] == 'longiron' ||
+            teeShotClub[i - 1] == 'middleiron' ||
+            teeShotClub[i - 1] == 'shortiron') {
+          teeShotIronCount += 1;
+          if (teeShotResult[i - 1] == 'fw') {
+            teeShotIronFwCount += 1;
+          }
+        }
+      }
+    }
+
+    String teeShotDriverFwPercentage =
+        ((teeShotDriverFwCount / teeShotDriverCount) * 100).toStringAsFixed(1);
+    String teeShotWoodFwPercentage =
+        ((teeShotWoodFwCount / teeShotWoodCount) * 100).toStringAsFixed(1);
+    String teeShotUtFwPercentage =
+        ((teeShotUtFwCount / teeShotUtCount) * 100).toStringAsFixed(1);
+    String teeShotIronFwPercentage =
+        ((teeShotIronFwCount / teeShotIronCount) * 100).toStringAsFixed(1);
+
+    // Par3 TeeShot分析
+    int parThreeTeeShotCount = teeShotResult
+        .where((shot) =>
+            shot.isNotEmpty &&
+            (shot == 'greenOn' ||
+                shot == 'greenOver' ||
+                shot == 'greenShort' ||
+                shot == 'greenLeft' ||
+                shot == 'greenRight'))
+        .length;
+
+    int parThreeTeeShotGreenOnCount = teeShotResult
+        .where(
+          (shot) => shot.isNotEmpty && (shot == 'greenOn'),
+        )
+        .length;
+    int parThreeTeeShotGreenOverCount = teeShotResult
+        .where(
+          (shot) => shot.isNotEmpty && (shot == 'greenOver'),
+        )
+        .length;
+    int parThreeTeeShotGreenShortCount = teeShotResult
+        .where(
+          (shot) => shot.isNotEmpty && (shot == 'greenShort'),
+        )
+        .length;
+    int parThreeTeeShotGreenLeftCount = teeShotResult
+        .where(
+          (shot) => shot.isNotEmpty && (shot == 'greenLeft'),
+        )
+        .length;
+    int parThreeTeeShotGreenRightCount = teeShotResult
+        .where(
+          (shot) => shot.isNotEmpty && (shot == 'greenRight'),
+        )
+        .length;
+
+    String parThreeTeeShotGreenOnPercentage =
+        ((parThreeTeeShotGreenOnCount / parThreeTeeShotCount) * 100)
+            .toStringAsFixed(1);
+    String parThreeTeeShotGreenOverPercentage =
+        ((parThreeTeeShotGreenOverCount / parThreeTeeShotCount) * 100)
+            .toStringAsFixed(1);
+    String parThreeTeeShotGreenShortPercentage =
+        ((parThreeTeeShotGreenShortCount / parThreeTeeShotCount) * 100)
+            .toStringAsFixed(1);
+    String parThreeTeeShotGreenLeftPercentage =
+        ((parThreeTeeShotGreenLeftCount / parThreeTeeShotCount) * 100)
+            .toStringAsFixed(1);
+    String parThreeTeeShotGreenRightPercentage =
+        ((parThreeTeeShotGreenRightCount / parThreeTeeShotCount) * 100)
+            .toStringAsFixed(1);
 
     // パット分析
 
@@ -243,9 +337,12 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int puttNoMissCount = puttMissed.where((putt) => putt == 'nomiss').length;
     int puttOverThreePutt = 0;
 
-    double puttLeftPercentage = (puttLeftCount / puttMissedCount) * 100;
-    double puttRightPercentage = (puttRightCount / puttMissedCount) * 100;
-    double puttNoMissPercentage = (puttNoMissCount / puttMissedCount) * 100;
+    String puttLeftPercentage =
+        ((puttLeftCount / puttMissedCount) * 100).toStringAsFixed(1);
+    String puttRightPercentage =
+        ((puttRightCount / puttMissedCount) * 100).toStringAsFixed(1);
+    String puttNoMissPercentage =
+        ((puttNoMissCount / puttMissedCount) * 100).toStringAsFixed(1);
 
     List<String> puttDistance = [];
     for (int i = 1; i <= 18; i++) {
@@ -262,12 +359,12 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int puttDistanceLongCount =
         puttDistance.where((putt) => putt == 'long').length;
 
-    double puttDistancePinPercentage =
-        (puttDistancePinCount / puttDistanceCount) * 100;
-    double puttDistanceShortPercentage =
-        (puttDistanceShortCount / puttDistanceCount) * 100;
-    double puttDistanceLongPercentage =
-        (puttDistanceLongCount / puttDistanceCount) * 100;
+    String puttDistancePinPercentage =
+        ((puttDistancePinCount / puttDistanceCount) * 100).toStringAsFixed(1);
+    String puttDistanceShortPercentage =
+        ((puttDistanceShortCount / puttDistanceCount) * 100).toStringAsFixed(1);
+    String puttDistanceLongPercentage =
+        ((puttDistanceLongCount / puttDistanceCount) * 100).toStringAsFixed(1);
 
 // 2.5m以内パット分析
     int puttInAPinCount = 0;
@@ -383,54 +480,59 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
       }
     }
 
-    double puttInAPinCupInPercentage =
-        (puttInAPinCupInCount / puttInAPinCount) * 100;
-    double puttInAPinLeftMissPercentage =
-        (puttInAPinLeftMissCount / puttInAPinCount) * 100;
-    double puttInAPinRightMissPercentage =
-        (puttInAPinRightMissCount / puttInAPinCount) * 100;
+    String puttInAPinCupInPercentage =
+        ((puttInAPinCupInCount / puttInAPinCount) * 100).toStringAsFixed(1);
+    String puttInAPinLeftMissPercentage =
+        ((puttInAPinLeftMissCount / puttInAPinCount) * 100).toStringAsFixed(1);
+    String puttInAPinRightMissPercentage =
+        ((puttInAPinRightMissCount / puttInAPinCount) * 100).toStringAsFixed(1);
 
-    double puttInShortCupInPercentage =
-        (puttInShortCupInCount / puttInShortCount) * 100;
-    double puttInShortLeftMissPercentage =
-        (puttInShortLeftMissCount / puttInShortCount) * 100;
-    double puttInShortRightMissPercentage =
-        (puttInShortRightMissCount / puttInShortCount) * 100;
+    String puttInShortCupInPercentage =
+        ((puttInShortCupInCount / puttInShortCount) * 100).toStringAsFixed(1);
+    String puttInShortLeftMissPercentage =
+        ((puttInShortLeftMissCount / puttInShortCount) * 100)
+            .toStringAsFixed(1);
+    String puttInShortRightMissPercentage =
+        ((puttInShortRightMissCount / puttInShortCount) * 100)
+            .toStringAsFixed(1);
 
-    double puttInMiddleCupInPercentage =
-        (puttInMiddleCupInCount / puttInMiddleCount) * 100;
-    double puttInMiddleLeftMissPercentage =
-        (puttInMiddleLeftMissCount / puttInMiddleCount) * 100;
-    double puttInMiddleRightMissPercentage =
-        (puttInMiddleRightMissCount / puttInMiddleCount) * 100;
-    double puttInMiddleWellPercentage =
-        (puttInMiddleWellCount / puttInMiddleCount) * 100;
-    double puttInMiddleShortPercentage =
-        (puttInMiddleShortCount / puttInMiddleCount) * 100;
-    double puttInMiddleLongPercentage =
-        (puttInMiddleLongCount / puttInMiddleCount) * 100;
-    double puttInMiddleTwoPutPercentage =
-        (puttInMiddleTwoPuttCount / puttInMiddleCount) * 100;
+    String puttInMiddleCupInPercentage =
+        ((puttInMiddleCupInCount / puttInMiddleCount) * 100).toStringAsFixed(1);
+    String puttInMiddleLeftMissPercentage =
+        ((puttInMiddleLeftMissCount / puttInMiddleCount) * 100)
+            .toStringAsFixed(1);
+    String puttInMiddleRightMissPercentage =
+        ((puttInMiddleRightMissCount / puttInMiddleCount) * 100)
+            .toStringAsFixed(1);
+    String puttInMiddleWellPercentage =
+        ((puttInMiddleWellCount / puttInMiddleCount) * 100).toStringAsFixed(1);
+    String puttInMiddleShortPercentage =
+        ((puttInMiddleShortCount / puttInMiddleCount) * 100).toStringAsFixed(1);
+    String puttInMiddleLongPercentage =
+        ((puttInMiddleLongCount / puttInMiddleCount) * 100).toStringAsFixed(1);
+    String puttInMiddleTwoPutPercentage =
+        ((puttInMiddleTwoPuttCount / puttInMiddleCount) * 100)
+            .toStringAsFixed(1);
 
-    double puttInLongCupInPercentage =
-        (puttInLongCupInCount / puttInLongCount) * 100;
-    double puttInLongLeftMissPercentage =
-        (puttInLongLeftMissCount / puttInLongCount) * 100;
-    double puttInLongRightMissPercentage =
-        (puttInLongRightMissCount / puttInLongCount) * 100;
-    double puttInLongWellPercentage =
-        (puttInLongWellCount / puttInLongCount) * 100;
-    double puttInLongShortPercentage =
-        (puttInLongShortCount / puttInLongCount) * 100;
-    double puttInLongLongPercentage =
-        (puttInLongLongCount / puttInLongCount) * 100;
-    double puttInLongTwoPutPercentage =
-        (puttInLongTwoPuttCount / puttInLongCount) * 100;
+    String puttInLongCupInPercentage =
+        ((puttInLongCupInCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongLeftMissPercentage =
+        ((puttInLongLeftMissCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongRightMissPercentage =
+        ((puttInLongRightMissCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongWellPercentage =
+        ((puttInLongWellCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongShortPercentage =
+        ((puttInLongShortCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongLongPercentage =
+        ((puttInLongLongCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongTwoPutPercentage =
+        ((puttInLongTwoPuttCount / puttInLongCount) * 100).toStringAsFixed(1);
 
     //パーオン分析
     int parOnCount = 0;
     int parOnUnder50Count = 0;
-    int parOnUder50OnGreenCount = 0;
+    int parOnUnder50OnGreenCount = 0;
     int parOnUnder100Count = 0;
     int parOnUnder100OnGreenCount = 0;
     int parOnUnder150Count = 0;
@@ -442,31 +544,140 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     for (int i = 1; i <= 18; i++) {
       int stroke = int.parse(scorecard['hole$i']?['stroke']);
       int putt = int.parse(scorecard['hole$i']?['putt']);
-      if (stroke - putt <= course.parValues[i - 1] - 2) {
-        parOnCount += 1;
-        if (scorecard['hole$i']?['parOnShotDistance'] != null &&
-            scorecard['hole$i']?['parOnShotDistance'].isNotEmpty) {
-          int parOnShotDistance =
-              int.parse(scorecard['hole$i']?['parOnShotDistance']);
+      bool parOn = stroke - putt <= course.parValues[i - 1] - 2;
 
-          if (parOnShotDistance < 50) {
-            parOnUnder50Count += 1;
+      if (parOn) {
+        parOnCount += 1;
+      }
+
+      if (scorecard['hole$i']?['parOnShotDistance'] != null &&
+          scorecard['hole$i']?['parOnShotDistance'].isNotEmpty) {
+        int parOnShotDistance =
+            int.parse(scorecard['hole$i']?['parOnShotDistance']);
+
+        if (parOnShotDistance < 50) {
+          parOnUnder50Count += 1;
+          if (parOn) {
+            parOnUnder50OnGreenCount += 1;
           }
-          if (parOnShotDistance >= 50 && parOnShotDistance < 100) {
-            parOnUnder100Count += 1;
+        }
+        if (parOnShotDistance >= 50 && parOnShotDistance < 100) {
+          parOnUnder100Count += 1;
+          if (parOn) {
+            parOnUnder100OnGreenCount += 1;
           }
-          if (parOnShotDistance >= 100 && parOnShotDistance < 150) {
-            parOnUnder150Count += 1;
+        }
+        if (parOnShotDistance >= 100 && parOnShotDistance < 150) {
+          parOnUnder150Count += 1;
+          if (parOn) {
+            parOnUnder150OnGreenCount += 1;
           }
-          if (parOnShotDistance >= 150 && parOnShotDistance < 200) {
-            parOnUnder200Count += 1;
+        }
+        if (parOnShotDistance >= 150 && parOnShotDistance < 200) {
+          parOnUnder200Count += 1;
+          if (parOn) {
+            parOnUnder200OnGreenCount += 1;
           }
-          if (parOnShotDistance >= 200) {
-            parOnOver200Count += 1;
+        }
+        if (parOnShotDistance >= 200) {
+          parOnOver200Count += 1;
+          if (parOn) {
+            parOnOver200OnGreenCount += 1;
           }
         }
       }
     }
+
+    // par on shot club 分析
+    int parOnShotClubCount =
+        parOnShotClub.where((shot) => shot.isNotEmpty).length;
+    int parOnWoodTryCount =
+        parOnShotClub.where((shot) => shot == 'wood').length +
+            teeShotClub.where((shot) => shot == 'wood').length;
+    int parOnUtTryCount = parOnShotClub.where((shot) => shot == 'ut').length +
+        teeShotClub.where((shot) => shot == 'ut').length;
+    int parOnLongIronTryCount =
+        parOnShotClub.where((shot) => shot == 'longiron').length +
+            teeShotClub.where((shot) => shot == 'longiron').length;
+    int parOnMiddleIronTryCount =
+        parOnShotClub.where((shot) => shot == 'middleiron').length +
+            teeShotClub.where((shot) => shot == 'middleiron').length;
+    int parOnShortIronTryCount =
+        parOnShotClub.where((shot) => shot == 'shortiron').length +
+            teeShotClub.where((shot) => shot == 'shortiron').length;
+    int parOnWedgeTryCount =
+        parOnShotClub.where((shot) => shot == 'wedge').length +
+            teeShotClub.where((shot) => shot == 'wedge').length;
+
+    int parOnWoodCount = 0;
+    int parOnUtCount = 0;
+    int parOnLongIronCount = 0;
+    int parOnMiddleIronCount = 0;
+    int parOnShortIronCount = 0;
+    int parOnWedgeCount = 0;
+
+    for (int i = 1; i <= 18; i++) {
+      bool parOn = int.parse(scorecard['hole$i']?['stroke']) -
+              int.parse(scorecard['hole$i']?['putt']) <=
+          course.parValues[i - 1] - 2;
+      bool parThree = course.parValues[i - 1] == 3;
+      if (parOn) {
+        if (scorecard['hole$i']?['parOnShotClub'] == 'wood') {
+          parOnWoodCount += 1;
+        }
+        if (scorecard['hole$i']?['parOnShotClub'] == 'ut') {
+          parOnUtCount += 1;
+        }
+        if (scorecard['hole$i']?['parOnShotClub'] == 'longiron') {
+          parOnLongIronCount += 1;
+        }
+        if (scorecard['hole$i']?['parOnShotClub'] == 'middleiron') {
+          parOnMiddleIronCount += 1;
+        }
+        if (scorecard['hole$i']?['parOnShotClub'] == 'shortiron') {
+          parOnShortIronCount += 1;
+        }
+        if (scorecard['hole$i']?['parOnShotClub'] == 'wedge') {
+          parOnWedgeCount += 1;
+        }
+        if (parThree) {
+          if (scorecard['hole$i']?['teeShotClub'] == 'wood') {
+            parOnWoodCount += 1;
+          }
+          if (scorecard['hole$i']?['teeShotClub'] == 'ut') {
+            parOnUtCount += 1;
+          }
+          if (scorecard['hole$i']?['teeShotClub'] == 'longiron') {
+            parOnLongIronCount += 1;
+          }
+          if (scorecard['hole$i']?['teeShotClub'] == 'middleiron') {
+            parOnMiddleIronCount += 1;
+          }
+          if (scorecard['hole$i']?['teeShotClub'] == 'shortiron') {
+            parOnShortIronCount += 1;
+          }
+          if (scorecard['hole$i']?['teeShotClub'] == 'wedge') {
+            parOnWedgeCount += 1;
+          }
+        }
+      }
+    }
+
+    String parOnWoodPercentage =
+        ((parOnWoodCount / parOnWoodTryCount) * 100).toStringAsFixed(1);
+    String parOnUtPercentage =
+        ((parOnUtCount / parOnUtTryCount) * 100).toStringAsFixed(1);
+    String parOnLongIronPercentage =
+        ((parOnLongIronCount / parOnLongIronTryCount) * 100).toStringAsFixed(1);
+    String parOnMiddleIronPercentage =
+        ((parOnMiddleIronCount / parOnMiddleIronTryCount) * 100)
+            .toStringAsFixed(1);
+    String parOnShortIronPercentage =
+        ((parOnShortIronCount / parOnShortIronTryCount) * 100)
+            .toStringAsFixed(1);
+    String parOnWedgePercentage =
+        ((parOnWedgeCount / parOnWedgeTryCount) * 100).toStringAsFixed(1);
+
     // アプローチ分析
     int approachCount = 0;
     int approachParSaveCount = 0;
@@ -474,14 +685,13 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     for (int i = 1; i <= 18; i++) {
       int stroke = int.parse(scorecard['hole$i']?['stroke']);
       int putt = int.parse(scorecard['hole$i']?['putt']);
-      if (!guardBunker[i - 1]) if (putt == 1) {
-        approachCount += 1;
+      if (putt == 1) {
         if (stroke == course.parValues[i - 1]) {
+          approachCount += 1;
           approachParSaveCount += 1;
         }
       }
       if (putt == 0) {
-        approachCount += 1;
         approachChipInCount += 1;
       }
     }
@@ -492,7 +702,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
       int stroke = int.parse(scorecard['hole$i']?['stroke']);
       if (guardBunker[i - 1]) {
         bunkerCount += 1;
-        if (stroke == course.parValues[i - 1]) {
+        if (stroke <= course.parValues[i - 1]) {
           bunkerParSaveCount += 1;
         }
       }
@@ -1063,228 +1273,518 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      ListTile(
-                        tileColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        title: const Text(
-                          "ダブルボギー以上の数:",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        trailing: Text(
-                          "$overBogeyCount",
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 20),
-                        ),
+                      ScoreCardDataTile(
+                        title: "ダブルボギー以上の数",
+                        data: overBogeyCount.toString(),
                       ),
-                      Text("ダブルボギー以上の数: $overBogeyCount"),
-                      Text("ボギーの数: $bogeyCount"),
-                      Text("パーの数: $parCount"),
-                      Text("バーディの数: $birdieCount"),
-                      Text("イーグル以下の数: $underBirdieCount"),
-                      Text("Par3平均スコア: $par3AverageScore"),
-                      Text("Par4平均スコア: $par4AverageScore"),
-                      Text("Par5平均スコア: $par5AverageScore"),
+                      ScoreCardDataTile(
+                        title: "ボギーの数",
+                        data: bogeyCount.toString(),
+                      ),
+                      ScoreCardDataTile(
+                        title: "パーの数",
+                        data: parCount.toString(),
+                      ),
+                      ScoreCardDataTile(
+                        title: "バーディの数",
+                        data: birdieCount.toString(),
+                      ),
+                      ScoreCardDataTile(
+                        title: "イーグル以下の数",
+                        data: underBirdieCount.toString(),
+                      ),
+                      ScoreCardDataTile(
+                        title: "Par3平均スコア",
+                        data: par3AverageScore.toString(),
+                      ),
+                      ScoreCardDataTile(
+                        title: "Par4平均スコア",
+                        data: par4AverageScore.toString(),
+                      ),
+                      ScoreCardDataTile(
+                        title: "Par5平均スコア",
+                        data: par5AverageScore.toString(),
+                      ),
                       const Gap(20),
                       const Text(
                         "ティーショット分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                          "フェアウェイキープ: $teeShotFairwayCount / $teeShotResultCount"),
-                      Text("フェアウェイキープ率: $teeShotFairwayPercentage%"),
-                      Text(
-                          "フェアウェイより左に外れた数: $teeShotLeftCount / $teeShotResultCount"),
-                      Text("フェアウェイより左に外れる確率: $teeShotLeftPercentage%"),
-                      Text(
-                          "フェアウェイより右に外れた数: $teeShotRightCount / $teeShotResultCount"),
-                      Text("フェアウェイより右に外れる確率: $teeShotRightPercentage%"),
-                      Text(
-                          "ティーショットクリティカルミス: $teeShotCriticalMissCount / $teeShotResultCount"),
-                      Text("ティーショットクリティカルミス率: $teeShotCriticalMissPercentage%"),
+                      ScoreCardDataTile(
+                        title: "フェアウェイキープ",
+                        data: "$teeShotFairwayCount / $teeShotResultCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "フェアウェイキープ率",
+                        data: "$teeShotFairwayPercentage%",
+                      ),
+                      ScoreCardDataTile(
+                        title: "フェアウェイより左に外れた数",
+                        data: "$teeShotLeftCount / $teeShotResultCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "フェアウェイより左に外れる確率",
+                        data: "$teeShotLeftPercentage%",
+                      ),
+                      ScoreCardDataTile(
+                        title: "フェアウェイより右に外れた数",
+                        data: "$teeShotRightCount / $teeShotResultCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "フェアウェイより右に外れる確率",
+                        data: "$teeShotRightPercentage%",
+                      ),
+                      ScoreCardDataTile(
+                        title: "ティーショットクリティカルミス",
+                        data: "$teeShotCriticalMissCount / $teeShotResultCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "ティーショットクリティカルミス率",
+                        data: "$teeShotCriticalMissPercentage%",
+                      ),
                       const Gap(20),
+                      const Text(
+                        "クラブ別FWキープ率",
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                      ),
+                      ScoreCardDataTile(
+                        title: "Driver のFwキープ数",
+                        data: "$teeShotDriverFwCount / $teeShotDriverCount",
+                      ),
+                      ScoreCardDataTile(
+                          title: "DriverのFwキープ率",
+                          data: "$teeShotDriverFwPercentage%"),
+                      ScoreCardDataTile(
+                        title: "WoodのFwキープ数",
+                        data: "$teeShotWoodCount / $teeShotWoodCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "WoodのFwキープ率",
+                        data: "$teeShotWoodFwPercentage%",
+                      ),
+                      ScoreCardDataTile(
+                        title: "UTのFwキープ数",
+                        data: "$teeShotUtCount / $teeShotUtCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "UTのFwキープ率",
+                        data: "$teeShotUtFwPercentage%",
+                      ),
+                      ScoreCardDataTile(
+                        title: "IronのFwキープ数",
+                        data: "$teeShotIronCount / $teeShotIronCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "IronのFwキープ率",
+                        data: "$teeShotIronFwPercentage%",
+                      ),
+                      const Gap(20),
+                      const Text(
+                        "Par3 ティーショット分析",
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                      ),
+                      const Gap(20),
+                      ScoreCardDataTile(
+                        title: "グリーン乗せ成功数",
+                        data:
+                            "$parThreeTeeShotGreenOnCount / $parThreeTeeShotCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "グリーン乗せ成功率",
+                        data: "$parThreeTeeShotGreenOnPercentage%",
+                      ),
+                      ScoreCardDataTile(
+                        title: "グリーン左外し",
+                        data:
+                            "$parThreeTeeShotGreenLeftCount / $parThreeTeeShotCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "グリーン左外し率",
+                        data: "$parThreeTeeShotGreenLeftPercentage%",
+                      ),
+                      ScoreCardDataTile(
+                        title: "グリーン右外し",
+                        data:
+                            "$parThreeTeeShotGreenRightCount / $parThreeTeeShotCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "グリーン右外し率",
+                        data: "$parThreeTeeShotGreenRightPercentage%",
+                      ),
+                      ScoreCardDataTile(
+                        title: "グリーンショート",
+                        data:
+                            "$parThreeTeeShotGreenShortCount / $parThreeTeeShotCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "グリーンショート率",
+                        data: "$parThreeTeeShotGreenShortPercentage%",
+                      ),
+                      ScoreCardDataTile(
+                        title: "グリーンオーバー",
+                        data:
+                            "$parThreeTeeShotGreenOverCount / $parThreeTeeShotCount",
+                      ),
+                      ScoreCardDataTile(
+                        title: "グリーンオーバー率",
+                        data: "$parThreeTeeShotGreenOverPercentage%",
+                      ),
                       const Text(
                         "パーオン分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text("パーオン $parOnCount / 18ホール"),
-                      Text("パーオン率: ${parOnCount / 18 * 100}%"),
+                      ScoreCardDataTile(
+                          title: "パーオン", data: "$parOnCount / 18ホール"),
+                      ScoreCardDataTile(
+                          title: "パーオン率", data: "${parOnCount / 18 * 100}%"),
                       const Gap(20),
                       const Text(
                         "パーオン距離別分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                          "50ヤード以内パーオン数: $parOnUder50OnGreenCount / $parOnUnder50Count"),
-                      Text(
-                          "50ヤード以内パーオン率: ${parOnUder50OnGreenCount / parOnUnder50Count * 100}%"),
-                      Text(
-                          "100ヤード以内パーオン数: $parOnUnder100OnGreenCount / $parOnUnder100Count"),
-                      Text(
-                          "100ヤード以内パーオン率: ${parOnUnder100OnGreenCount / parOnUnder100Count * 100}%"),
-                      Text(
-                          "150ヤード以内パーオン数: $parOnUnder150OnGreenCount / $parOnUnder150Count"),
-                      Text(
-                          "150ヤード以内パーオン率: ${parOnUnder150OnGreenCount / parOnUnder150Count * 100}%"),
-                      Text(
-                          "200ヤード以内パーオン数: $parOnUnder200OnGreenCount / $parOnUnder200Count"),
-                      Text(
-                          "200ヤード以内パーオン率: ${parOnUnder200OnGreenCount / parOnUnder200Count * 100}%"),
-                      Text(
-                          "200ヤード以上パーオン数: $parOnOver200OnGreenCount / $parOnOver200Count"),
-                      Text(
-                          "200ヤード以上パーオン率: ${parOnOver200OnGreenCount / parOnOver200Count * 100}%"),
+                      ScoreCardDataTile(
+                          title: "50ヤード以内パーオン数",
+                          data:
+                              "$parOnUnder50OnGreenCount / $parOnUnder50Count"),
+                      ScoreCardDataTile(
+                          title: "50ヤード以内パーオン率",
+                          data:
+                              "${parOnUnder50OnGreenCount / parOnUnder50Count * 100}%"),
+                      ScoreCardDataTile(
+                          title: "100ヤード以内パーオン数",
+                          data:
+                              "$parOnUnder100OnGreenCount / $parOnUnder100Count"),
+                      ScoreCardDataTile(
+                          title: "100ヤード以内パーオン率",
+                          data:
+                              "${parOnUnder100OnGreenCount / parOnUnder100Count * 100}%"),
+                      ScoreCardDataTile(
+                          title: "150ヤード以内パーオン数",
+                          data:
+                              "$parOnUnder150OnGreenCount / $parOnUnder150Count"),
+                      ScoreCardDataTile(
+                          title: "150ヤード以内パーオン率",
+                          data:
+                              "${parOnUnder150OnGreenCount / parOnUnder150Count * 100}%"),
+                      ScoreCardDataTile(
+                        title: "200ヤード以内パーオン数",
+                        data:
+                            "$parOnUnder200OnGreenCount / $parOnUnder200Count",
+                      ),
+                      ScoreCardDataTile(
+                        title: "200ヤード以内パーオン率",
+                        data:
+                            "${parOnUnder200OnGreenCount / parOnUnder200Count * 100}%",
+                      ),
+                      ScoreCardDataTile(
+                        title: "200ヤード以上パーオン数",
+                        data: "$parOnOver200OnGreenCount / $parOnOver200Count",
+                      ),
+                      ScoreCardDataTile(
+                        title: "200ヤード以上パーオン率",
+                        data:
+                            "${parOnOver200OnGreenCount / parOnOver200Count * 100}%",
+                      ),
                       const Gap(20),
                       const Text(
-                        "パット分析",
+                        "パーオンクラブ別分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text("カップイン数: $puttNoMissCount / $puttMissedCount"),
-                      Text(
-                        "カップイン:$puttNoMissPercentage%",
+                      ScoreCardDataTile(
+                          title: "woodパーオン数",
+                          data: "$parOnWoodCount / $parOnWoodTryCount"),
+                      ScoreCardDataTile(
+                          title: "woodパーオン率", data: "$parOnWoodPercentage%"),
+                      ScoreCardDataTile(
+                          title: "UTパーオン数",
+                          data: "$parOnUtCount / $parOnUtTryCount"),
+                      ScoreCardDataTile(
+                          title: "UTパーオン率", data: "$parOnUtPercentage%"),
+                      ScoreCardDataTile(
+                          title: "LongIronパーオン数",
+                          data: "$parOnLongIronCount / $parOnLongIronTryCount"),
+                      ScoreCardDataTile(
+                          title: "LongIronパーオン率",
+                          data: "$parOnLongIronPercentage%"),
+                      ScoreCardDataTile(
+                          title: "MiddleIronパーオン数",
+                          data:
+                              "$parOnMiddleIronCount / $parOnMiddleIronTryCount"),
+                      ScoreCardDataTile(
+                          title: "MiddleIronパーオン率",
+                          data: "$parOnMiddleIronPercentage%"),
+                      ScoreCardDataTile(
+                          title: "ShortIronパーオン数",
+                          data:
+                              "$parOnShortIronCount / $parOnShortIronTryCount"),
+                      ScoreCardDataTile(
+                          title: "ShortIronパーオン率",
+                          data: "$parOnShortIronPercentage%"),
+                      ScoreCardDataTile(
+                          title: "Wedgeパーオン数",
+                          data: "$parOnWedgeCount / $parOnWedgeTryCount"),
+                      ScoreCardDataTile(
+                          title: "Wedgeパーオン率", data: "$parOnWedgePercentage%"),
+                      const Gap(20),
+                      const Text(
+                        "パットミス傾向分析",
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text("左外し数: $puttLeftCount / $puttMissedCount"),
-                      Text("左外し率:$puttLeftPercentage%"),
-                      Text("右外し数: $puttRightCount / $puttMissedCount"),
-                      Text("右外し率:$puttRightPercentage%"),
+                      ScoreCardDataTile(
+                          title: "カップイン数",
+                          data: "$puttNoMissCount / $puttMissedCount"),
+                      ScoreCardDataTile(
+                          title: "カップイン率", data: "$puttNoMissPercentage%"),
+                      ScoreCardDataTile(
+                          title: "左外し数",
+                          data: "$puttLeftCount / $puttMissedCount"),
+                      ScoreCardDataTile(
+                          title: "左外し率", data: "$puttLeftPercentage%"),
+                      ScoreCardDataTile(
+                          title: "右外し数",
+                          data: "$puttRightCount / $puttMissedCount"),
+                      ScoreCardDataTile(
+                          title: "右外し率", data: "$puttRightPercentage%"),
                       const Gap(20),
                       const Text(
                         "パット距離分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                          "1m以内寄せ数: $puttDistancePinCount / $puttDistanceCount"),
-                      Text("1m以内寄せ率: $puttDistancePinPercentage%"),
-                      Text(
-                          "ショート数: $puttDistanceShortCount / $puttDistanceCount"),
-                      Text("ショート率: $puttDistanceShortPercentage%"),
-                      Text("ロング数: $puttDistanceLongCount / $puttDistanceCount"),
-                      Text("ロング率: $puttDistanceLongPercentage%"),
+                      ScoreCardDataTile(
+                          title: "1m以内寄せ数",
+                          data: "$puttDistancePinCount / $puttDistanceCount"),
+                      ScoreCardDataTile(
+                          title: "1m以内寄せ率",
+                          data: "$puttDistancePinPercentage%"),
+                      ScoreCardDataTile(
+                          title: "ショート数",
+                          data: "$puttDistanceShortCount / $puttDistanceCount"),
+                      ScoreCardDataTile(
+                          title: "ショート率",
+                          data: "$puttDistanceShortPercentage%"),
+                      ScoreCardDataTile(
+                          title: "ロング数",
+                          data: "$puttDistanceLongCount / $puttDistanceCount"),
+                      ScoreCardDataTile(
+                          title: "ロング率", data: "$puttDistanceLongPercentage%"),
                       const Gap(20),
                       const Text(
                         "2.5m以内パット分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text("カップイン数: $puttInAPinCupInCount / $puttInAPinCount"),
-                      Text("カップイン率: $puttInAPinCupInPercentage%"),
-                      Text("左外し数: $puttInAPinLeftMissCount / $puttInAPinCount"),
-                      Text("左外し率: $puttInAPinLeftMissPercentage%"),
-                      Text(
-                          "右外し数: $puttInAPinRightMissCount / $puttInAPinCount"),
-                      Text("右外し率: $puttInAPinRightMissPercentage%"),
+                      ScoreCardDataTile(
+                          title: "カップイン数",
+                          data: "$puttInAPinCupInCount / $puttInAPinCount"),
+                      ScoreCardDataTile(
+                          title: "カップイン率", data: "$puttInAPinCupInPercentage%"),
+                      ScoreCardDataTile(
+                          title: "左外し数",
+                          data: "$puttInAPinLeftMissCount / $puttInAPinCount"),
+                      ScoreCardDataTile(
+                          title: "左外し率",
+                          data: "$puttInAPinLeftMissPercentage%"),
+                      ScoreCardDataTile(
+                          title: "右外し数",
+                          data: "$puttInAPinRightMissCount / $puttInAPinCount"),
+                      ScoreCardDataTile(
+                          title: "右外し率",
+                          data: "$puttInAPinRightMissPercentage%"),
                       const Gap(20),
                       const Text(
                         "5m以内パット分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                          "カップイン数: $puttInShortCupInCount / $puttInShortCount"),
-                      Text("カップイン率: $puttInShortCupInPercentage%"),
-                      Text(
-                          "左外し数: $puttInShortLeftMissCount / $puttInShortCount"),
-                      Text("左外し率: $puttInShortLeftMissPercentage%"),
-                      Text(
-                          "右外し数: $puttInShortRightMissCount / $puttInShortCount"),
-                      Text("右外し率: $puttInShortRightMissPercentage%"),
+                      ScoreCardDataTile(
+                          title: "カップイン数",
+                          data: "$puttInShortCupInCount / $puttInShortCount"),
+                      ScoreCardDataTile(
+                          title: "カップイン率",
+                          data: "$puttInShortCupInPercentage%"),
+                      ScoreCardDataTile(
+                          title: "左外し数",
+                          data:
+                              "$puttInShortLeftMissCount / $puttInShortCount"),
+                      ScoreCardDataTile(
+                          title: "左外し率",
+                          data: "$puttInShortLeftMissPercentage%"),
+                      ScoreCardDataTile(
+                          title: "右外し数",
+                          data:
+                              "$puttInShortRightMissCount / $puttInShortCount"),
+                      ScoreCardDataTile(
+                          title: "右外し率",
+                          data: "$puttInShortRightMissPercentage%"),
                       const Gap(20),
                       const Text(
                         "10m以内パット分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                          "カップイン数: $puttInMiddleCupInCount / $puttInMiddleCount"),
-                      Text("カップイン率: $puttInMiddleCupInPercentage%"),
-                      Text(
-                          "左外し数: $puttInMiddleLeftMissCount / $puttInMiddleCount"),
-                      Text("左外し率: $puttInMiddleLeftMissPercentage%"),
-                      Text(
-                          "右外し数: $puttInMiddleRightMissCount / $puttInMiddleCount"),
-                      Text("右外し率: $puttInMiddleRightMissPercentage%"),
-                      Text(
-                          "1m以内寄せ数: $puttInMiddleWellCount / $puttInMiddleCount"),
-                      Text("1m以内寄せ率: $puttInMiddleWellPercentage%"),
-                      Text(
-                          "ショート数: $puttInMiddleShortCount / $puttInMiddleCount"),
-                      Text("ショート率: $puttInMiddleShortPercentage%"),
-                      Text("ロング数: $puttInMiddleLongCount / $puttInMiddleCount"),
-                      Text("ロング率: $puttInMiddleLongPercentage%"),
-                      Text(
-                          "2パット以下数: $puttInMiddleTwoPuttCount / $puttInMiddleCount"),
-                      Text("2パット以下率: $puttInMiddleTwoPutPercentage%"),
+                      ScoreCardDataTile(
+                          title: "カップイン数",
+                          data: "$puttInMiddleCupInCount / $puttInMiddleCount"),
+                      ScoreCardDataTile(
+                          title: "カップイン率",
+                          data: "$puttInMiddleCupInPercentage%"),
+                      ScoreCardDataTile(
+                          title: "左外し数",
+                          data:
+                              "$puttInMiddleLeftMissCount / $puttInMiddleCount"),
+                      ScoreCardDataTile(
+                          title: "左外し率",
+                          data: "$puttInMiddleLeftMissPercentage%"),
+                      ScoreCardDataTile(
+                          title: "右外し数",
+                          data:
+                              "$puttInMiddleRightMissCount / $puttInMiddleCount"),
+                      ScoreCardDataTile(
+                          title: "右外し率",
+                          data: "$puttInMiddleRightMissPercentage%"),
+                      ScoreCardDataTile(
+                          title: "1m以内寄せ数",
+                          data: "$puttInMiddleWellCount / $puttInMiddleCount"),
+                      ScoreCardDataTile(
+                          title: "1m以内寄せ率",
+                          data: "$puttInMiddleWellPercentage%"),
+                      ScoreCardDataTile(
+                          title: "ショート数",
+                          data: "$puttInMiddleShortCount / $puttInMiddleCount"),
+                      ScoreCardDataTile(
+                          title: "ショート率",
+                          data: "$puttInMiddleShortPercentage%"),
+                      ScoreCardDataTile(
+                          title: "ロング数",
+                          data: "$puttInMiddleLongCount / $puttInMiddleCount"),
+                      ScoreCardDataTile(
+                          title: "ロング率", data: "$puttInMiddleLongPercentage%"),
+                      ScoreCardDataTile(
+                          title: "2パット以下数",
+                          data:
+                              "$puttInMiddleTwoPuttCount / $puttInMiddleCount"),
+                      ScoreCardDataTile(
+                          title: "2パット以下率",
+                          data: "$puttInMiddleTwoPutPercentage%"),
                       const Gap(20),
                       const Text(
                         "10m以上パット分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text("カップイン数: $puttInLongCupInCount / $puttInLongCount"),
-                      Text("カップイン率: $puttInLongCupInPercentage%"),
-                      Text("左外し数: $puttInLongLeftMissCount / $puttInLongCount"),
-                      Text("左外し率: $puttInLongLeftMissPercentage%"),
-                      Text(
-                          "右外し数: $puttInLongRightMissCount / $puttInLongCount"),
-                      Text("右外し率: $puttInLongRightMissPercentage%"),
-                      Text("1m以内寄せ数: $puttInLongWellCount / $puttInLongCount"),
-                      Text("1m以内寄せ率: $puttInLongWellPercentage%"),
-                      Text("ショート数: $puttInLongShortCount / $puttInLongCount"),
-                      Text("ショート率: $puttInLongShortPercentage%"),
-                      Text("ロング数: $puttInLongLongCount / $puttInLongCount"),
-                      Text("ロング率: $puttInLongLongPercentage%"),
-                      Text(
-                          "2パット以下: $puttInLongTwoPuttCount / $puttInLongCount"),
-                      Text("2パット以下率: $puttInLongTwoPutPercentage%"),
+                      ScoreCardDataTile(
+                          title: "カップイン数",
+                          data: "$puttInLongCupInCount / $puttInLongCount"),
+                      ScoreCardDataTile(
+                          title: "カップイン率", data: "$puttInLongCupInPercentage%"),
+                      ScoreCardDataTile(
+                          title: "左外し数",
+                          data: "$puttInLongLeftMissCount / $puttInLongCount"),
+                      ScoreCardDataTile(
+                          title: "左外し率",
+                          data: "$puttInLongLeftMissPercentage%"),
+                      ScoreCardDataTile(
+                          title: "右外し数",
+                          data: "$puttInLongRightMissCount / $puttInLongCount"),
+                      ScoreCardDataTile(
+                          title: "右外し率",
+                          data: "$puttInLongRightMissPercentage%"),
+                      ScoreCardDataTile(
+                          title: "1m以内寄せ数",
+                          data: "$puttInLongWellCount / $puttInLongCount"),
+                      ScoreCardDataTile(
+                          title: "1m以内寄せ率", data: "$puttInLongWellPercentage%"),
+                      ScoreCardDataTile(
+                          title: "ショート数",
+                          data: "$puttInLongShortCount / $puttInLongCount"),
+                      ScoreCardDataTile(
+                          title: "ショート率", data: "$puttInLongShortPercentage%"),
+                      ScoreCardDataTile(
+                          title: "ロング数",
+                          data: "$puttInLongLongCount / $puttInLongCount"),
+                      ScoreCardDataTile(
+                          title: "ロング率", data: "$puttInLongLongPercentage%"),
+                      ScoreCardDataTile(
+                          title: "2パット以下",
+                          data: "$puttInLongTwoPuttCount / $puttInLongCount"),
+                      ScoreCardDataTile(
+                          title: "2パット以下率",
+                          data: "$puttInLongTwoPutPercentage%"),
                       const Gap(20),
                       const Text(
                         "アプローチ分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text("アプローチセーブ数: $approachParSaveCount / $approachCount"),
-                      Text(
-                          "アプローチセーブ率: ${approachParSaveCount / approachCount * 100}%"),
-                      Text("チップイン数: $approachChipInCount / $approachCount"),
-                      Text(
-                          "チップイン率: ${approachChipInCount / approachCount * 100}%"),
+                      ScoreCardDataTile(
+                          title: "パーセーブ数",
+                          data: "$approachParSaveCount / $approachCount"),
+                      ScoreCardDataTile(
+                          title: "パーセーブ率",
+                          data:
+                              "${approachParSaveCount / approachCount * 100}%"),
+                      ScoreCardDataTile(
+                          title: "チップイン数", data: "$approachChipInCount"),
                       const Gap(20),
                       const Text(
                         "バンカー分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text("バンカーセーブ数: $bunkerParSaveCount / $bunkerCount"),
-                      Text(
-                          "バンカーセーブ率: ${bunkerParSaveCount / bunkerCount * 100}%"),
+                      ScoreCardDataTile(
+                          title: "バンカーセーブ数",
+                          data: "$bunkerParSaveCount / $bunkerCount"),
+                      ScoreCardDataTile(
+                          title: "バンカーセーブ率",
+                          data: "${bunkerParSaveCount / bunkerCount * 100}%"),
                       const Gap(20),
                       const Text(
                         "バーディーチャンス分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text("バーディチャンス $birdieChanceCount / 18ホール(5m以内バーディパット)"),
-                      Text("バーディチャンス率: ${birdieChanceCount / 18 * 100}%"),
-                      Text(
-                          "バーディチャンス時ホールイン数: $birdieChanceHoleInCount / $birdieChanceCount"),
-                      Text(
-                          "バーディチャンス成功率: ${birdieChanceHoleInCount / birdieChanceCount * 100}%"),
+                      const Text(
+                        "*Par5での2onによるバーディチャンスは除外",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w400),
+                      ),
+                      const Gap(10),
+                      ScoreCardDataTile(
+                          title: "バーディチャンス",
+                          subtitle: "(5m以内バーディパット)",
+                          data: "$birdieChanceCount"),
+                      ScoreCardDataTile(
+                          title: "バーディチャンス時ホールイン数",
+                          data:
+                              "$birdieChanceHoleInCount / $birdieChanceCount"),
+                      ScoreCardDataTile(
+                          title: "バーディチャンス成功率",
+                          data:
+                              "${birdieChanceHoleInCount / birdieChanceCount * 100}%"),
                       const Text(
                         "ミス分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                          "100ヤード以内でグリーンを外した数: ${parOnUnder50Count + parOnUnder100Count - parOnUder50OnGreenCount - parOnUnder100OnGreenCount}"),
-                      Text("3パット以上した数: $puttOverThreePutt"),
-                      Text("グリーンサイドバンカーに入れた数: $bunkerCount"),
-                      Text("OBした数: $obCount"),
-                      Text("池に入れた数: $hazardCount"),
+                      ScoreCardDataTile(
+                          title: "100ヤード以内でグリーンを外した数",
+                          data:
+                              "${parOnUnder50Count + parOnUnder100Count - parOnUnder50OnGreenCount - parOnUnder100OnGreenCount}"),
+                      ScoreCardDataTile(
+                          title: "3パット以上した数", data: "$puttOverThreePutt"),
+                      ScoreCardDataTile(
+                          title: "グリーンサイドバンカーに入れた数", data: "$bunkerCount"),
+                      ScoreCardDataTile(title: "OBした数", data: "$obCount"),
+                      ScoreCardDataTile(title: "池に入れた数", data: "$hazardCount"),
+                      ScoreCardDataTile(title: "ペナルティ数", data: "$penaltyCount"),
                     ],
                   ),
                 ),
