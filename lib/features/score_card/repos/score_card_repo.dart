@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
+import 'package:golfbu_kun/features/score_card/models/score_card_data_model.dart';
 import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
 
 class ScoreCardRepository {
@@ -25,13 +26,23 @@ class ScoreCardRepository {
       {required ScoreCardcourseModel course}) async {
     final universityId = _authRepo.user!.displayName;
     final courseJson = course.toJson();
-    print(courseJson);
     await _db
         .collection("university")
         .doc(universityId)
         .collection("courses")
         .add(courseJson);
   }
+
+  Future<void> uploadScoreCard(
+      {required ScoreCardDataModel scoreCardData}) async {
+    final universityId = _authRepo.user!.displayName;
+    final scoreCardJson = scoreCardData.toJson();
+    await _db
+        .collection("university")
+        .doc(universityId)
+        .collection("scorecards")
+        .add(scoreCardJson);
+  }
 }
 
-final scoreCardProvider = Provider((ref) => ScoreCardRepository());
+final scoreCardRepo = Provider((ref) => ScoreCardRepository());

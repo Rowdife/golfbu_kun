@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/authentication/vms/delete_account_vm.dart';
+import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
   static const routeName = "Setting";
@@ -29,8 +30,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
             child: const Text("いいえ"),
           ),
           CupertinoActionSheetAction(
-            onPressed: () => {
-              ref.read(authRepo).signOut(),
+            onPressed: () async => {
+              await ref.read(authRepo).signOut(),
+              ref.read(profileProvider.notifier).resetProfile(),
               context.go("/"),
             },
             isDestructiveAction: true,
@@ -46,7 +48,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
       context: context,
       builder: (context) => CupertinoActionSheet(
         title: const Text(
-          "本当にアカウントを削除してよろしいですか？",
+          "本当にアカウントを削除してよろしいですか？\n 今までアップロードしたデータは全て削除されます。",
           style: TextStyle(color: Colors.black),
         ),
         actions: [

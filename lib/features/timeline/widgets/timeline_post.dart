@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,19 +34,9 @@ class TimelinePost extends ConsumerStatefulWidget {
 class _TimelinePostState extends ConsumerState<TimelinePost>
     with SingleTickerProviderStateMixin {
   late VideoPlayerController _videoPlayerController;
+  late ChewieController _chewieController;
 
   bool _isPlaying = false;
-
-  void _initVideoPlayer() async {
-    try {
-      _videoPlayerController =
-          VideoPlayerController.network(widget.videoData.fileUrl);
-      await _videoPlayerController.initialize();
-      setState(() {});
-    } on PlatformException catch (e) {
-      print('動画読み込みに失敗しました: ${e.message}');
-    }
-  }
 
   void _onTogglePlay() {
     if (_videoPlayerController.value.isPlaying) {
@@ -80,12 +71,20 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
   @override
   void initState() {
     super.initState();
-    _initVideoPlayer();
+    _videoPlayerController =
+        VideoPlayerController.network(widget.videoData.fileUrl);
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController,
+      aspectRatio: 9 / 16,
+      allowFullScreen: true,
+      autoInitialize: true,
+    );
   }
 
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _chewieController.dispose();
     super.dispose();
   }
 
@@ -175,34 +174,13 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
               ),
               const Gap(10),
               Container(
-                height: size.height * 0.6,
-                width: size.width * 0.9,
+                height: size.height * 0.65,
+                width: size.width * 0.8,
                 color: Colors.grey.shade900,
                 child: Stack(
                   children: [
-                    VideoPlayer(_videoPlayerController),
-                    Positioned(
-                      child: Container(
-                        padding: const EdgeInsets.only(top: 40),
-                        child: _isPlaying
-                            ? null
-                            : const Align(
-                                alignment: Alignment.topCenter,
-                                child: FaIcon(
-                                  FontAwesomeIcons.play,
-                                  color: Colors.white,
-                                ),
-                              ),
-                      ),
-                    ),
-                    Positioned(
-                      child: GestureDetector(
-                        onTap: _onTogglePlay,
-                        child: Container(
-                          decoration:
-                              const BoxDecoration(color: Colors.transparent),
-                        ),
-                      ),
+                    Chewie(
+                      controller: _chewieController,
                     ),
                   ],
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 import 'package:golfbu_kun/features/schedule_management/models/calendar_event_model.dart';
@@ -23,7 +24,7 @@ class _ScheduleUploadFormState extends ConsumerState<ScheduleUploadForm> {
   final _formKey = GlobalKey<FormState>();
 
   String _scheduleName = "";
-  String? _description = "";
+  final String _description = "";
 
   Color _selectedColor = Colors.white;
 
@@ -47,7 +48,7 @@ class _ScheduleUploadFormState extends ConsumerState<ScheduleUploadForm> {
     }
   }
 
-  void _onSaveTap() {
+  void _onSaveTap(BuildContext context) {
     ref.read(profileProvider).whenData((value) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
@@ -111,6 +112,7 @@ class _ScheduleUploadFormState extends ConsumerState<ScheduleUploadForm> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.6,
                             child: TextFormField(
+                              maxLength: 25,
                               decoration: const InputDecoration(
                                 hintText: "日程名",
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -123,18 +125,6 @@ class _ScheduleUploadFormState extends ConsumerState<ScheduleUploadForm> {
                               },
                               onSaved: (value) {
                                 _scheduleName = value!;
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                hintText: "説明",
-                                hintStyle: TextStyle(color: Colors.grey),
-                              ),
-                              onSaved: (value) {
-                                _description = value;
                               },
                             ),
                           ),
@@ -219,7 +209,7 @@ class _ScheduleUploadFormState extends ConsumerState<ScheduleUploadForm> {
                     ),
                     const Gap(30),
                     GestureDetector(
-                        onTap: _onSaveTap,
+                        onTap: () => _onSaveTap(context),
                         child:
                             const AuthButton(color: Colors.green, text: "Save"))
                   ],

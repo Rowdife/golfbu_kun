@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_by_course.dart';
-import 'package:golfbu_kun/features/score_card/courses/vms/score_card_vm.dart';
+import 'package:golfbu_kun/features/score_card/vms/score_card_vm.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_add_course_screen.dart';
 
 class ScoreCardAddScreen extends ConsumerStatefulWidget {

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:golfbu_kun/features/score_card/courses/repos/score_card_repo.dart';
+import 'package:golfbu_kun/features/score_card/repos/score_card_repo.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_model.dart';
 import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
 
@@ -11,7 +11,7 @@ class ScoreCardCourseViewModel
 
   @override
   FutureOr<List<ScoreCardcourseModel>> build() async {
-    _repository = ref.read(scoreCardProvider);
+    _repository = ref.read(scoreCardRepo);
     state = const AsyncValue.loading();
     final courses = await _repository.fetchScoreCardCourses();
     state = AsyncValue.data(courses);

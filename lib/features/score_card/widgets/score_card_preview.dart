@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
+import 'package:golfbu_kun/features/profile/models/profile_model.dart';
+import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
+import 'package:golfbu_kun/features/score_card/models/score_card_data_model.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_model.dart';
 import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
+import 'package:golfbu_kun/features/score_card/repos/score_card_repo.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_data_tile.dart';
 
 class ScoreCardPreview extends ConsumerStatefulWidget {
@@ -32,11 +38,57 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
   int outTotalPutt = 0;
   int inTotalScroe = 0;
   int inTotalPutt = 0;
+  int totalScore = 0;
+  int totalPutt = 0;
+  late final ProfileModel profile;
+
+  Future<void> _onUploadScoreTap(
+      ScoreCardDataModel scoreCardData, BuildContext context) async {
+    await ref.read(scoreCardRepo).uploadScoreCard(scoreCardData: scoreCardData);
+    await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text(
+                "スコア登録を完了しました。",
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.grey.shade900,
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ));
+    context.go("/score");
+  }
+
+  void _getProfile() async {
+    profile = await ref.read(profileProvider.notifier).fetchProfile();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
     final scorecard = widget.scorecard.scorecard;
     final course = widget.course;
+
+    List<int> scoreList = [];
+    List<int> puttList = [];
+    List<int> parValueList = [];
+    for (int i = 1; i <= 18; i++) {
+      scoreList.add(int.parse(scorecard['hole$i']?['stroke']));
+      puttList.add(int.parse(scorecard['hole$i']?['putt']));
+      parValueList.add(course.parValues[i - 1]);
+    }
 
     for (int i = 1; i <= 9; i++) {
       outTotalScroe +=
@@ -50,6 +102,9 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
       inTotalPutt +=
           int.parse(widget.scorecard.scorecard['hole$i']?['putt'] ?? '0');
     }
+
+    totalScore = outTotalScroe + inTotalScroe;
+    totalPutt = outTotalPutt + inTotalPutt;
 
     List<String> puttRemained = [];
     for (int i = 1; i <= 18; i++) {
@@ -331,18 +386,18 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
 
     // パット分析
 
-    int puttMissedCount = puttMissed.where((putt) => putt.isNotEmpty).length;
+    int puttTryCount = puttMissed.where((putt) => putt.isNotEmpty).length;
     int puttLeftCount = puttMissed.where((putt) => putt == 'left').length;
     int puttRightCount = puttMissed.where((putt) => putt == 'right').length;
     int puttNoMissCount = puttMissed.where((putt) => putt == 'nomiss').length;
     int puttOverThreePutt = 0;
 
     String puttLeftPercentage =
-        ((puttLeftCount / puttMissedCount) * 100).toStringAsFixed(1);
+        ((puttLeftCount / puttTryCount) * 100).toStringAsFixed(1);
     String puttRightPercentage =
-        ((puttRightCount / puttMissedCount) * 100).toStringAsFixed(1);
+        ((puttRightCount / puttTryCount) * 100).toStringAsFixed(1);
     String puttNoMissPercentage =
-        ((puttNoMissCount / puttMissedCount) * 100).toStringAsFixed(1);
+        ((puttNoMissCount / puttTryCount) * 100).toStringAsFixed(1);
 
     List<String> puttDistance = [];
     for (int i = 1; i <= 18; i++) {
@@ -352,7 +407,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
 
     int puttDistanceCount =
         puttDistance.where((putt) => putt.isNotEmpty).length;
-    int puttDistancePinCount =
+    int puttDistanceNoMissCount =
         puttDistance.where((putt) => putt == 'nomiss').length;
     int puttDistanceShortCount =
         puttDistance.where((putt) => putt == 'short').length;
@@ -360,7 +415,8 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
         puttDistance.where((putt) => putt == 'long').length;
 
     String puttDistancePinPercentage =
-        ((puttDistancePinCount / puttDistanceCount) * 100).toStringAsFixed(1);
+        ((puttDistanceNoMissCount / puttDistanceCount) * 100)
+            .toStringAsFixed(1);
     String puttDistanceShortPercentage =
         ((puttDistanceShortCount / puttDistanceCount) * 100).toStringAsFixed(1);
     String puttDistanceLongPercentage =
@@ -385,7 +441,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int puttInMiddleLeftMissCount = 0;
     int puttInMiddleRightMissCount = 0;
 
-    int puttInMiddleWellCount = 0;
+    int puttInMiddleJustTouchCount = 0;
     int puttInMiddleShortCount = 0;
     int puttInMiddleLongCount = 0;
     int puttInMiddleTwoPuttCount = 0;
@@ -396,7 +452,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int puttInLongLeftMissCount = 0;
     int puttInLongRightMissCount = 0;
 
-    int puttInLongWellCount = 0;
+    int puttInLongJustTouchCount = 0;
     int puttInLongShortCount = 0;
     int puttInLongLongCount = 0;
     int puttInLongTwoPuttCount = 0;
@@ -442,7 +498,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
           puttInMiddleRightMissCount += 1;
         }
         if (scorecard['hole$i']?['puttDistance'] == 'nomiss') {
-          puttInMiddleWellCount += 1;
+          puttInMiddleJustTouchCount += 1;
         }
         if (scorecard['hole$i']?['puttDistance'] == 'short') {
           puttInMiddleShortCount += 1;
@@ -466,7 +522,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
           puttInLongRightMissCount += 1;
         }
         if (scorecard['hole$i']?['puttDistance'] == 'nomiss') {
-          puttInLongWellCount += 1;
+          puttInLongJustTouchCount += 1;
         }
         if (scorecard['hole$i']?['puttDistance'] == 'short') {
           puttInLongShortCount += 1;
@@ -504,8 +560,9 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     String puttInMiddleRightMissPercentage =
         ((puttInMiddleRightMissCount / puttInMiddleCount) * 100)
             .toStringAsFixed(1);
-    String puttInMiddleWellPercentage =
-        ((puttInMiddleWellCount / puttInMiddleCount) * 100).toStringAsFixed(1);
+    String puttInMiddleJustTouchPercentage =
+        ((puttInMiddleJustTouchCount / puttInMiddleCount) * 100)
+            .toStringAsFixed(1);
     String puttInMiddleShortPercentage =
         ((puttInMiddleShortCount / puttInMiddleCount) * 100).toStringAsFixed(1);
     String puttInMiddleLongPercentage =
@@ -520,8 +577,8 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
         ((puttInLongLeftMissCount / puttInLongCount) * 100).toStringAsFixed(1);
     String puttInLongRightMissPercentage =
         ((puttInLongRightMissCount / puttInLongCount) * 100).toStringAsFixed(1);
-    String puttInLongWellPercentage =
-        ((puttInLongWellCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongJustTouchPercentage =
+        ((puttInLongJustTouchCount / puttInLongCount) * 100).toStringAsFixed(1);
     String puttInLongShortPercentage =
         ((puttInLongShortCount / puttInLongCount) * 100).toStringAsFixed(1);
     String puttInLongLongPercentage =
@@ -1539,17 +1596,17 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       ),
                       ScoreCardDataTile(
                           title: "カップイン数",
-                          data: "$puttNoMissCount / $puttMissedCount"),
+                          data: "$puttNoMissCount / $puttTryCount"),
                       ScoreCardDataTile(
                           title: "カップイン率", data: "$puttNoMissPercentage%"),
                       ScoreCardDataTile(
                           title: "左外し数",
-                          data: "$puttLeftCount / $puttMissedCount"),
+                          data: "$puttLeftCount / $puttTryCount"),
                       ScoreCardDataTile(
                           title: "左外し率", data: "$puttLeftPercentage%"),
                       ScoreCardDataTile(
                           title: "右外し数",
-                          data: "$puttRightCount / $puttMissedCount"),
+                          data: "$puttRightCount / $puttTryCount"),
                       ScoreCardDataTile(
                           title: "右外し率", data: "$puttRightPercentage%"),
                       const Gap(20),
@@ -1560,7 +1617,8 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       ),
                       ScoreCardDataTile(
                           title: "1m以内寄せ数",
-                          data: "$puttDistancePinCount / $puttDistanceCount"),
+                          data:
+                              "$puttDistanceNoMissCount / $puttDistanceCount"),
                       ScoreCardDataTile(
                           title: "1m以内寄せ率",
                           data: "$puttDistancePinPercentage%"),
@@ -1652,10 +1710,11 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                           data: "$puttInMiddleRightMissPercentage%"),
                       ScoreCardDataTile(
                           title: "1m以内寄せ数",
-                          data: "$puttInMiddleWellCount / $puttInMiddleCount"),
+                          data:
+                              "$puttInMiddleJustTouchCount / $puttInMiddleCount"),
                       ScoreCardDataTile(
                           title: "1m以内寄せ率",
-                          data: "$puttInMiddleWellPercentage%"),
+                          data: "$puttInMiddleJustTouchPercentage%"),
                       ScoreCardDataTile(
                           title: "ショート数",
                           data: "$puttInMiddleShortCount / $puttInMiddleCount"),
@@ -1699,9 +1758,10 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                           data: "$puttInLongRightMissPercentage%"),
                       ScoreCardDataTile(
                           title: "1m以内寄せ数",
-                          data: "$puttInLongWellCount / $puttInLongCount"),
+                          data: "$puttInLongJustTouchCount / $puttInLongCount"),
                       ScoreCardDataTile(
-                          title: "1m以内寄せ率", data: "$puttInLongWellPercentage%"),
+                          title: "1m以内寄せ率",
+                          data: "$puttInLongJustTouchPercentage%"),
                       ScoreCardDataTile(
                           title: "ショート数",
                           data: "$puttInLongShortCount / $puttInLongCount"),
@@ -1785,6 +1845,132 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       ScoreCardDataTile(title: "OBした数", data: "$obCount"),
                       ScoreCardDataTile(title: "池に入れた数", data: "$hazardCount"),
                       ScoreCardDataTile(title: "ペナルティ数", data: "$penaltyCount"),
+                      const Gap(40),
+                      GestureDetector(
+                        onTap: () {
+                          final scoreCardData = ScoreCardDataModel(
+                            uploaderName: profile.name,
+                            uploaderId: profile.uid,
+                            uploadDate: widget.date,
+                            courseName: course.courseName,
+                            createAtUnix: DateTime.now().millisecondsSinceEpoch,
+                            weather: widget.weather,
+                            wind: widget.wind,
+                            temperature: widget.temperature,
+                            scoreList: scoreList,
+                            puttsList: puttList,
+                            parValueList: parValueList,
+                            totalScore: totalScore,
+                            totalPutts: totalPutt,
+                            totalFairwayFind: teeShotFairwayCount,
+                            totalFairwayTry: teeShotResultCount,
+                            driverFairwayFind: teeShotDriverFwCount,
+                            driverFairwayTry: teeShotDriverCount,
+                            woodFairwayFind: teeShotWoodFwCount,
+                            woodFairwayTry: teeShotWoodCount,
+                            utilityFairwayFind: teeShotUtFwCount,
+                            utilityFairwayTry: teeShotUtCount,
+                            ironFairwayFind: teeShotIronFwCount,
+                            ironFairwayTry: teeShotIronCount,
+                            parThreeTeeshotTry: parThreeTeeShotCount,
+                            parThreeGreenInRegulation:
+                                parThreeTeeShotGreenOnCount,
+                            parThreeGreenMissedLeft:
+                                parThreeTeeShotGreenLeftCount,
+                            parThreeGreenMissedRight:
+                                parThreeTeeShotGreenRightCount,
+                            parThreeGreenMissedShort:
+                                parThreeTeeShotGreenShortCount,
+                            parThreeGreenMissedOver:
+                                parThreeTeeShotGreenOverCount,
+                            totalGreenInRegulation: parOnCount,
+                            greenInRegulationIn50: parOnUnder50OnGreenCount,
+                            greenInRegulationIn50Try: parOnUnder50Count,
+                            greenInRegulationIn100: parOnUnder100OnGreenCount,
+                            greenInRegulationIn100Try: parOnUnder100Count,
+                            greenInRegulationIn150: parOnUnder150OnGreenCount,
+                            greenInRegulationIn150Try: parOnUnder150Count,
+                            greenInRegulationIn200: parOnUnder200OnGreenCount,
+                            greenInRegulationIn200Try: parOnUnder200Count,
+                            greenInRegulationOver200: parOnOver200OnGreenCount,
+                            greenInRegulationOver200Try: parOnOver200Count,
+                            parOnByWood: parOnWoodCount,
+                            parOnByWoodTry: parOnWoodTryCount,
+                            parOnByUtility: parOnUtCount,
+                            parOnByUtilityTry: parOnUtTryCount,
+                            parOnByLongIron: parOnLongIronCount,
+                            parOnByLongIronTry: parOnLongIronTryCount,
+                            parOnByMiddleIron: parOnMiddleIronCount,
+                            parOnByMiddleIronTry: parOnMiddleIronTryCount,
+                            parOnByShortIron: parOnShortIronCount,
+                            parOnByShortIronTry: parOnShortIronTryCount,
+                            parOnByWedge: parOnWedgeCount,
+                            parOnByWedgeTry: parOnWedgeTryCount,
+                            puttTry: puttTryCount,
+                            puttHoleIn: puttNoMissCount,
+                            puttMissedLeft: puttLeftCount,
+                            puttMissedRight: puttRightCount,
+                            puttDistanceTry: puttDistanceCount,
+                            puttDistanceIn1m: puttDistanceNoMissCount,
+                            puttDistanceLong: puttDistanceLongCount,
+                            puttDistanceShort: puttDistanceShortCount,
+                            puttIn2and5mTry: puttInAPinCount,
+                            puttIn2and5mHoleIn: puttInAPinCupInCount,
+                            puttIn2and5mMissedLeft: puttInAPinLeftMissCount,
+                            puttIn2and5mMissedRight: puttInAPinRightMissCount,
+                            puttIn5mTry: puttInShortCount,
+                            puttIn5mHoleIn: puttInShortCupInCount,
+                            puttIn5mMissedLeft: puttInShortLeftMissCount,
+                            puttIn5mMissedRight: puttInShortRightMissCount,
+                            puttIn10mTry: puttInMiddleCount,
+                            puttIn10mHoleIn: puttInMiddleCupInCount,
+                            puttIn10mMissedLeft: puttInMiddleLeftMissCount,
+                            puttIn10mMissedRight: puttInMiddleRightMissCount,
+                            puttIn10mMissedShort: puttInMiddleShortCount,
+                            puttIn10mMissedLong: puttInMiddleLongCount,
+                            puttIn10mJustTouch: puttInMiddleJustTouchCount,
+                            puttIn10mTwoPutt: puttInMiddleTwoPuttCount,
+                            puttInOver10mTry: puttInLongCount,
+                            puttInOver10mHoleIn: puttInLongCupInCount,
+                            puttInOver10mMissedLeft: puttInLongLeftMissCount,
+                            puttInOver10mMissedRight: puttInLongRightMissCount,
+                            puttInOver10mMissedShort: puttInLongShortCount,
+                            puttInOver10mMissedLong: puttInLongLongCount,
+                            puttInOver10mJustTouch: puttInLongJustTouchCount,
+                            puttInOver10mTwoPutt: puttInLongTwoPuttCount,
+                            approachTry: approachCount,
+                            approachParSave: approachParSaveCount,
+                            approachChipIn: approachChipInCount,
+                            bunkerTry: bunkerCount,
+                            bunkerParSave: bunkerParSaveCount,
+                            birdieChanceCount: birdieChanceCount,
+                            birdieChanceSuccess: birdieChanceHoleInCount,
+                            missedGreenInRegulationUnder100: parOnUnder50Count +
+                                parOnUnder100Count -
+                                parOnUnder50OnGreenCount -
+                                parOnUnder100OnGreenCount,
+                            missedOverThreePutts: puttOverThreePutt,
+                            missedIntoBunker: bunkerCount,
+                            missedIntoWater: hazardCount,
+                            missedIntoOB: obCount,
+                            missedGetPenalty: penaltyCount,
+                            overBogeyCount: overBogeyCount,
+                            bogeyCount: bogeyCount,
+                            parCount: parCount,
+                            birdieCount: birdieCount,
+                            underBirdieCount: underBirdieCount,
+                            averagePar3Score: par3AverageScore,
+                            averagePar4Score: par4AverageScore,
+                            averagePar5Score: par5AverageScore,
+                          );
+                          _onUploadScoreTap(scoreCardData, context);
+                        },
+                        child: const Center(
+                          child:
+                              AuthButton(color: Colors.green, text: "スコアを登録する"),
+                        ),
+                      ),
+                      const Gap(40),
                     ],
                   ),
                 ),

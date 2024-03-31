@@ -62,6 +62,10 @@ class GolfbukunApp extends ConsumerWidget {
           ),
           centerTitle: true,
         ),
+        dialogTheme: DialogTheme(
+          backgroundColor: Colors.grey.shade900,
+          shadowColor: Colors.green,
+        ),
       ),
     );
   }

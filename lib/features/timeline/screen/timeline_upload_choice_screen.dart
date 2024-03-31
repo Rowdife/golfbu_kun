@@ -102,13 +102,7 @@ class _TimelineUploadChoiceScreenState
                                 color: Colors.blueAccent,
                                 text: "スイング動画を投稿(動画)"),
                           ),
-                          const Gap(50),
-                          GestureDetector(
-                            onTap: () => _onUploadQuestionTap(context),
-                            child: const AuthButton(
-                                color: Colors.green, text: "質問を投稿(文字のみ)"),
-                          ),
-                          const Gap(200),
+                          const Gap(150)
                         ],
                       ),
                     ],

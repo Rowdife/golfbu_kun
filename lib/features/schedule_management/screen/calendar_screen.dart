@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/schedule_management/models/calendar_event_model.dart';
@@ -51,26 +52,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     }
   }
 
-  void _getTodaySchedule() async {
-    final todaySchedule = await ref
-        .read(calendarProvider)
-        .getScheduleListByDate(_today.toString().substring(0, 10));
-    final jsonList = todaySchedule.map((event) => event.toJson()).toList();
-    if (jsonList.isNotEmpty) {
-      setState(() {
-        _todayEventsList =
-            jsonList.map((json) => CalendarEventModel.fromJson(json)).toList();
-      });
-    } else {
-      setState(() {
-        _todayEventsList = [];
-      });
-    }
-  }
-
   void _deleteSchedule(int createdAt) async {
     await ref.read(calendarProvider).deleteSchedule(createdAt);
     _getTodaySchedule();
+    _getSelectedDaySchedule(_focusedDay);
     _getAllSchedule();
     showDialog(
         context: context,
@@ -92,7 +77,24 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             ));
   }
 
-  Future<void> _getAllSchedule() async {
+  void _getTodaySchedule() async {
+    final todaySchedule = await ref
+        .read(calendarProvider)
+        .getScheduleListByDate(_today.toString().substring(0, 10));
+    final jsonList = todaySchedule.map((event) => event.toJson()).toList();
+    if (jsonList.isNotEmpty) {
+      setState(() {
+        _todayEventsList =
+            jsonList.map((json) => CalendarEventModel.fromJson(json)).toList();
+      });
+    } else {
+      setState(() {
+        _todayEventsList = [];
+      });
+    }
+  }
+
+  _getAllSchedule() async {
     final allSchedule = await ref.read(calendarProvider).getAllSchedule();
     final jsonList = allSchedule.map((event) => event.toJson()).toList();
     if (jsonList.isNotEmpty) {
@@ -107,11 +109,31 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     }
   }
 
+  Future<void> _onRefresh() async {
+    _getTodaySchedule();
+    await _getAllSchedule();
+  }
+
+  void _uploadScheduleTap(List<DateTime>? schedule) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      scrollControlDisabledMaxHeightRatio: 0.5,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.7,
+          child: ScheduleUploadForm(
+            schedule: schedule,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-    _getAllSchedule();
-    _getTodaySchedule();
+    _onRefresh();
     _uid = ref.read(authRepo).user!.uid;
   }
 
@@ -120,6 +142,12 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Calendar'),
+        actions: [
+          IconButton(
+            onPressed: _onRefresh,
+            icon: const FaIcon(FontAwesomeIcons.arrowsRotate),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -165,16 +193,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             ),
           );
           if (schedule != null) {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              scrollControlDisabledMaxHeightRatio: 0.5,
-              builder: (BuildContext context) {
-                return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    child: ScheduleUploadForm(schedule: schedule));
-              },
-            );
+            _uploadScheduleTap(schedule);
           }
         },
         backgroundColor: Colors.grey.shade200,
@@ -184,11 +203,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: _getAllSchedule,
+        onRefresh: _onRefresh,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 1.1,
+          child: SafeArea(
             child: Column(
               children: [
                 TableCalendar(
@@ -271,100 +289,126 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 if (_selectedEventsList.isNotEmpty)
                   ListView.builder(
                     shrinkWrap: true,
+                    padding: const EdgeInsets.all(10),
                     itemCount: _selectedEventsList.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                          leading: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: _selectedEventsList[index].eventColor,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          title: Row(
-                            children: [
-                              Text(
-                                _selectedEventsList[index].title,
-                                style: const TextStyle(color: Colors.white),
+                      return Column(
+                        children: [
+                          ListTile(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(
+                                    color: Colors.green, width: 1),
                               ),
-                              const Gap(20),
-                              Text(
-                                "${_selectedEventsList[index].scheduleStartTime} ~ ${_selectedEventsList[index].scheduleEndTime}",
-                                style: const TextStyle(color: Colors.white),
+                              leading: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: _selectedEventsList[index].eventColor,
+                                  shape: BoxShape.circle,
+                                ),
                               ),
-                            ],
-                          ),
-                          subtitle: Row(
-                            children: [
-                              Text(
-                                "uploaded by ${_selectedEventsList[index].uploaderName}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                          trailing: (index < _selectedEventsList.length &&
-                                  _selectedEventsList[index].uploaderId == _uid)
-                              ? IconButton(
-                                  onPressed: () => _deleteSchedule(
-                                    _selectedEventsList[index].createdAt,
+                              title: Row(
+                                children: [
+                                  Text(
+                                    _selectedEventsList[index].title,
+                                    style: const TextStyle(color: Colors.white),
                                   ),
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
+                                ],
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${_selectedEventsList[index].scheduleStartTime} ~ ${_selectedEventsList[index].scheduleEndTime}",
+                                    style: const TextStyle(color: Colors.white),
                                   ),
-                                )
-                              : null);
+                                  const Gap(5),
+                                  Text(
+                                    "uploaded by ${_selectedEventsList[index].uploaderName}",
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              trailing: (index < _selectedEventsList.length &&
+                                      _selectedEventsList[index].uploaderId ==
+                                          _uid)
+                                  ? IconButton(
+                                      onPressed: () => _deleteSchedule(
+                                        _selectedEventsList[index].createdAt,
+                                      ),
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : null),
+                          const Gap(10),
+                        ],
+                      );
                     },
                   ),
                 const Text("今日のスケジュール"),
                 if (_todayEventsList.isNotEmpty)
                   ListView.builder(
                     shrinkWrap: true,
+                    padding: const EdgeInsets.all(10),
                     itemCount: _todayEventsList.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                          leading: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: _todayEventsList[index].eventColor,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          title: Row(
-                            children: [
-                              Text(
-                                _todayEventsList[index].title,
-                                style: const TextStyle(color: Colors.white),
+                      return Column(
+                        children: [
+                          ListTile(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(
+                                    color: Colors.green, width: 1),
                               ),
-                              const Gap(20),
-                              Text(
-                                "${_todayEventsList[index].scheduleStartTime} ~ ${_todayEventsList[index].scheduleEndTime}",
-                                style: const TextStyle(color: Colors.white),
+                              leading: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: _todayEventsList[index].eventColor,
+                                  shape: BoxShape.circle,
+                                ),
                               ),
-                            ],
-                          ),
-                          subtitle: Row(
-                            children: [
-                              Text(
-                                "uploaded by ${_todayEventsList[index].uploaderName}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                          trailing: (index < _todayEventsList.length &&
-                                  _todayEventsList[index].uploaderId == _uid)
-                              ? IconButton(
-                                  onPressed: () => _deleteSchedule(
-                                    _todayEventsList[index].createdAt,
+                              title: Row(
+                                children: [
+                                  Text(
+                                    _todayEventsList[index].title,
+                                    style: const TextStyle(color: Colors.white),
                                   ),
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
+                                ],
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${_todayEventsList[index].scheduleStartTime} ~ ${_todayEventsList[index].scheduleEndTime}",
+                                    style: const TextStyle(color: Colors.white),
                                   ),
-                                )
-                              : null);
+                                  const Gap(5),
+                                  Text(
+                                    "uploaded by ${_todayEventsList[index].uploaderName}",
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              trailing: (index < _todayEventsList.length &&
+                                      _todayEventsList[index].uploaderId ==
+                                          _uid)
+                                  ? IconButton(
+                                      onPressed: () => _deleteSchedule(
+                                        _todayEventsList[index].createdAt,
+                                      ),
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : null),
+                          const Gap(10),
+                        ],
+                      );
                     },
                   ),
               ],

@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/vms/log_in_vm.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
+import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 
 class LoginScreen extends ConsumerWidget {
   static const routeName = "Login";
@@ -16,15 +17,17 @@ class LoginScreen extends ConsumerWidget {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Map<String, String> formData = {};
 
-    void onLoginTap(BuildContext context) {
+    void onLoginTap(BuildContext context) async {
       if (formKey.currentState != null) {
         if (formKey.currentState!.validate()) {
           formKey.currentState!.save();
 
-          ref.read(loginProvider.notifier).login(
+          await ref.read(loginProvider.notifier).login(
               email: formData["email"]!,
               password: formData["password"],
               context: context);
+          print("logged in");
+          await ref.read(profileProvider.notifier).fetchProfile();
         }
       }
     }

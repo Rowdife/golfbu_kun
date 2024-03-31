@@ -24,7 +24,6 @@ class MainNavigationScreen extends ConsumerStatefulWidget {
 class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
   final List<String> _tabs = [
     "home",
-    "announce",
     "score",
     "calendar",
     "profile",
@@ -50,18 +49,14 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
           ),
           Offstage(
             offstage: _selectedIndex != 1,
-            child: const AnnounceScreen(),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 2,
             child: const ScoreCardScreen(),
           ),
           Offstage(
-            offstage: _selectedIndex != 3,
+            offstage: _selectedIndex != 2,
             child: const CalendarScreen(),
           ),
           Offstage(
-            offstage: _selectedIndex != 4,
+            offstage: _selectedIndex != 3,
             child: const ProfileNavigationScreen(),
           ),
         ],
@@ -80,28 +75,22 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
               onTap: () => _onTap(0),
             ),
             NavTap(
-              tapName: 'Announce',
-              icon: FontAwesomeIcons.bullhorn,
+              tapName: 'Score',
+              icon: FontAwesomeIcons.chartColumn,
               isSelected: _selectedIndex == 1,
               onTap: () => _onTap(1),
             ),
             NavTap(
-              tapName: 'Score',
-              icon: FontAwesomeIcons.chartColumn,
+              tapName: 'Calendar',
+              icon: FontAwesomeIcons.calendar,
               isSelected: _selectedIndex == 2,
               onTap: () => _onTap(2),
             ),
             NavTap(
-              tapName: 'Calendar',
-              icon: FontAwesomeIcons.calendar,
-              isSelected: _selectedIndex == 3,
-              onTap: () => _onTap(3),
-            ),
-            NavTap(
               tapName: 'Profile',
               icon: FontAwesomeIcons.user,
-              isSelected: _selectedIndex == 4,
-              onTap: () => _onTap(4),
+              isSelected: _selectedIndex == 3,
+              onTap: () => _onTap(3),
             ),
           ],
         ),

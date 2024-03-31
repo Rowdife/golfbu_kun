@@ -19,9 +19,9 @@ final routeProvider = Provider(
       redirect: (context, state) async {
         final isLoggedIn = ref.read(authRepo).isLoggedIn;
         if (!isLoggedIn) {
-          if (state.subloc != OnboardingScreen.routeURL &&
-              state.subloc != SignUpScreen.routeURL &&
-              state.subloc != LoginScreen.routeURL) {
+          if (state.matchedLocation != OnboardingScreen.routeURL &&
+              state.matchedLocation != SignUpScreen.routeURL &&
+              state.matchedLocation != LoginScreen.routeURL) {
             return "/";
           } else {
             return null;
@@ -47,9 +47,9 @@ final routeProvider = Provider(
         ),
         GoRoute(
           name: MainNavigationScreen.routeName,
-          path: "/:tab(home|announce|score|calendar|profile)",
+          path: "/:tab(home|score|calendar|profile)",
           builder: (context, state) {
-            final tab = state.params["tab"]!;
+            final tab = state.pathParameters["tab"]!;
             return MainNavigationScreen(tab: tab);
           },
         ),

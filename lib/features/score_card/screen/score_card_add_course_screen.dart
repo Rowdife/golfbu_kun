@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/profile/models/profile_model.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
-import 'package:golfbu_kun/features/score_card/courses/vms/score_card_vm.dart';
+import 'package:golfbu_kun/features/score_card/vms/score_card_vm.dart';
 import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
 
 List<String> prefectures = [
@@ -60,7 +60,7 @@ List<String> prefectures = [
 enum ParValue { par3, par4, par5 }
 
 class ScoreCardAddcourseScreen extends ConsumerStatefulWidget {
-  const ScoreCardAddcourseScreen({Key? key}) : super(key: key);
+  const ScoreCardAddcourseScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
