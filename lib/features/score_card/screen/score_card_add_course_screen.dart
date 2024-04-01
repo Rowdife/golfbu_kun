@@ -4,8 +4,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/profile/models/profile_model.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
-import 'package:golfbu_kun/features/score_card/vms/score_card_vm.dart';
-import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
+import 'package:golfbu_kun/features/score_card/vms/score_card_courses_vm.dart';
+import 'package:golfbu_kun/features/score_card/models/score_card_course_model.dart';
 
 List<String> prefectures = [
   '北海道',
@@ -83,7 +83,7 @@ class _ScoreCardAddcourseScreenState
 
         ref
             .read(scoreCardCourseProvider.notifier)
-            .addNewCourse(ScoreCardcourseModel(
+            .addNewCourse(ScoreCardCourseModel(
               courseName: courseName,
               courseNameByHiragana: courseNameByHiragana,
               prefecture: selectedPrefecture!,

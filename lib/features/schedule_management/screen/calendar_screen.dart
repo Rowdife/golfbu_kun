@@ -70,7 +70,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text(
                     "OK",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.greenAccent),
                   ),
                 ),
               ],

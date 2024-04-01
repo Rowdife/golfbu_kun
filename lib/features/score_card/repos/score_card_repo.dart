@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_data_model.dart';
-import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
+import 'package:golfbu_kun/features/score_card/models/score_card_course_model.dart';
 
 class ScoreCardRepository {
   // Implement your repository methods and functionality here
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final AuthenticationRepository _authRepo = AuthenticationRepository();
 
-  Future<List<ScoreCardcourseModel>> fetchScoreCardCourses() async {
+  Future<List<ScoreCardCourseModel>> fetchScoreCardCourses() async {
     final universityId = _authRepo.user!.displayName;
     final courses = await _db
         .collection("university")
@@ -17,13 +17,13 @@ class ScoreCardRepository {
         .collection("courses")
         .get();
     final courseList = courses.docs
-        .map((e) => ScoreCardcourseModel.fromJson(e.data()))
+        .map((e) => ScoreCardCourseModel.fromJson(e.data()))
         .toList();
     return courseList;
   }
 
   Future<void> addNewScoreCardCourse(
-      {required ScoreCardcourseModel course}) async {
+      {required ScoreCardCourseModel course}) async {
     final universityId = _authRepo.user!.displayName;
     final courseJson = course.toJson();
     await _db
@@ -42,6 +42,36 @@ class ScoreCardRepository {
         .doc(universityId)
         .collection("scorecards")
         .add(scoreCardJson);
+  }
+
+  Future<List<ScoreCardDataModel>> fetchMyScoreCardsData() async {
+    final universityId = _authRepo.user!.displayName;
+    final userId = _authRepo.user!.uid;
+    final scoreCards = await _db
+        .collection("university")
+        .doc(universityId)
+        .collection("scorecards")
+        .where("uploaderId", isEqualTo: userId)
+        .orderBy("uploadDate", descending: true)
+        .get();
+    final scoreCardList = scoreCards.docs
+        .map((e) => ScoreCardDataModel.fromJson(e.data()))
+        .toList();
+    return scoreCardList;
+  }
+
+  Future<List<ScoreCardDataModel>> fetchTeamScoreCardsData() async {
+    final universityId = _authRepo.user!.displayName;
+    final scoreCards = await _db
+        .collection("university")
+        .doc(universityId)
+        .collection("scorecards")
+        .orderBy("uploadDate", descending: true)
+        .get();
+    final scoreCardList = scoreCards.docs
+        .map((e) => ScoreCardDataModel.fromJson(e.data()))
+        .toList();
+    return scoreCardList;
   }
 }
 

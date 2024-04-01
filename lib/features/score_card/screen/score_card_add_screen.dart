@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
-import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
+import 'package:golfbu_kun/features/score_card/models/score_card_course_model.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_by_course.dart';
-import 'package:golfbu_kun/features/score_card/vms/score_card_vm.dart';
+import 'package:golfbu_kun/features/score_card/vms/score_card_courses_vm.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_add_course_screen.dart';
 
 class ScoreCardAddScreen extends ConsumerStatefulWidget {
@@ -18,7 +18,7 @@ class ScoreCardAddScreen extends ConsumerStatefulWidget {
 }
 
 class _ScoreCardAddScreenState extends ConsumerState<ScoreCardAddScreen> {
-  void _onCourseTap(BuildContext context, ScoreCardcourseModel course) {
+  void _onCourseTap(BuildContext context, ScoreCardCourseModel course) {
     Navigator.push(
       context,
       MaterialPageRoute(

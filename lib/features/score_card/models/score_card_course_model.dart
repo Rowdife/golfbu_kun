@@ -1,4 +1,4 @@
-class ScoreCardcourseModel {
+class ScoreCardCourseModel {
   String courseName;
   String courseNameByHiragana;
   String prefecture; // changed variable name from location to prefecture
@@ -9,7 +9,7 @@ class ScoreCardcourseModel {
   int createdAt;
   List<int> parValues;
 
-  ScoreCardcourseModel({
+  ScoreCardCourseModel({
     required this.courseName,
     required this.courseNameByHiragana,
     required this.prefecture, // changed variable name from location to prefecture
@@ -21,8 +21,8 @@ class ScoreCardcourseModel {
     required this.parValues,
   });
 
-  factory ScoreCardcourseModel.fromJson(Map<String, dynamic> json) {
-    return ScoreCardcourseModel(
+  factory ScoreCardCourseModel.fromJson(Map<String, dynamic> json) {
+    return ScoreCardCourseModel(
       courseName: json['courseName'],
       courseNameByHiragana: json['courseNameByHiragana'],
       prefecture: json[

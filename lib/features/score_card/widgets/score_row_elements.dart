@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:golfbu_kun/features/score_card/vms/score_card_vm.dart';
+import 'package:golfbu_kun/features/score_card/vms/score_card_courses_vm.dart';
 
 class ScoreRowElements extends ConsumerStatefulWidget {
   const ScoreRowElements({

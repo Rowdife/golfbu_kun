@@ -7,7 +7,7 @@ import 'package:golfbu_kun/features/profile/models/profile_model.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_data_model.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_model.dart';
-import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
+import 'package:golfbu_kun/features/score_card/models/score_card_course_model.dart';
 import 'package:golfbu_kun/features/score_card/repos/score_card_repo.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_data_tile.dart';
 
@@ -22,7 +22,7 @@ class ScoreCardPreview extends ConsumerStatefulWidget {
     required this.temperature,
   });
   final ScoreCardModel scorecard;
-  final ScoreCardcourseModel course;
+  final ScoreCardCourseModel course;
   final String date;
   final String weather;
   final int wind;
@@ -1415,7 +1415,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                           data: "$teeShotDriverFwPercentage%"),
                       ScoreCardDataTile(
                         title: "WoodのFwキープ数",
-                        data: "$teeShotWoodCount / $teeShotWoodCount",
+                        data: "$teeShotWoodFwCount / $teeShotWoodCount",
                       ),
                       ScoreCardDataTile(
                         title: "WoodのFwキープ率",
@@ -1423,7 +1423,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       ),
                       ScoreCardDataTile(
                         title: "UTのFwキープ数",
-                        data: "$teeShotUtCount / $teeShotUtCount",
+                        data: "$teeShotUtFwCount / $teeShotUtCount",
                       ),
                       ScoreCardDataTile(
                         title: "UTのFwキープ率",
@@ -1431,7 +1431,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       ),
                       ScoreCardDataTile(
                         title: "IronのFwキープ数",
-                        data: "$teeShotIronCount / $teeShotIronCount",
+                        data: "$teeShotIronFwCount / $teeShotIronCount",
                       ),
                       ScoreCardDataTile(
                         title: "IronのFwキープ率",
@@ -1497,7 +1497,9 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       ScoreCardDataTile(
                           title: "パーオン", data: "$parOnCount / 18ホール"),
                       ScoreCardDataTile(
-                          title: "パーオン率", data: "${parOnCount / 18 * 100}%"),
+                          title: "パーオン率",
+                          data:
+                              "${(parOnCount / 18 * 100).toStringAsFixed(1)}%"),
                       const Gap(20),
                       const Text(
                         "パーオン距離別分析",
@@ -1828,7 +1830,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       ScoreCardDataTile(
                           title: "バーディチャンス成功率",
                           data:
-                              "${birdieChanceHoleInCount / birdieChanceCount * 100}%"),
+                              "${(birdieChanceHoleInCount / birdieChanceCount * 100).toStringAsFixed(1)}%"),
                       const Text(
                         "ミス分析",
                         style: TextStyle(
@@ -1962,6 +1964,10 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                             averagePar3Score: par3AverageScore,
                             averagePar4Score: par4AverageScore,
                             averagePar5Score: par5AverageScore,
+                            totalParOn: parOnCount,
+                            teeShotMissedLeft: teeShotLeftCount,
+                            teeShotMissedRight: teeShotRightCount,
+                            teeShotCriticalMiss: teeShotCriticalMissCount,
                           );
                           _onUploadScoreTap(scoreCardData, context);
                         },

@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart';
+import 'package:golfbu_kun/features/score_card/screen/score_card_my_history_screen.dart';
+import 'package:golfbu_kun/features/score_card/screen/score_card_team_screen.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_button.dart';
 
 class ScoreCardScreen extends ConsumerStatefulWidget {
@@ -17,6 +19,14 @@ class ScoreCardScreen extends ConsumerStatefulWidget {
 class _ScoreCardScreenState extends ConsumerState<ScoreCardScreen> {
   void _onScoreAddTap(BuildContext context) {
     context.pushNamed(ScoreCardAddScreen.routeName);
+  }
+
+  void _onMyHistoryTap(BuildContext context) {
+    context.pushNamed(ScoreCardMyHistoryScreen.routeName);
+  }
+
+  void _onTeamScoreTap(BuildContext context) {
+    context.pushNamed(ScoreCardTeamScreen.routeName);
   }
 
   @override
@@ -45,15 +55,21 @@ class _ScoreCardScreenState extends ConsumerState<ScoreCardScreen> {
                     color: Colors.green,
                   ),
                 ),
-                const ScoreButton(
-                  icon: FontAwesomeIcons.magnifyingGlassChart,
-                  text: "自分のスコアを分析",
-                  color: Colors.blueAccent,
+                GestureDetector(
+                  onTap: () => _onMyHistoryTap(context),
+                  child: const ScoreButton(
+                    icon: FontAwesomeIcons.magnifyingGlassChart,
+                    text: "自分のスコアを分析",
+                    color: Colors.blueAccent,
+                  ),
                 ),
-                const ScoreButton(
-                  icon: FontAwesomeIcons.rankingStar,
-                  text: "部内のスコアを分析",
-                  color: Colors.cyan,
+                GestureDetector(
+                  onTap: () => _onTeamScoreTap(context),
+                  child: const ScoreButton(
+                    icon: FontAwesomeIcons.rankingStar,
+                    text: "部内のスコアを分析",
+                    color: Colors.cyan,
+                  ),
                 ),
               ],
             ),

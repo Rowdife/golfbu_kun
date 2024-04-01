@@ -17,11 +17,11 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 class TimelinePost extends ConsumerStatefulWidget {
   const TimelinePost({
-    Key? key,
+    super.key,
     required this.videoData,
     required this.index,
     required this.keyValue,
-  }) : super(key: key);
+  });
 
   final ValueKey keyValue;
   final PostVideoModel videoData;
@@ -72,10 +72,10 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
   void initState() {
     super.initState();
     _videoPlayerController =
-        VideoPlayerController.network(widget.videoData.fileUrl);
+        VideoPlayerController.networkUrl(Uri.parse(widget.videoData.fileUrl));
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
-      aspectRatio: 9 / 16,
+      aspectRatio: 9 / 15,
       allowFullScreen: true,
       autoInitialize: true,
     );
@@ -174,7 +174,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
               ),
               const Gap(10),
               Container(
-                height: size.height * 0.65,
+                height: size.height * 0.6,
                 width: size.width * 0.8,
                 color: Colors.grey.shade900,
                 child: Stack(

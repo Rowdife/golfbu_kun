@@ -64,7 +64,11 @@ class GolfbukunApp extends ConsumerWidget {
         ),
         dialogTheme: DialogTheme(
           backgroundColor: Colors.grey.shade900,
-          shadowColor: Colors.green,
+          surfaceTintColor: Colors.grey.shade900,
+          titleTextStyle: const TextStyle(fontSize: 16),
+        ),
+        listTileTheme: const ListTileThemeData(
+          textColor: Colors.white,
         ),
       ),
     );

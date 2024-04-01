@@ -8,6 +8,8 @@ import 'package:golfbu_kun/features/authentication/screens/sign_up_screen.dart';
 import 'package:golfbu_kun/features/profile/screens/profile_screen.dart';
 import 'package:golfbu_kun/features/profile/screens/setting_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart';
+import 'package:golfbu_kun/features/score_card/screen/score_card_my_history_screen.dart';
+import 'package:golfbu_kun/features/score_card/screen/score_card_team_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_question_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_video_screen.dart';
 import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
@@ -57,6 +59,16 @@ final routeProvider = Provider(
           name: ScoreCardAddScreen.routeName,
           path: ScoreCardAddScreen.routeUrl,
           builder: (context, state) => const ScoreCardAddScreen(),
+        ),
+        GoRoute(
+          name: ScoreCardMyHistoryScreen.routeName,
+          path: ScoreCardMyHistoryScreen.routeUrl,
+          builder: (context, state) => const ScoreCardMyHistoryScreen(),
+        ),
+        GoRoute(
+          name: ScoreCardTeamScreen.routeName,
+          path: ScoreCardTeamScreen.routeUrl,
+          builder: (context, state) => const ScoreCardTeamScreen(),
         ),
         GoRoute(
           name: SettingScreen.routeName,

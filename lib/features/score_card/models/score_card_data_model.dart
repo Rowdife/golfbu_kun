@@ -14,8 +14,13 @@ class ScoreCardDataModel {
 
   final int totalScore;
   final int totalPutts;
+  final int totalParOn;
   final int totalFairwayFind;
   final int totalFairwayTry;
+
+  final int teeShotMissedLeft;
+  final int teeShotMissedRight;
+  final int teeShotCriticalMiss;
 
   final int driverFairwayFind;
   final int driverFairwayTry;
@@ -45,6 +50,8 @@ class ScoreCardDataModel {
   final int greenInRegulationIn200Try;
   final int greenInRegulationOver200;
   final int greenInRegulationOver200Try;
+
+  //parOnInTotal
 
   final int parOnByWood;
   final int parOnByWoodTry;
@@ -229,6 +236,10 @@ class ScoreCardDataModel {
     required this.averagePar3Score,
     required this.averagePar4Score,
     required this.averagePar5Score,
+    required this.totalParOn,
+    required this.teeShotMissedLeft,
+    required this.teeShotMissedRight,
+    required this.teeShotCriticalMiss,
   });
 
   factory ScoreCardDataModel.fromJson(Map<String, dynamic> json) {
@@ -338,6 +349,10 @@ class ScoreCardDataModel {
       scoreList: List<int>.from(json['scoreList']),
       puttsList: List<int>.from(json['puttsList']),
       parValueList: List<int>.from(json['parValueList']),
+      totalParOn: json['totalParOn'],
+      teeShotMissedLeft: json['teeShotMissedLeft'],
+      teeShotMissedRight: json['teeShotMissedRight'],
+      teeShotCriticalMiss: json['teeShotCriticalMiss'],
     );
   }
   Map<String, dynamic> toJson() {
@@ -447,6 +462,10 @@ class ScoreCardDataModel {
       'scoreList': scoreList,
       'puttsList': puttsList,
       'parValueList': parValueList,
+      'teeShotMissedLeft': teeShotMissedLeft,
+      'teeShotMissedRight': teeShotMissedRight,
+      'teeShotCriticalMiss': teeShotCriticalMiss,
+      'totalParOn': totalParOn,
     };
   }
 }

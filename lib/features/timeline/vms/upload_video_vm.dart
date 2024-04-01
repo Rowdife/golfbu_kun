@@ -55,8 +55,6 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
               profile: profileData,
             );
           }
-          context.pop();
-          context.pop();
           ref.read(timelineProvider.notifier).refresh();
         },
       );

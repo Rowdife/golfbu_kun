@@ -23,6 +23,7 @@ class TimelineViewModel extends AsyncNotifier<List<PostVideoModel>> {
         json: doc.data(),
       ),
     );
+    state = AsyncValue.data(videos.toList());
     return videos.toList();
   }
 

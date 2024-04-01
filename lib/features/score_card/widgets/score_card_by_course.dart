@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:gap/gap.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
-import 'package:golfbu_kun/features/score_card/repos/score_card_repo.dart';
-import 'package:golfbu_kun/features/score_card/vms/score_card_vm.dart';
-import 'package:golfbu_kun/features/score_card/models/score_card_model.dart';
-import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
+
+import 'package:golfbu_kun/features/score_card/vms/score_card_courses_vm.dart';
+
+import 'package:golfbu_kun/features/score_card/models/score_card_course_model.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_preview.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_categories.dart';
-import 'package:golfbu_kun/features/score_card/widgets/score_int_with_underline.dart';
+
 import 'package:golfbu_kun/features/score_card/widgets/score_row_elements.dart';
 
 class ScoreCardByCourse extends ConsumerStatefulWidget {
   const ScoreCardByCourse(this.course, {super.key});
-  final ScoreCardcourseModel course;
+  final ScoreCardCourseModel course;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

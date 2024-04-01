@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golfbu_kun/features/score_card/repos/score_card_repo.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_model.dart';
-import 'package:golfbu_kun/features/score_card/models/scroe_card_courses_model.dart';
+import 'package:golfbu_kun/features/score_card/models/score_card_course_model.dart';
 
 class ScoreCardCourseViewModel
-    extends AsyncNotifier<List<ScoreCardcourseModel>> {
+    extends AsyncNotifier<List<ScoreCardCourseModel>> {
   late ScoreCardRepository _repository;
 
   @override
-  FutureOr<List<ScoreCardcourseModel>> build() async {
+  FutureOr<List<ScoreCardCourseModel>> build() async {
     _repository = ref.read(scoreCardRepo);
     state = const AsyncValue.loading();
     final courses = await _repository.fetchScoreCardCourses();
@@ -19,7 +19,7 @@ class ScoreCardCourseViewModel
   }
 
   // course関連
-  addNewCourse(ScoreCardcourseModel course) {
+  addNewCourse(ScoreCardCourseModel course) {
     // save course to repository
     _repository.addNewScoreCardCourse(course: course);
   }
@@ -40,6 +40,6 @@ final scoreCardForm =
     StateProvider<Map<String, Map<String, dynamic>>>((ref) => {});
 
 final scoreCardCourseProvider =
-    AsyncNotifierProvider<ScoreCardCourseViewModel, List<ScoreCardcourseModel>>(
+    AsyncNotifierProvider<ScoreCardCourseViewModel, List<ScoreCardCourseModel>>(
   () => ScoreCardCourseViewModel(),
 );

@@ -6,6 +6,7 @@ import 'package:golfbu_kun/common/main_navigation/widgets/nav_tap.dart';
 import 'package:golfbu_kun/features/announcement/view/announcement_screen.dart';
 import 'package:golfbu_kun/features/league_relations/screen/chat_screen.dart';
 import 'package:golfbu_kun/features/profile/screens/profile_nav_screen.dart';
+import 'package:golfbu_kun/features/profile/screens/profile_screen.dart';
 import 'package:golfbu_kun/features/schedule_management/screen/calendar_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_screen.dart';
@@ -57,7 +58,7 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
           ),
           Offstage(
             offstage: _selectedIndex != 3,
-            child: const ProfileNavigationScreen(),
+            child: const ProfileScreen(),
           ),
         ],
       ),
