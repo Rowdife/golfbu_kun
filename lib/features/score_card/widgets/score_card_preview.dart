@@ -84,85 +84,29 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     List<int> scoreList = [];
     List<int> puttList = [];
     List<int> parValueList = [];
-    for (int i = 1; i <= 18; i++) {
-      scoreList.add(int.parse(scorecard['hole$i']?['stroke']));
-      puttList.add(int.parse(scorecard['hole$i']?['putt']));
-      parValueList.add(course.parValues[i - 1]);
-    }
-
-    for (int i = 1; i <= 9; i++) {
-      outTotalScroe +=
-          int.parse(widget.scorecard.scorecard['hole$i']?['stroke'] ?? '0');
-      outTotalPutt +=
-          int.parse(widget.scorecard.scorecard['hole$i']?['putt'] ?? '0');
-    }
-    for (int i = 10; i <= 18; i++) {
-      inTotalScroe +=
-          int.parse(widget.scorecard.scorecard['hole$i']?['stroke'] ?? '0');
-      inTotalPutt +=
-          int.parse(widget.scorecard.scorecard['hole$i']?['putt'] ?? '0');
-    }
 
     totalScore = outTotalScroe + inTotalScroe;
     totalPutt = outTotalPutt + inTotalPutt;
 
     List<String> puttRemained = [];
-    for (int i = 1; i <= 18; i++) {
-      String putt = widget.scorecard.scorecard['hole$i']?['puttRemained'];
-      puttRemained.add(putt);
-    }
 
     List<String> puttMissed = [];
-    for (int i = 1; i <= 18; i++) {
-      String putt = widget.scorecard.scorecard['hole$i']?['puttMissed'];
-      puttMissed.add(putt);
-    }
 
     List<String> teeShotClub = [];
-    for (int i = 1; i <= 18; i++) {
-      String shot = widget.scorecard.scorecard['hole$i']?['teeShotClub'];
-      teeShotClub.add(shot);
-    }
 
     List<String> teeShotResult = [];
-    for (int i = 1; i <= 18; i++) {
-      String shot = widget.scorecard.scorecard['hole$i']?['teeShotResult'];
-      teeShotResult.add(shot);
-    }
 
     List<String> parOnShotDistance = [];
-    for (int i = 1; i <= 18; i++) {
-      String shot = widget.scorecard.scorecard['hole$i']?['parOnShotDistance'];
-      parOnShotDistance.add(shot);
-    }
+
     List<String> parOnShotClub = [];
-    for (int i = 1; i <= 18; i++) {
-      String shot = widget.scorecard.scorecard['hole$i']?['parOnShotClub'];
-      parOnShotClub.add(shot);
-    }
+
     List<bool> guardBunker = [];
-    for (int i = 1; i <= 18; i++) {
-      bool? shot = widget.scorecard.scorecard['hole$i']?['guardBunker'];
-      shot ??= false;
-      guardBunker.add(shot);
-    }
 
     List<String> ob = [];
-    for (int i = 1; i <= 18; i++) {
-      String shot = widget.scorecard.scorecard['hole$i']?['ob'];
-      ob.add(shot);
-    }
 
     List<String> hazard = [];
-    for (int i = 1; i <= 18; i++) {
-      String shot = widget.scorecard.scorecard['hole$i']?['hazard'];
-      hazard.add(shot);
-    }
+
     List<String> penalty = [];
-    for (int i = 1; i <= 18; i++) {
-      String shot = widget.scorecard.scorecard['hole$i']?['penalty'];
-      penalty.add(shot);
-    }
 
     int puttRemainedCount =
         puttRemained.where((putt) => putt.isNotEmpty).length;
@@ -181,71 +125,28 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
 
     // スコア分析
     int overBogeyCount = 0;
-    for (int i = 1; i <= 18; i++) {
-      int stroke = int.parse(scorecard['hole$i']?['stroke']);
-      if (stroke - course.parValues[i - 1] >= 2) {
-        overBogeyCount += 1;
-      }
-    }
+
     int bogeyCount = 0;
-    for (int i = 1; i <= 18; i++) {
-      int stroke = int.parse(scorecard['hole$i']?['stroke']);
-      if (stroke - course.parValues[i - 1] == 1) {
-        bogeyCount += 1;
-      }
-    }
 
     int parCount = 0;
-    for (int i = 1; i <= 18; i++) {
-      int stroke = int.parse(scorecard['hole$i']?['stroke']);
-      if (stroke - course.parValues[i - 1] == 0) {
-        parCount += 1;
-      }
-    }
 
     int birdieCount = 0;
-    for (int i = 1; i <= 18; i++) {
-      int stroke = int.parse(scorecard['hole$i']?['stroke']);
-      if (stroke - course.parValues[i - 1] == -1) {
-        birdieCount += 1;
-      }
-    }
+
     int underBirdieCount = 0;
-    for (int i = 1; i <= 18; i++) {
-      int stroke = int.parse(scorecard['hole$i']?['stroke']);
-      if (stroke - course.parValues[i - 1] <= -2) {
-        underBirdieCount += 1;
-      }
-    }
 
     int par3Count = 0;
     int par3TotalScore = 0;
-    for (int i = 1; i <= 18; i++) {
-      if (course.parValues[i - 1] == 3) {
-        par3Count += 1;
-        par3TotalScore += int.parse(scorecard['hole$i']?['stroke']);
-      }
-    }
+
     double par3AverageScore = par3TotalScore / par3Count;
 
     int par4Count = 0;
     int par4TotalScore = 0;
-    for (int i = 1; i <= 18; i++) {
-      if (course.parValues[i - 1] == 4) {
-        par4Count += 1;
-        par4TotalScore += int.parse(scorecard['hole$i']?['stroke']);
-      }
-    }
+
     double par4AverageScore = par4TotalScore / par4Count;
 
     int par5Count = 0;
     int par5TotalScore = 0;
-    for (int i = 1; i <= 18; i++) {
-      if (course.parValues[i - 1] == 5) {
-        par5Count += 1;
-        par5TotalScore += int.parse(scorecard['hole$i']?['stroke']);
-      }
-    }
+
     double par5AverageScore = par5TotalScore / par5Count;
 
     // teeShotResult分析
@@ -290,37 +191,6 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int teeShotUtFwCount = 0;
     int teeShotIronCount = 0;
     int teeShotIronFwCount = 0;
-
-    for (int i = 1; i <= 18; i++) {
-      if (course.parValues[i - 1] != 3) {
-        if (teeShotClub[i - 1] == 'driver') {
-          teeShotDriverCount += 1;
-          if (teeShotResult[i - 1] == 'fw') {
-            teeShotDriverFwCount += 1;
-          }
-        }
-        if (teeShotClub[i - 1] == 'wood') {
-          teeShotWoodCount += 1;
-          if (teeShotResult[i - 1] == 'fw') {
-            teeShotWoodFwCount += 1;
-          }
-        }
-        if (teeShotClub[i - 1] == 'ut') {
-          teeShotUtCount += 1;
-          if (teeShotResult[i - 1] == 'fw') {
-            teeShotUtFwCount += 1;
-          }
-        }
-        if (teeShotClub[i - 1] == 'longiron' ||
-            teeShotClub[i - 1] == 'middleiron' ||
-            teeShotClub[i - 1] == 'shortiron') {
-          teeShotIronCount += 1;
-          if (teeShotResult[i - 1] == 'fw') {
-            teeShotIronFwCount += 1;
-          }
-        }
-      }
-    }
 
     String teeShotDriverFwPercentage =
         ((teeShotDriverFwCount / teeShotDriverCount) * 100).toStringAsFixed(1);
@@ -400,10 +270,6 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
         ((puttNoMissCount / puttTryCount) * 100).toStringAsFixed(1);
 
     List<String> puttDistance = [];
-    for (int i = 1; i <= 18; i++) {
-      String putt = widget.scorecard.scorecard['hole$i']?['puttDistance'];
-      puttDistance.add(putt);
-    }
 
     int puttDistanceCount =
         puttDistance.where((putt) => putt.isNotEmpty).length;
@@ -457,8 +323,249 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int puttInLongLongCount = 0;
     int puttInLongTwoPuttCount = 0;
 
+    String puttInAPinCupInPercentage =
+        ((puttInAPinCupInCount / puttInAPinCount) * 100).toStringAsFixed(1);
+    String puttInAPinLeftMissPercentage =
+        ((puttInAPinLeftMissCount / puttInAPinCount) * 100).toStringAsFixed(1);
+    String puttInAPinRightMissPercentage =
+        ((puttInAPinRightMissCount / puttInAPinCount) * 100).toStringAsFixed(1);
+
+    String puttInShortCupInPercentage =
+        ((puttInShortCupInCount / puttInShortCount) * 100).toStringAsFixed(1);
+    String puttInShortLeftMissPercentage =
+        ((puttInShortLeftMissCount / puttInShortCount) * 100)
+            .toStringAsFixed(1);
+    String puttInShortRightMissPercentage =
+        ((puttInShortRightMissCount / puttInShortCount) * 100)
+            .toStringAsFixed(1);
+
+    String puttInMiddleCupInPercentage =
+        ((puttInMiddleCupInCount / puttInMiddleCount) * 100).toStringAsFixed(1);
+    String puttInMiddleLeftMissPercentage =
+        ((puttInMiddleLeftMissCount / puttInMiddleCount) * 100)
+            .toStringAsFixed(1);
+    String puttInMiddleRightMissPercentage =
+        ((puttInMiddleRightMissCount / puttInMiddleCount) * 100)
+            .toStringAsFixed(1);
+    String puttInMiddleJustTouchPercentage =
+        ((puttInMiddleJustTouchCount / puttInMiddleCount) * 100)
+            .toStringAsFixed(1);
+    String puttInMiddleShortPercentage =
+        ((puttInMiddleShortCount / puttInMiddleCount) * 100).toStringAsFixed(1);
+    String puttInMiddleLongPercentage =
+        ((puttInMiddleLongCount / puttInMiddleCount) * 100).toStringAsFixed(1);
+    String puttInMiddleTwoPutPercentage =
+        ((puttInMiddleTwoPuttCount / puttInMiddleCount) * 100)
+            .toStringAsFixed(1);
+
+    String puttInLongCupInPercentage =
+        ((puttInLongCupInCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongLeftMissPercentage =
+        ((puttInLongLeftMissCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongRightMissPercentage =
+        ((puttInLongRightMissCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongJustTouchPercentage =
+        ((puttInLongJustTouchCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongShortPercentage =
+        ((puttInLongShortCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongLongPercentage =
+        ((puttInLongLongCount / puttInLongCount) * 100).toStringAsFixed(1);
+    String puttInLongTwoPutPercentage =
+        ((puttInLongTwoPuttCount / puttInLongCount) * 100).toStringAsFixed(1);
+
+    //パーオン分析
+    int parOnCount = 0;
+    int parOnUnder50Count = 0;
+    int parOnUnder50OnGreenCount = 0;
+    int parOnUnder100Count = 0;
+    int parOnUnder100OnGreenCount = 0;
+    int parOnUnder150Count = 0;
+    int parOnUnder150OnGreenCount = 0;
+    int parOnUnder200Count = 0;
+    int parOnUnder200OnGreenCount = 0;
+    int parOnOver200Count = 0;
+    int parOnOver200OnGreenCount = 0;
+
+    // par on shot club 分析
+    int parOnShotClubCount =
+        parOnShotClub.where((shot) => shot.isNotEmpty).length;
+    int parOnWoodTryCount =
+        parOnShotClub.where((shot) => shot == 'wood').length +
+            teeShotClub.where((shot) => shot == 'wood').length;
+    int parOnUtTryCount = parOnShotClub.where((shot) => shot == 'ut').length +
+        teeShotClub.where((shot) => shot == 'ut').length;
+    int parOnLongIronTryCount =
+        parOnShotClub.where((shot) => shot == 'longiron').length +
+            teeShotClub.where((shot) => shot == 'longiron').length;
+    int parOnMiddleIronTryCount =
+        parOnShotClub.where((shot) => shot == 'middleiron').length +
+            teeShotClub.where((shot) => shot == 'middleiron').length;
+    int parOnShortIronTryCount =
+        parOnShotClub.where((shot) => shot == 'shortiron').length +
+            teeShotClub.where((shot) => shot == 'shortiron').length;
+    int parOnWedgeTryCount =
+        parOnShotClub.where((shot) => shot == 'wedge').length +
+            teeShotClub.where((shot) => shot == 'wedge').length;
+
+    int parOnWoodCount = 0;
+    int parOnUtCount = 0;
+    int parOnLongIronCount = 0;
+    int parOnMiddleIronCount = 0;
+    int parOnShortIronCount = 0;
+    int parOnWedgeCount = 0;
+
+    String parOnWoodPercentage =
+        ((parOnWoodCount / parOnWoodTryCount) * 100).toStringAsFixed(1);
+    String parOnUtPercentage =
+        ((parOnUtCount / parOnUtTryCount) * 100).toStringAsFixed(1);
+    String parOnLongIronPercentage =
+        ((parOnLongIronCount / parOnLongIronTryCount) * 100).toStringAsFixed(1);
+    String parOnMiddleIronPercentage =
+        ((parOnMiddleIronCount / parOnMiddleIronTryCount) * 100)
+            .toStringAsFixed(1);
+    String parOnShortIronPercentage =
+        ((parOnShortIronCount / parOnShortIronTryCount) * 100)
+            .toStringAsFixed(1);
+    String parOnWedgePercentage =
+        ((parOnWedgeCount / parOnWedgeTryCount) * 100).toStringAsFixed(1);
+
+    // アプローチ分析
+    int approachCount = 0;
+    int approachParSaveCount = 0;
+    int approachChipInCount = 0;
+
+    //バンカー分析
+    int bunkerCount = 0;
+    int bunkerParSaveCount = 0;
+
+    // バーディーチャンス分析
+    int birdieChanceCount = 0;
+    int birdieChanceHoleInCount = 0;
+
+// 重複するForの処理をまとめる
+
+    for (int i = 1; i <= 9; i++) {
+      outTotalScroe +=
+          int.parse(widget.scorecard.scorecard['hole$i']?['stroke'] ?? '0');
+      outTotalPutt +=
+          int.parse(widget.scorecard.scorecard['hole$i']?['putt'] ?? '0');
+    }
+
     for (int i = 1; i <= 18; i++) {
+      scoreList.add(int.parse(scorecard['hole$i']?['stroke']));
+      puttList.add(int.parse(scorecard['hole$i']?['putt']));
+      parValueList.add(course.parValues[i - 1]);
+
+      inTotalScroe +=
+          int.parse(widget.scorecard.scorecard['hole$i']?['stroke'] ?? '0');
+      inTotalPutt +=
+          int.parse(widget.scorecard.scorecard['hole$i']?['putt'] ?? '0');
+
+      String puttRemain = widget.scorecard.scorecard['hole$i']?['puttRemained'];
+      String puttMissedCount =
+          widget.scorecard.scorecard['hole$i']?['puttMissed'];
+      puttRemained.add(puttRemain);
+      puttMissed.add(puttMissedCount);
+
+      String tClub = widget.scorecard.scorecard['hole$i']?['teeShotClub'];
+      teeShotClub.add(tClub);
+
+      String tShotResult =
+          widget.scorecard.scorecard['hole$i']?['teeShotResult'];
+      teeShotResult.add(tShotResult);
+
+      String pShotDistance =
+          widget.scorecard.scorecard['hole$i']?['parOnShotDistance'];
+      parOnShotDistance.add(pShotDistance);
+
+      String pShotClub = widget.scorecard.scorecard['hole$i']?['parOnShotClub'];
+      parOnShotClub.add(pShotClub);
+
+      bool? bunkerShot = widget.scorecard.scorecard['hole$i']?['guardBunker'];
+      bunkerShot ??= false;
+      guardBunker.add(bunkerShot);
+
+      String obShot = widget.scorecard.scorecard['hole$i']?['ob'];
+      ob.add(obShot);
+
+      String hzShot = widget.scorecard.scorecard['hole$i']?['hazard'];
+      hazard.add(hzShot);
+
+      String penaltyShot = widget.scorecard.scorecard['hole$i']?['penalty'];
+      penalty.add(penaltyShot);
+
+      // stroke, putt, parOn, ParThree
+      int stroke = int.parse(scorecard['hole$i']?['stroke']);
       int putt = int.parse(scorecard['hole$i']?['putt']);
+      bool parThree = course.parValues[i - 1] == 3;
+      bool parOn = stroke - putt <= course.parValues[i - 1] - 2;
+
+      if (stroke - course.parValues[i - 1] >= 2) {
+        overBogeyCount += 1;
+      }
+      if (stroke - course.parValues[i - 1] == 1) {
+        bogeyCount += 1;
+      }
+
+      if (stroke - course.parValues[i - 1] == 0) {
+        parCount += 1;
+      }
+
+      if (stroke - course.parValues[i - 1] == -1) {
+        birdieCount += 1;
+      }
+
+      if (stroke - course.parValues[i - 1] <= -2) {
+        underBirdieCount += 1;
+      }
+
+      if (course.parValues[i - 1] == 3) {
+        par3Count += 1;
+        par3TotalScore += int.parse(scorecard['hole$i']?['stroke']);
+      }
+
+      if (course.parValues[i - 1] == 4) {
+        par4Count += 1;
+        par4TotalScore += int.parse(scorecard['hole$i']?['stroke']);
+      }
+
+      if (course.parValues[i - 1] == 5) {
+        par5Count += 1;
+        par5TotalScore += int.parse(scorecard['hole$i']?['stroke']);
+      }
+
+      if (course.parValues[i - 1] != 3) {
+        if (teeShotClub[i - 1] == 'driver') {
+          teeShotDriverCount += 1;
+          if (teeShotResult[i - 1] == 'fw') {
+            teeShotDriverFwCount += 1;
+          }
+        }
+        if (teeShotClub[i - 1] == 'wood') {
+          teeShotWoodCount += 1;
+          if (teeShotResult[i - 1] == 'fw') {
+            teeShotWoodFwCount += 1;
+          }
+        }
+        if (teeShotClub[i - 1] == 'ut') {
+          teeShotUtCount += 1;
+          if (teeShotResult[i - 1] == 'fw') {
+            teeShotUtFwCount += 1;
+          }
+        }
+        if (teeShotClub[i - 1] == 'longiron' ||
+            teeShotClub[i - 1] == 'middleiron' ||
+            teeShotClub[i - 1] == 'shortiron') {
+          teeShotIronCount += 1;
+          if (teeShotResult[i - 1] == 'fw') {
+            teeShotIronFwCount += 1;
+          }
+        }
+      }
+
+      String puttTouch = widget.scorecard.scorecard['hole$i']?['puttDistance'];
+      puttDistance.add(puttTouch);
+
       if (putt >= 3) {
         puttOverThreePutt += 1;
       }
@@ -534,74 +641,6 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
           puttInLongTwoPuttCount += 1;
         }
       }
-    }
-
-    String puttInAPinCupInPercentage =
-        ((puttInAPinCupInCount / puttInAPinCount) * 100).toStringAsFixed(1);
-    String puttInAPinLeftMissPercentage =
-        ((puttInAPinLeftMissCount / puttInAPinCount) * 100).toStringAsFixed(1);
-    String puttInAPinRightMissPercentage =
-        ((puttInAPinRightMissCount / puttInAPinCount) * 100).toStringAsFixed(1);
-
-    String puttInShortCupInPercentage =
-        ((puttInShortCupInCount / puttInShortCount) * 100).toStringAsFixed(1);
-    String puttInShortLeftMissPercentage =
-        ((puttInShortLeftMissCount / puttInShortCount) * 100)
-            .toStringAsFixed(1);
-    String puttInShortRightMissPercentage =
-        ((puttInShortRightMissCount / puttInShortCount) * 100)
-            .toStringAsFixed(1);
-
-    String puttInMiddleCupInPercentage =
-        ((puttInMiddleCupInCount / puttInMiddleCount) * 100).toStringAsFixed(1);
-    String puttInMiddleLeftMissPercentage =
-        ((puttInMiddleLeftMissCount / puttInMiddleCount) * 100)
-            .toStringAsFixed(1);
-    String puttInMiddleRightMissPercentage =
-        ((puttInMiddleRightMissCount / puttInMiddleCount) * 100)
-            .toStringAsFixed(1);
-    String puttInMiddleJustTouchPercentage =
-        ((puttInMiddleJustTouchCount / puttInMiddleCount) * 100)
-            .toStringAsFixed(1);
-    String puttInMiddleShortPercentage =
-        ((puttInMiddleShortCount / puttInMiddleCount) * 100).toStringAsFixed(1);
-    String puttInMiddleLongPercentage =
-        ((puttInMiddleLongCount / puttInMiddleCount) * 100).toStringAsFixed(1);
-    String puttInMiddleTwoPutPercentage =
-        ((puttInMiddleTwoPuttCount / puttInMiddleCount) * 100)
-            .toStringAsFixed(1);
-
-    String puttInLongCupInPercentage =
-        ((puttInLongCupInCount / puttInLongCount) * 100).toStringAsFixed(1);
-    String puttInLongLeftMissPercentage =
-        ((puttInLongLeftMissCount / puttInLongCount) * 100).toStringAsFixed(1);
-    String puttInLongRightMissPercentage =
-        ((puttInLongRightMissCount / puttInLongCount) * 100).toStringAsFixed(1);
-    String puttInLongJustTouchPercentage =
-        ((puttInLongJustTouchCount / puttInLongCount) * 100).toStringAsFixed(1);
-    String puttInLongShortPercentage =
-        ((puttInLongShortCount / puttInLongCount) * 100).toStringAsFixed(1);
-    String puttInLongLongPercentage =
-        ((puttInLongLongCount / puttInLongCount) * 100).toStringAsFixed(1);
-    String puttInLongTwoPutPercentage =
-        ((puttInLongTwoPuttCount / puttInLongCount) * 100).toStringAsFixed(1);
-
-    //パーオン分析
-    int parOnCount = 0;
-    int parOnUnder50Count = 0;
-    int parOnUnder50OnGreenCount = 0;
-    int parOnUnder100Count = 0;
-    int parOnUnder100OnGreenCount = 0;
-    int parOnUnder150Count = 0;
-    int parOnUnder150OnGreenCount = 0;
-    int parOnUnder200Count = 0;
-    int parOnUnder200OnGreenCount = 0;
-    int parOnOver200Count = 0;
-    int parOnOver200OnGreenCount = 0;
-    for (int i = 1; i <= 18; i++) {
-      int stroke = int.parse(scorecard['hole$i']?['stroke']);
-      int putt = int.parse(scorecard['hole$i']?['putt']);
-      bool parOn = stroke - putt <= course.parValues[i - 1] - 2;
 
       if (parOn) {
         parOnCount += 1;
@@ -643,41 +682,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
           }
         }
       }
-    }
 
-    // par on shot club 分析
-    int parOnShotClubCount =
-        parOnShotClub.where((shot) => shot.isNotEmpty).length;
-    int parOnWoodTryCount =
-        parOnShotClub.where((shot) => shot == 'wood').length +
-            teeShotClub.where((shot) => shot == 'wood').length;
-    int parOnUtTryCount = parOnShotClub.where((shot) => shot == 'ut').length +
-        teeShotClub.where((shot) => shot == 'ut').length;
-    int parOnLongIronTryCount =
-        parOnShotClub.where((shot) => shot == 'longiron').length +
-            teeShotClub.where((shot) => shot == 'longiron').length;
-    int parOnMiddleIronTryCount =
-        parOnShotClub.where((shot) => shot == 'middleiron').length +
-            teeShotClub.where((shot) => shot == 'middleiron').length;
-    int parOnShortIronTryCount =
-        parOnShotClub.where((shot) => shot == 'shortiron').length +
-            teeShotClub.where((shot) => shot == 'shortiron').length;
-    int parOnWedgeTryCount =
-        parOnShotClub.where((shot) => shot == 'wedge').length +
-            teeShotClub.where((shot) => shot == 'wedge').length;
-
-    int parOnWoodCount = 0;
-    int parOnUtCount = 0;
-    int parOnLongIronCount = 0;
-    int parOnMiddleIronCount = 0;
-    int parOnShortIronCount = 0;
-    int parOnWedgeCount = 0;
-
-    for (int i = 1; i <= 18; i++) {
-      bool parOn = int.parse(scorecard['hole$i']?['stroke']) -
-              int.parse(scorecard['hole$i']?['putt']) <=
-          course.parValues[i - 1] - 2;
-      bool parThree = course.parValues[i - 1] == 3;
       if (parOn) {
         if (scorecard['hole$i']?['parOnShotClub'] == 'wood') {
           parOnWoodCount += 1;
@@ -718,30 +723,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
           }
         }
       }
-    }
 
-    String parOnWoodPercentage =
-        ((parOnWoodCount / parOnWoodTryCount) * 100).toStringAsFixed(1);
-    String parOnUtPercentage =
-        ((parOnUtCount / parOnUtTryCount) * 100).toStringAsFixed(1);
-    String parOnLongIronPercentage =
-        ((parOnLongIronCount / parOnLongIronTryCount) * 100).toStringAsFixed(1);
-    String parOnMiddleIronPercentage =
-        ((parOnMiddleIronCount / parOnMiddleIronTryCount) * 100)
-            .toStringAsFixed(1);
-    String parOnShortIronPercentage =
-        ((parOnShortIronCount / parOnShortIronTryCount) * 100)
-            .toStringAsFixed(1);
-    String parOnWedgePercentage =
-        ((parOnWedgeCount / parOnWedgeTryCount) * 100).toStringAsFixed(1);
-
-    // アプローチ分析
-    int approachCount = 0;
-    int approachParSaveCount = 0;
-    int approachChipInCount = 0;
-    for (int i = 1; i <= 18; i++) {
-      int stroke = int.parse(scorecard['hole$i']?['stroke']);
-      int putt = int.parse(scorecard['hole$i']?['putt']);
       if (putt == 1) {
         if (stroke == course.parValues[i - 1]) {
           approachCount += 1;
@@ -751,27 +733,13 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
       if (putt == 0) {
         approachChipInCount += 1;
       }
-    }
-    //バンカー分析
-    int bunkerCount = 0;
-    int bunkerParSaveCount = 0;
-    for (int i = 1; i <= 18; i++) {
-      int stroke = int.parse(scorecard['hole$i']?['stroke']);
       if (guardBunker[i - 1]) {
         bunkerCount += 1;
         if (stroke <= course.parValues[i - 1]) {
           bunkerParSaveCount += 1;
         }
       }
-    }
 
-    // バーディーチャンス分析
-    int birdieChanceCount = 0;
-    int birdieChanceHoleInCount = 0;
-
-    for (int i = 1; i <= 18; i++) {
-      int stroke = int.parse(scorecard['hole$i']?['stroke']);
-      int putt = int.parse(scorecard['hole$i']?['putt']);
       if (stroke - putt <= course.parValues[i - 1] - 2) {
         if (scorecard['hole$i']?['puttRemained'] == 'pin' ||
             scorecard['hole$i']?['puttRemained'] == 'short') {
