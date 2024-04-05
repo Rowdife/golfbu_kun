@@ -36,7 +36,10 @@ class TimelineComment extends ConsumerWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Gap(15),
+              Text(
+                comment.createdAt,
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -48,11 +51,6 @@ class TimelineComment extends ConsumerWidget {
                   ),
                   Row(
                     children: [
-                      Text(
-                        comment.createdAt,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 12),
-                      ),
                       if (comment.uploaderUid == ref.read(authRepo).user!.uid)
                         PopupMenuButton<String>(
                           icon: const Icon(

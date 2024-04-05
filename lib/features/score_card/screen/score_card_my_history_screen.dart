@@ -46,6 +46,7 @@ class _ScoreCardMyHistoryScreenState
       ),
       body: ref.watch(scoreCardMyHisotryProvider).when(
             data: (scoreCardsData) {
+              print(scoreCardsData[0].totalScore.toString());
               final scoreCard = scoreCardsData;
               return ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

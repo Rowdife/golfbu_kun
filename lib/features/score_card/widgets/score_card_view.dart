@@ -58,18 +58,25 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "コース名: ${scoreCard.courseName}",
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    "日付: ${scoreCard.uploadDate}",
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "コース名: ${scoreCard.courseName}",
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      "日付: ${scoreCard.uploadDate}",
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      "プレーヤー名: ${scoreCard.uploaderName}",
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
               ),
               Column(
                 children: [

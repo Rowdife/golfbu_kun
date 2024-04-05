@@ -146,7 +146,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                     ],
                   ),
                   if (widget.videoData.uploaderUid ==
-                      ref.read(authRepo).user!.uid)
+                      ref.read(authRepo).user?.uid)
                     PopupMenuButton<String>(
                       icon: const Icon(
                         Icons.more_vert,

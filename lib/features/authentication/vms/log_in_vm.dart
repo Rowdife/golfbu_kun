@@ -21,9 +21,12 @@ class LoginViewModel extends AsyncNotifier<void> {
     state = await AsyncValue.guard(() async {
       await _repository.signIn(email, password);
     });
+
     if (state.hasError) {
       const errorSnack = SnackBar(content: Text("ログイン情報が正しくありません"));
-      ScaffoldMessenger.of(context).showSnackBar(errorSnack);
+      if (!state.isLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(errorSnack);
+      }
     } else {
       context.go("/home");
     }

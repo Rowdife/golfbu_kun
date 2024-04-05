@@ -15,6 +15,7 @@ class CalendarRepository {
         .doc(universityId)
         .collection('calendar')
         .add(schedule.toJson());
+    await getAllSchedule();
   }
 
   Future<List<CalendarEventModel>> getScheduleListByDate(String date) async {

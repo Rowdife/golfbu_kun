@@ -39,6 +39,24 @@ class ProfileRepository {
         .doc(uid)
         .delete();
   }
+
+  Future<void> updateProfile({
+    required String userName,
+    required String userGrade,
+  }) async {
+    final universityId = FirebaseAuth.instance.currentUser!.displayName;
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    await _db
+        .collection("university")
+        .doc(universityId)
+        .collection("users")
+        .doc(uid)
+        .update({
+      "name": userName,
+      "grade": userGrade,
+    });
+  }
 }
 
 final profileRepo = Provider((ref) => ProfileRepository());

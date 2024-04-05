@@ -89,6 +89,8 @@ class _TimelineUploadScreenState
           ],
         ),
       );
+      context.pop();
+      context.pop();
     }
   }
 

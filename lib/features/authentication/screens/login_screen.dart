@@ -16,18 +16,20 @@ class LoginScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Map<String, String> formData = {};
+    bool isLoggingIn = false;
 
     void onLoginTap(BuildContext context) async {
+      if (isLoggingIn) return;
       if (formKey.currentState != null) {
         if (formKey.currentState!.validate()) {
           formKey.currentState!.save();
+          isLoggingIn = true;
 
           await ref.read(loginProvider.notifier).login(
               email: formData["email"]!,
               password: formData["password"],
               context: context);
-          print("logged in");
-          await ref.read(profileProvider.notifier).fetchProfile();
+          isLoggingIn = false;
         }
       }
     }
