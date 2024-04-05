@@ -4,31 +4,15 @@
 
 ゴルフ部の内部SNS、チームスコアマネジメント、スケジュールマネジメントを助けるアプリです。
 
-2024年3月末にAppStoreに登録するのが目標です。
-人生初のアプリ開発なので開発方法論については知識が皆無で、お恥ずかしながらcommitのルールもガバガバです。改善して行きますの大目にみてください、、
+発売目前! テスト後AppStore審査申請予定。
 
-現在実装したScreen別進捗度
+アプリの画面録画:
 
-Timeline Screen ✅  
--スイング動画  
-  *Create✅  
-  *Read✅  
-  *Delete✅
--スイング動画コメント  
-  *Create✅  
-  *Read✅  
-  *Delete✅
-  
-部内告知アナウンス機能 in Progress  
-スコア登録機能 in Progress  
-部内日程管理機能 ✅
+Timeline Screen: 
+Uploading Simulator Screen Recording - iPhone 15 Pro Max - 2024-04-05 at 13.42.22.mp4…
 
-Profile Screen  
--プロフィール情報  
-  *Read ✅  
--アカウント  
-  *Delete ✅  
-  *ログアウト ✅  
+
+
 
   作成完了した画面のScreenshots:
   https://github.com/Rowdife/golfbu_kun/tree/master/preview_screenshots
