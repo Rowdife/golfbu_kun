@@ -32,6 +32,7 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
 
   Future<void> _onRefresh() async {
     await ref.read(timelineProvider.notifier).refresh();
+    setState(() {});
   }
 
   void fetchNextVideos() {
