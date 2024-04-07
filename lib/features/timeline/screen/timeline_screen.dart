@@ -48,10 +48,6 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
         fetchNextVideos();
       }
     });
-    // _fetchVideoIds();
-    if (mounted) {
-      _onRefresh();
-    }
   }
 
   @override

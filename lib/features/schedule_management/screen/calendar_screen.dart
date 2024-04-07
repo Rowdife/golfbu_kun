@@ -34,7 +34,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
   void _getSelectedDaySchedule(DateTime date) async {
     final focusedDateSchedule = await ref
-        .read(calendarProvider)
+        .read(calendarRepo)
         .getScheduleListByDate(date.toString().substring(0, 10));
 
     // Convert Instance of CalendarEventModel to JSON
@@ -53,7 +53,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   }
 
   void _deleteSchedule(int createdAt) async {
-    await ref.read(calendarProvider).deleteSchedule(createdAt);
+    await ref.read(calendarRepo).deleteSchedule(createdAt);
     _getTodaySchedule();
     _getSelectedDaySchedule(_focusedDay);
     _getAllSchedule();
@@ -79,7 +79,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
   void _getTodaySchedule() async {
     final todaySchedule = await ref
-        .read(calendarProvider)
+        .read(calendarRepo)
         .getScheduleListByDate(_today.toString().substring(0, 10));
     final jsonList = todaySchedule.map((event) => event.toJson()).toList();
     if (jsonList.isNotEmpty) {
@@ -95,7 +95,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   }
 
   _getAllSchedule() async {
-    final allSchedule = await ref.read(calendarProvider).getAllSchedule();
+    final allSchedule = await ref.read(calendarRepo).getAllSchedule();
     final jsonList = allSchedule.map((event) => event.toJson()).toList();
     if (jsonList.isNotEmpty) {
       setState(() {

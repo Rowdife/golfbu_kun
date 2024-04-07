@@ -106,6 +106,18 @@ class PostRepository {
     }
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideosByUserId() {
+    final universityId = _authRepo.user!.displayName;
+
+    final query = _db
+        .collection("university")
+        .doc(universityId)
+        .collection("videos")
+        .where("uploaderUid", isEqualTo: _authRepo.user!.uid);
+
+    return query.get();
+  }
+
 // comment　関連
   Future<void> saveVideoComment({
     required PostCommentModel comment,

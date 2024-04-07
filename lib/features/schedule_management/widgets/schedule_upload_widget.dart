@@ -65,7 +65,7 @@ class _ScheduleUploadFormState extends ConsumerState<ScheduleUploadForm> {
           uploaderId: profile.uid,
           createdAt: DateTime.now().millisecondsSinceEpoch,
         );
-        ref.read(calendarProvider).uploadSchedule(schedule);
+        ref.read(calendarRepo).uploadSchedule(schedule);
         Navigator.of(context).pop();
       }
     });

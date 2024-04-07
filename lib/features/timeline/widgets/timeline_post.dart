@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -128,11 +129,21 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                 children: [
                   Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         backgroundColor: Colors.black,
-                        child: FaIcon(
-                          FontAwesomeIcons.user,
-                          color: Colors.white,
+                        child: ClipOval(
+                          child: Image.network(
+                              "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${widget.videoData.uploaderUid}?alt=media&token=${Random().nextInt(100)}",
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                            return const FaIcon(
+                              FontAwesomeIcons.user,
+                              color: Colors.white,
+                              size: 15,
+                            );
+                          }),
                         ),
                       ),
                       const Gap(10),

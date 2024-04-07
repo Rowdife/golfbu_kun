@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golfbu_kun/features/profile/models/profile_model.dart';
 
 class ProfileRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final _storage = FirebaseStorage.instance;
 
   Future<void> createProfile(ProfileModel profile) async {
     _db
@@ -56,6 +60,13 @@ class ProfileRepository {
       "name": userName,
       "grade": userGrade,
     });
+  }
+
+  Future<void> updateAvatar(File file) async {
+    final universityId = FirebaseAuth.instance.currentUser!.displayName;
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final fileRef = _storage.ref('avatars/$uid');
+    await fileRef.putFile(file);
   }
 }
 

@@ -58,6 +58,6 @@ class CalendarRepository {
   }
 }
 
-final calendarProvider = Provider<CalendarRepository>((ref) {
+final calendarRepo = Provider<CalendarRepository>((ref) {
   return CalendarRepository();
 });
