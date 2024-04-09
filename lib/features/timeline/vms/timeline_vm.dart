@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/profile/repos/profile_repo.dart';
@@ -36,11 +37,34 @@ class TimelineViewModel extends AsyncNotifier<List<PostVideoModel>> {
     return _list;
   }
 
-  fetchNextVideos() async {
+  fetchNextVideos(BuildContext context, ScrollController controller,
+      double previousOffset) async {
+    state = const AsyncValue.loading();
     final nextVideosData =
         await _fetchVideos(lastItemCreatedAt: _list.last.createdAt);
     _list = [..._list, ...nextVideosData];
     state = AsyncValue.data(_list);
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text(
+                "動画を追加でロードしました。\n動画が変わらない場合これが最後の動画です。",
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.grey.shade900,
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    controller.jumpTo(previousOffset);
+                  },
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(color: Colors.greenAccent),
+                  ),
+                ),
+              ],
+            ));
   }
 
   Future<List<PostCommentModel>> fetchComments({required int createdAt}) async {

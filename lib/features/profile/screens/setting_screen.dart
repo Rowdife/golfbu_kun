@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/authentication/vms/delete_account_vm.dart';
@@ -99,11 +100,31 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
               ),
             ),
             Theme(
-              data: ThemeData(
-                  listTileTheme:
-                      const ListTileThemeData(textColor: Colors.white)),
-              child: const AboutListTile(),
-            ),
+                data: ThemeData(
+                    listTileTheme: const ListTileThemeData(
+                  textColor: Colors.white,
+                )),
+                child: ListTile(
+                  title: const Text("About Golfbu-kun"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Theme(
+                          data: Theme.of(context).copyWith(
+                            cardColor: Colors.grey.shade900,
+                          ),
+                          child: LicensePage(
+                            applicationIcon: SvgPicture.asset(
+                              "assets/images/golfbukun_logo.svg",
+                              width: 200,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                )),
           ],
         ),
       ),

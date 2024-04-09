@@ -26,9 +26,7 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
     BuildContext context,
   ) async {
     final user = ref.read(authRepo).user;
-    final profile = await ref
-        .read(profileRepo)
-        .findProfile(uid: user!.uid, universityId: user.displayName);
+    final profile = await ref.read(profileRepo).findProfile(uid: user!.uid);
     final createdAt = DateTime.now().millisecondsSinceEpoch;
 
     if (profile != null) {

@@ -6,11 +6,8 @@ class CalendarEventModel {
   final String uploaderId;
   final int createdAt;
   final String? description;
-  final String scheduleStartDate;
-  final String scheduleStartTime;
-  final String scheduleEndDate;
-  final String scheduleEndTime;
-
+  final String date;
+  final String time;
   final Color eventColor;
 
   CalendarEventModel({
@@ -19,10 +16,8 @@ class CalendarEventModel {
     required this.uploaderId,
     required this.createdAt,
     this.description,
-    required this.scheduleStartDate,
-    required this.scheduleStartTime,
-    required this.scheduleEndDate,
-    required this.scheduleEndTime,
+    required this.date,
+    required this.time,
     required this.eventColor,
   });
 
@@ -33,10 +28,8 @@ class CalendarEventModel {
       uploaderId: json['uploaderId'],
       createdAt: json['createdAt'],
       description: json['description'],
-      scheduleStartDate: json['scheduleStartDate'],
-      scheduleStartTime: json['scheduleStartTime'],
-      scheduleEndDate: json['scheduleEndDate'],
-      scheduleEndTime: json['scheduleEndTime'],
+      date: json['date'],
+      time: json['time'],
       eventColor: Color(json['eventColor']),
     );
   }
@@ -48,10 +41,8 @@ class CalendarEventModel {
       'uploaderId': uploaderId,
       'createdAt': createdAt,
       'description': description,
-      "scheduleStartDate": scheduleStartDate,
-      "scheduleStartTime": scheduleStartTime,
-      "scheduleEndDate": scheduleEndDate,
-      "scheduleEndTime": scheduleEndTime,
+      'date': date,
+      'time': time,
       'eventColor': eventColor.value,
     };
   }

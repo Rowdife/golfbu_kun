@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
+import 'package:golfbu_kun/features/timeline/screen/timeline_team_list_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_choice_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_question_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_video_screen.dart';
@@ -35,8 +38,11 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
     setState(() {});
   }
 
-  void fetchNextVideos() {
-    ref.read(timelineProvider.notifier).fetchNextVideos();
+  void fetchNextVideos() async {
+    final double previousOffset = _scrollController.offset;
+    await ref
+        .read(timelineProvider.notifier)
+        .fetchNextVideos(context, _scrollController, previousOffset);
   }
 
   @override
@@ -59,6 +65,7 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const TimelineTeamListScreen(),
       backgroundColor: Colors.grey.shade900,
       appBar: AppBar(
         title: const Text("Timeline"),

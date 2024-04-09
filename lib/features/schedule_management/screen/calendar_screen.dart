@@ -114,8 +114,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     await _getAllSchedule();
   }
 
-  void _uploadScheduleTap(List<DateTime>? schedule) {
-    showModalBottomSheet(
+  void _uploadScheduleTap(DateTime date, TimeOfDay time) async {
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       scrollControlDisabledMaxHeightRatio: 0.5,
@@ -123,11 +123,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.7,
           child: ScheduleUploadForm(
-            schedule: schedule,
+            date: date,
+            time: time,
           ),
         );
       },
     );
+    _onRefresh();
   }
 
   @override
@@ -151,49 +153,100 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final schedule = await showOmniDateTimeRangePicker(
+          final date = await showDatePicker(
             context: context,
-            theme: ThemeData(
-              splashFactory: NoSplash.splashFactory,
-              appBarTheme: Theme.of(context).appBarTheme.copyWith(
-                  backgroundColor: Colors.white, foregroundColor: Colors.white),
-              scaffoldBackgroundColor: Colors.grey.shade900,
-              colorScheme: ColorScheme.fromSwatch().copyWith(
-                primary: Colors.green,
-                onPrimary: Colors.white,
-                secondary: Colors.white,
-                secondaryContainer: const Color.fromARGB(255, 45, 66, 46),
-                onSurface: Colors.white,
-                background: Colors.grey.shade900,
-                primaryContainer: Colors.white,
-                onPrimaryContainer: Colors.white,
-                onSecondary: Colors.white,
-                onSecondaryContainer: Colors.white,
-                tertiary: Colors.white,
-                onTertiary: Colors.white,
-                tertiaryContainer: Colors.white,
-                onTertiaryContainer: Colors.white,
-                error: Colors.white,
-                onError: Colors.white,
-                errorContainer: Colors.white,
-                onErrorContainer: Colors.white,
-                onBackground: Colors.white,
-                surface: Colors.white,
-                surfaceVariant: Colors.white,
-                onSurfaceVariant: Colors.white,
-                outline: Colors.white,
-                outlineVariant: Colors.white,
-                shadow: Colors.white,
-                scrim: Colors.white,
-                inverseSurface: Colors.white,
-                onInverseSurface: Colors.white,
-                inversePrimary: Colors.white,
-                surfaceTint: Colors.white,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2030),
+            builder: (BuildContext context, Widget? child) => Theme(
+              data: ThemeData(
+                splashFactory: NoSplash.splashFactory,
+                appBarTheme: Theme.of(context).appBarTheme.copyWith(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.white),
+                scaffoldBackgroundColor: Colors.grey.shade900,
+                colorScheme: ColorScheme.fromSwatch().copyWith(
+                  primary: Colors.green,
+                  onPrimary: Colors.white,
+                  secondary: Colors.white,
+                  secondaryContainer: const Color.fromARGB(255, 45, 66, 46),
+                  onSurface: Colors.white,
+                  background: Colors.white,
+                  primaryContainer: Colors.white,
+                  onPrimaryContainer: Colors.white,
+                  onSecondary: Colors.grey.shade900,
+                  onSecondaryContainer: Colors.grey.shade900,
+                  tertiary: Colors.grey.shade900,
+                  onTertiary: Colors.grey.shade900,
+                  tertiaryContainer: Colors.grey.shade900,
+                  onTertiaryContainer: Colors.grey.shade900,
+                  error: Colors.grey.shade900,
+                  onError: Colors.grey.shade900,
+                  onBackground: Colors.grey.shade900,
+                  surface: Colors.grey.shade900,
+                  surfaceVariant: Colors.grey.shade900,
+                  onSurfaceVariant: Colors.white,
+                  outline: Colors.white,
+                  outlineVariant: Colors.grey.shade900,
+                  shadow: Colors.grey.shade900,
+                  scrim: Colors.grey.shade900,
+                  inverseSurface: Colors.grey.shade900,
+                  onInverseSurface: Colors.grey.shade900,
+                  inversePrimary: Colors.grey.shade900,
+                  surfaceTint: Colors.grey.shade900,
+                ),
               ),
+              child: child!,
             ),
           );
-          if (schedule != null) {
-            _uploadScheduleTap(schedule);
+
+          final time = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.now(),
+            builder: (BuildContext context, Widget? child) => Theme(
+              data: ThemeData(
+                splashFactory: NoSplash.splashFactory,
+                appBarTheme: Theme.of(context).appBarTheme.copyWith(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.white),
+                scaffoldBackgroundColor: Colors.grey.shade900,
+                colorScheme: ColorScheme.fromSwatch().copyWith(
+                  primary: Colors.green,
+                  onPrimary: Colors.white,
+                  secondary: Colors.white,
+                  secondaryContainer: const Color.fromARGB(255, 45, 66, 46),
+                  onSurface: Colors.white,
+                  background: Colors.white,
+                  primaryContainer: Colors.grey.shade900,
+                  onPrimaryContainer: Colors.white,
+                  onSecondary: Colors.grey.shade900,
+                  onSecondaryContainer: Colors.grey.shade900,
+                  tertiary: Colors.grey.shade900,
+                  onTertiary: Colors.grey.shade900,
+                  tertiaryContainer: Colors.grey.shade900,
+                  onTertiaryContainer: Colors.grey.shade900,
+                  error: Colors.grey.shade900,
+                  onError: Colors.grey.shade900,
+                  onBackground: Colors.grey.shade900,
+                  surface: Colors.grey.shade900,
+                  surfaceVariant: Colors.grey.shade900,
+                  onSurfaceVariant: Colors.white,
+                  outline: Colors.white,
+                  outlineVariant: Colors.grey.shade900,
+                  shadow: Colors.grey.shade900,
+                  scrim: Colors.grey.shade900,
+                  inverseSurface: Colors.grey.shade900,
+                  onInverseSurface: Colors.grey.shade900,
+                  inversePrimary: Colors.grey.shade900,
+                  surfaceTint: Colors.grey.shade900,
+                ),
+              ),
+              child: child!,
+            ),
+          );
+
+          if (date != null && time != null) {
+            _uploadScheduleTap(date, time);
           }
         },
         backgroundColor: Colors.grey.shade200,
@@ -279,7 +332,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     String dateString = date.toString().substring(0, 10);
                     List<CalendarEventModel> filteredEvents =
                         _allEventsList.where((event) {
-                      return event.scheduleStartDate == dateString;
+                      return event.date == dateString;
                     }).toList();
                     return filteredEvents;
                   },
@@ -320,7 +373,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${_selectedEventsList[index].scheduleStartTime} ~ ${_selectedEventsList[index].scheduleEndTime}",
+                                    _selectedEventsList[index].time,
                                     style: const TextStyle(color: Colors.white),
                                   ),
                                   const Gap(5),
@@ -383,7 +436,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${_todayEventsList[index].scheduleStartTime} ~ ${_todayEventsList[index].scheduleEndTime}",
+                                    _todayEventsList[index].time,
                                     style: const TextStyle(color: Colors.white),
                                   ),
                                   const Gap(5),

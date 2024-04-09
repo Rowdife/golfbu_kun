@@ -22,6 +22,14 @@ class ProfileAvatarViewModel extends AsyncNotifier<void> {
       () async => await _profileRepo.updateAvatar(file),
     );
   }
+
+  Future<void> updateAvatarById(File file, String id) async {
+    state = const AsyncValue.loading();
+
+    state = await AsyncValue.guard(
+      () async => await _profileRepo.updateAvatarById(file: file, id: id),
+    );
+  }
 }
 
 final profileAvatarProvider =

@@ -21,8 +21,8 @@ class ProfileRepository {
 
   Future<Map<String, dynamic>?> findProfile({
     required String uid,
-    required String? universityId,
   }) async {
+    final universityId = FirebaseAuth.instance.currentUser!.displayName;
     final doc = await _db
         .collection("university")
         .doc(universityId)
@@ -30,6 +30,17 @@ class ProfileRepository {
         .doc(uid)
         .get();
     return doc.data();
+  }
+
+  Future<List<ProfileModel>> fetchAllProfileInMyTeam() async {
+    final universityId = FirebaseAuth.instance.currentUser!.displayName;
+
+    final doc = await _db
+        .collection("university")
+        .doc(universityId)
+        .collection("users")
+        .get();
+    return doc.docs.map((e) => ProfileModel.fromJson(e.data())).toList();
   }
 
   Future<void> deleteProfile({
@@ -63,9 +74,14 @@ class ProfileRepository {
   }
 
   Future<void> updateAvatar(File file) async {
-    final universityId = FirebaseAuth.instance.currentUser!.displayName;
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final fileRef = _storage.ref('avatars/$uid');
+    await fileRef.putFile(file);
+  }
+
+  Future<void> updateAvatarById(
+      {required File file, required String id}) async {
+    final fileRef = _storage.ref('avatars/$id');
     await fileRef.putFile(file);
   }
 }

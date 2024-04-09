@@ -106,14 +106,14 @@ class PostRepository {
     }
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideosByUserId() {
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideosByUserId(String id) {
     final universityId = _authRepo.user!.displayName;
 
     final query = _db
         .collection("university")
         .doc(universityId)
         .collection("videos")
-        .where("uploaderUid", isEqualTo: _authRepo.user!.uid);
+        .where("uploaderUid", isEqualTo: id);
 
     return query.get();
   }

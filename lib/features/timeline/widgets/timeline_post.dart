@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
 import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
@@ -124,64 +125,71 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Gap(10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.black,
-                        child: ClipOval(
-                          child: Image.network(
-                              "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${widget.videoData.uploaderUid}?alt=media&token=${Random().nextInt(100)}",
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                            return const FaIcon(
-                              FontAwesomeIcons.user,
-                              color: Colors.white,
-                              size: 15,
-                            );
-                          }),
+              GestureDetector(
+                onTap: () {
+                  context.push("/profileinfo/${widget.videoData.uploaderUid}");
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.black,
+                          child: ClipOval(
+                            child: Image.network(
+                                "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${widget.videoData.uploaderUid}?alt=media&token=${Random().nextInt(100)}",
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                              return const FaIcon(
+                                FontAwesomeIcons.user,
+                                color: Colors.white,
+                                size: 15,
+                              );
+                            }),
+                          ),
                         ),
-                      ),
-                      const Gap(10),
-                      Text(
-                        "${widget.videoData.uploaderGrade} ${widget.videoData.uploaderName}",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (widget.videoData.uploaderUid ==
-                      ref.read(authRepo).user?.uid)
-                    PopupMenuButton<String>(
-                      icon: const Icon(
-                        Icons.more_vert,
-                        color: Colors.white,
-                      ),
-                      onSelected: (value) async {
-                        switch (value) {
-                          case 'Delete':
-                            await ref.read(postRepo).deleteVideo(
-                                  createdAt: widget.videoData.createdAt,
-                                );
-                            await ref.read(timelineProvider.notifier).refresh();
-                            break;
-                        }
-                      },
-                      itemBuilder: (BuildContext context) =>
-                          <PopupMenuEntry<String>>[
-                        const PopupMenuItem<String>(
-                          value: 'Delete',
-                          child: Text('Delete'),
+                        const Gap(10),
+                        Text(
+                          "${widget.videoData.uploaderGrade} ${widget.videoData.uploaderName}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
-                    )
-                ],
+                    ),
+                    if (widget.videoData.uploaderUid ==
+                        ref.read(authRepo).user?.uid)
+                      PopupMenuButton<String>(
+                        icon: const Icon(
+                          Icons.more_vert,
+                          color: Colors.white,
+                        ),
+                        onSelected: (value) async {
+                          switch (value) {
+                            case 'Delete':
+                              await ref.read(postRepo).deleteVideo(
+                                    createdAt: widget.videoData.createdAt,
+                                  );
+                              await ref
+                                  .read(timelineProvider.notifier)
+                                  .refresh();
+                              break;
+                          }
+                        },
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<String>>[
+                          const PopupMenuItem<String>(
+                            value: 'Delete',
+                            child: Text('Delete'),
+                          ),
+                        ],
+                      )
+                  ],
+                ),
               ),
               const Gap(10),
               Container(

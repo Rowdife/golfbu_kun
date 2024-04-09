@@ -24,7 +24,7 @@ class CalendarRepository {
         .collection('university')
         .doc(universityId)
         .collection('calendar')
-        .where('scheduleStartDate', isEqualTo: date)
+        .where('date', isEqualTo: date)
         .get();
     return snapshot.docs
         .map((doc) => CalendarEventModel.fromJson(doc.data()))

@@ -10,10 +10,12 @@ import 'package:golfbu_kun/features/schedule_management/repos/calendar_repo.dart
 class ScheduleUploadForm extends ConsumerStatefulWidget {
   const ScheduleUploadForm({
     super.key,
-    required this.schedule,
+    required this.date,
+    required this.time,
   });
 
-  final List<DateTime>? schedule;
+  final DateTime date;
+  final TimeOfDay time;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -54,10 +56,8 @@ class _ScheduleUploadFormState extends ConsumerState<ScheduleUploadForm> {
         _formKey.currentState!.save();
         final profile = value;
         final schedule = CalendarEventModel(
-          scheduleStartDate: widget.schedule![0].toString().substring(0, 10),
-          scheduleStartTime: widget.schedule![0].toString().substring(11, 16),
-          scheduleEndDate: widget.schedule![1].toString().substring(0, 10),
-          scheduleEndTime: widget.schedule![1].toString().substring(11, 16),
+          date: widget.date.toString().substring(0, 10),
+          time: widget.time.toString().substring(10, 15),
           title: _scheduleName,
           description: _description,
           eventColor: _selectedColor,
@@ -92,14 +92,12 @@ class _ScheduleUploadFormState extends ConsumerState<ScheduleUploadForm> {
               children: [
                 const Gap(20),
                 Text(
-                  widget.schedule.toString().substring(1, 17),
+                  widget.date.toString().substring(0, 10),
                   style: const TextStyle(fontSize: 20),
                 ),
                 const Gap(10),
-                const Text("TO"),
-                const Gap(10),
                 Text(
-                  widget.schedule.toString().substring(26, 42),
+                  widget.time.toString().substring(10, 15),
                   style: const TextStyle(fontSize: 20),
                 ),
                 const Gap(20),

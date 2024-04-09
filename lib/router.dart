@@ -5,6 +5,7 @@ import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/authentication/screens/login_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/onboarding_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/sign_up_screen.dart';
+import 'package:golfbu_kun/features/profile/screens/profile_by_user_id_screen.dart';
 import 'package:golfbu_kun/features/profile/screens/profile_screen.dart';
 import 'package:golfbu_kun/features/profile/screens/setting_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart';
@@ -17,14 +18,14 @@ import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 final routeProvider = Provider(
   (ref) {
     return GoRouter(
-      initialLocation: "/home",
+      initialLocation: "/",
       redirect: (context, state) async {
         final isLoggedIn = ref.read(authRepo).isLoggedIn;
-        if (!isLoggedIn) {
-          if (state.matchedLocation != OnboardingScreen.routeURL &&
-              state.matchedLocation != SignUpScreen.routeURL &&
-              state.matchedLocation != LoginScreen.routeURL) {
-            return "/";
+        if (isLoggedIn) {
+          if (state.matchedLocation == OnboardingScreen.routeURL &&
+              state.matchedLocation == SignUpScreen.routeURL &&
+              state.matchedLocation == LoginScreen.routeURL) {
+            return "/home";
           } else {
             return null;
           }
@@ -79,6 +80,13 @@ final routeProvider = Provider(
           name: ProfileScreen.routeName,
           path: ProfileScreen.routeURL,
           builder: (context, state) => const ProfileScreen(),
+        ),
+        GoRoute(
+          path: '${ProfileByUserIdScreen.routeURL}/:id',
+          builder: (context, state) {
+            final id = state.pathParameters['id']!;
+            return ProfileByUserIdScreen(userId: id);
+          },
         ),
         GoRoute(
           name: TimelineUploadQuestionScreen.routeName,

@@ -28,13 +28,12 @@ class _ScoreCardMyHistoryScreenState
     );
   }
 
-  void _fetchMyScoreCardsData() async {
-    ref.read(scoreCardMyHisotryProvider.notifier).fetchMyScoreCardsData();
+  Future<void> _fetchMyScoreCardsData() async {
+    await ref.read(scoreCardMyHisotryProvider.notifier).fetchMyScoreCardsData();
   }
 
   @override
   void initState() {
-    _fetchMyScoreCardsData();
     super.initState();
   }
 
@@ -47,27 +46,32 @@ class _ScoreCardMyHistoryScreenState
       body: ref.watch(scoreCardMyHisotryProvider).when(
             data: (scoreCardsData) {
               final scoreCard = scoreCardsData;
-              return ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                itemCount: scoreCard.length,
-                itemBuilder: (context, index) {
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () => _onScoreCardTap(scoreCard[index]),
-                          child: ScoreCardHistoryTile(
-                            courseName: scoreCard[index].courseName,
-                            uploaderName: scoreCard[index].uploaderName,
-                            uploadDate: scoreCard[index].uploadDate.toString(),
-                            totalScore: scoreCard[index].totalScore.toString(),
+              return RefreshIndicator(
+                onRefresh: _fetchMyScoreCardsData,
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  itemCount: scoreCard.length,
+                  itemBuilder: (context, index) {
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () => _onScoreCardTap(scoreCard[index]),
+                            child: ScoreCardHistoryTile(
+                              courseName: scoreCard[index].courseName,
+                              uploaderName: scoreCard[index].uploaderName,
+                              uploadDate:
+                                  scoreCard[index].uploadDate.toString(),
+                              totalScore:
+                                  scoreCard[index].totalScore.toString(),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                        ],
+                      ),
+                    );
+                  },
+                ),
               );
             },
             loading: () => const Center(

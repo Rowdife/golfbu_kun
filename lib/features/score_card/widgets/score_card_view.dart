@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
 import 'package:golfbu_kun/features/profile/models/profile_model.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
@@ -51,6 +53,59 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
         title: const Text(
           "スコアカード",
         ),
+        actions: [
+          if (scoreCard.uploaderId == ref.read(authRepo).user!.uid)
+            IconButton(
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: const Text("本当にこのスコアデータを削除してよろしいですか？"),
+                    content: const Text("取り戻せなくなります。"),
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          context.pop();
+                          return;
+                        },
+                        child: const Text("No"),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          await ref
+                              .read(scoreCardRepo)
+                              .deleteScoreCardByCreatedAt(
+                                  scoreCard.createAtUnix);
+                          await showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: const Text("削除完了"),
+                              content: const Text("スコア削除を完了しました"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                  child: const Text("OK"),
+                                ),
+                              ],
+                            ),
+                          );
+                          context.pop();
+                          context.pop();
+                        },
+                        child: const Text(
+                          "OK",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: const FaIcon(FontAwesomeIcons.trash),
+            ),
+        ],
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -640,7 +695,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ScoreCardDataTile(
                         title: "フェアウェイキープ率",
                         data:
-                            "${(scoreCard.totalFairwayFind / scoreCard.totalFairwayTry).toStringAsFixed(1)}%",
+                            "${(scoreCard.totalFairwayFind / scoreCard.totalFairwayTry * 100).toStringAsFixed(1)}%",
                       ),
                       // model設計ミスによって表示不可。修正要
                       ScoreCardDataTile(
@@ -649,24 +704,19 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                             "${scoreCard.teeShotMissedLeft} / ${scoreCard.totalFairwayTry}",
                       ),
                       ScoreCardDataTile(
-                        title: "フェアウェイより左に外れる確率",
-                        data: (scoreCard.teeShotMissedLeft /
-                                scoreCard.totalFairwayTry *
-                                100)
-                            .toStringAsFixed(1),
-                      ),
+                          title: "フェアウェイより左に外れる確率",
+                          data:
+                              "${(scoreCard.teeShotMissedLeft / scoreCard.totalFairwayTry * 100).toStringAsFixed(1)}%"),
                       ScoreCardDataTile(
                         title: "フェアウェイより右に外れた数",
                         data:
                             "${scoreCard.teeShotMissedRight} / ${scoreCard.totalFairwayTry}",
                       ),
                       ScoreCardDataTile(
-                        title: "フェアウェイより右に外れる確率",
-                        data: (scoreCard.teeShotMissedRight /
-                                scoreCard.totalFairwayTry *
-                                100)
-                            .toStringAsFixed(1),
-                      ),
+                          title: "フェアウェイより右に外れる確率",
+                          data:
+                              "${(scoreCard.teeShotMissedRight / scoreCard.totalFairwayTry * 100).toStringAsFixed(1)}%"),
+
                       ScoreCardDataTile(
                         title: "ティーショットクリティカルミス",
                         data:
@@ -674,10 +724,8 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ),
                       ScoreCardDataTile(
                         title: "ティーショットクリティカルミス率",
-                        data: (scoreCard.teeShotCriticalMiss /
-                                scoreCard.totalFairwayTry *
-                                100)
-                            .toStringAsFixed(1),
+                        data:
+                            "${(scoreCard.teeShotCriticalMiss / scoreCard.totalFairwayTry * 100).toStringAsFixed(1)}%",
                       ),
 
                       const Gap(20),
@@ -694,7 +742,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ScoreCardDataTile(
                         title: "DriverのFwキープ率",
                         data:
-                            "${(scoreCard.driverFairwayFind / scoreCard.driverFairwayTry).toStringAsFixed(1)}%",
+                            "${(scoreCard.driverFairwayFind / scoreCard.driverFairwayTry * 100).toStringAsFixed(1)}%",
                       ),
                       ScoreCardDataTile(
                         title: "WoodのFwキープ数",
@@ -704,7 +752,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ScoreCardDataTile(
                         title: "WoodのFwキープ率",
                         data:
-                            "${(scoreCard.woodFairwayFind / scoreCard.woodFairwayTry).toStringAsFixed(1)}%",
+                            "${(scoreCard.woodFairwayFind / scoreCard.woodFairwayTry * 100).toStringAsFixed(1)}%",
                       ),
                       ScoreCardDataTile(
                         title: "UTのFwキープ数",
@@ -714,7 +762,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ScoreCardDataTile(
                         title: "UTのFwキープ率",
                         data:
-                            "${(scoreCard.utilityFairwayFind / scoreCard.utilityFairwayTry).toStringAsFixed(1)}%",
+                            "${(scoreCard.utilityFairwayFind / scoreCard.utilityFairwayTry * 100).toStringAsFixed(1)}%",
                       ),
                       ScoreCardDataTile(
                         title: "IronのFwキープ数",
@@ -724,7 +772,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ScoreCardDataTile(
                         title: "IronのFwキープ率",
                         data:
-                            "${(scoreCard.ironFairwayFind / scoreCard.ironFairwayTry).toStringAsFixed(1)}%",
+                            "${(scoreCard.ironFairwayFind / scoreCard.ironFairwayTry * 100).toStringAsFixed(1)}%",
                       ),
                       const Gap(20),
                       const Text(
@@ -794,7 +842,8 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ),
                       ScoreCardDataTile(
                         title: "パーオン率",
-                        data: "${scoreCard.totalParOn / 18 * 100}%",
+                        data:
+                            "${(scoreCard.totalParOn / 18 * 100).toStringAsFixed(1)}%",
                       ),
                       const Gap(20),
                       const Text(
@@ -936,7 +985,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ScoreCardDataTile(
                         title: "左外し数",
                         data:
-                            "${scoreCard.puttMissedLeft} / ${scoreCard.puttTry}t",
+                            "${scoreCard.puttMissedLeft} / ${scoreCard.puttTry}",
                       ),
                       ScoreCardDataTile(
                         title: "左外し率",

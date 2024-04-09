@@ -178,7 +178,7 @@ class _TimelineUploadScreenState
                 ],
               )
             : const Center(
-                child: Text("7秒以内の動画を使用してください"),
+                child: Text("5秒以内の動画を使用してください"),
               ));
   }
 }

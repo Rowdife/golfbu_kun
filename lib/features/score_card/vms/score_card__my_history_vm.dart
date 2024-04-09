@@ -9,6 +9,7 @@ class ScoreCardMyHistoryViewModel
   late ScoreCardRepository _repository;
 
   Future<List<ScoreCardDataModel>> fetchMyScoreCardsData() async {
+    state = const AsyncValue.loading();
     final myScoreCardsData = await _repository.fetchMyScoreCardsData();
     state = AsyncValue.data(myScoreCardsData);
     return myScoreCardsData;
@@ -21,6 +22,14 @@ class ScoreCardMyHistoryViewModel
     final scoreCardsData = await fetchMyScoreCardsData();
     state = AsyncValue.data(scoreCardsData);
     return scoreCardsData;
+  }
+
+  Future<List<ScoreCardDataModel>> fetchScoreCardsDataByUserId(
+      String id) async {
+    state = const AsyncValue.loading();
+    final myScoreCardsData = await _repository.fetchScoreCardsDataByUserId(id);
+    state = AsyncValue.data(myScoreCardsData);
+    return myScoreCardsData;
   }
 }
 
