@@ -76,12 +76,12 @@ class _ScoreCardAddcourseScreenState
   String? description;
   List<int> holeParValues = List.generate(18, (index) => 4);
 
-  void _onSavePressed(BuildContext context, ProfileModel profile) {
+  void _onSavePressed(BuildContext context, ProfileModel profile) async {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
 
-        ref
+        await ref
             .read(scoreCardCourseProvider.notifier)
             .addNewCourse(ScoreCardCourseModel(
               courseName: courseName,
@@ -94,7 +94,23 @@ class _ScoreCardAddcourseScreenState
               createdAt: DateTime.now().millisecondsSinceEpoch,
               parValues: holeParValues,
             ));
-        context.pop();
+        await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text("アップロード完了"),
+            content: const Text("コースのアップロードが完了しました"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  context.pop();
+                  context.pop();
+                  context.pop();
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          ),
+        );
       }
 
       // Save the form data to the database

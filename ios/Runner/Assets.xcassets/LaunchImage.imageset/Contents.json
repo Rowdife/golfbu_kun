@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "golfbukun_logo.svg",
+      "filename" : "ゴルフ部のくん (2).png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "golfbukun_logo 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "golfbukun_logo 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

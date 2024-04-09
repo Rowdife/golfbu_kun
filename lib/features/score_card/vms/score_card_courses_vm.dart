@@ -19,9 +19,9 @@ class ScoreCardCourseViewModel
   }
 
   // course関連
-  addNewCourse(ScoreCardCourseModel course) {
+  Future<void> addNewCourse(ScoreCardCourseModel course) async {
     // save course to repository
-    _repository.addNewScoreCardCourse(course: course);
+    await _repository.addNewScoreCardCourse(course: course);
   }
 
   fetchCourses() async {

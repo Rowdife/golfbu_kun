@@ -8,7 +8,6 @@ import 'package:golfbu_kun/features/profile/repos/profile_repo.dart';
 
 class ProfileAvatarViewModel extends AsyncNotifier<void> {
   late final ProfileRepository _profileRepo;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   @override
   FutureOr<void> build() {

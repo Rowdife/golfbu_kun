@@ -57,7 +57,10 @@ class ProfilesViewModel extends AsyncNotifier<ProfileModel> {
 
   Future<ProfileModel> fetchProfile() async {
     final profile = await _profileRepo.findProfile(uid: _authRepo.user!.uid);
-    state = AsyncValue.data(ProfileModel.fromJson(profile!));
+    if (profile == null) {
+      return ProfileModel.empty();
+    }
+    state = AsyncValue.data(ProfileModel.fromJson(profile));
     return ProfileModel.fromJson(profile);
   }
 

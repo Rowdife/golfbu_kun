@@ -10,12 +10,7 @@ class ScoreCardRepository {
   final AuthenticationRepository _authRepo = AuthenticationRepository();
 
   Future<List<ScoreCardCourseModel>> fetchScoreCardCourses() async {
-    final universityId = _authRepo.user!.displayName;
-    final courses = await _db
-        .collection("university")
-        .doc(universityId)
-        .collection("courses")
-        .get();
+    final courses = await _db.collection("courses").get();
     final courseList = courses.docs
         .map((e) => ScoreCardCourseModel.fromJson(e.data()))
         .toList();
@@ -24,13 +19,8 @@ class ScoreCardRepository {
 
   Future<void> addNewScoreCardCourse(
       {required ScoreCardCourseModel course}) async {
-    final universityId = _authRepo.user!.displayName;
     final courseJson = course.toJson();
-    await _db
-        .collection("university")
-        .doc(universityId)
-        .collection("courses")
-        .add(courseJson);
+    await _db.collection("courses").add(courseJson);
   }
 
   Future<void> uploadScoreCard(

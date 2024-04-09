@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/common/main_navigation/screen/main_navigation_screen.dart';
+import 'package:golfbu_kun/common/privacy_policy/screen/privacy_policy_screen.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/authentication/screens/login_screen.dart';
 import 'package:golfbu_kun/features/authentication/screens/onboarding_screen.dart';
@@ -22,8 +23,8 @@ final routeProvider = Provider(
       redirect: (context, state) async {
         final isLoggedIn = ref.read(authRepo).isLoggedIn;
         if (isLoggedIn) {
-          if (state.matchedLocation == OnboardingScreen.routeURL &&
-              state.matchedLocation == SignUpScreen.routeURL &&
+          if (state.matchedLocation == OnboardingScreen.routeURL ||
+              state.matchedLocation == SignUpScreen.routeURL ||
               state.matchedLocation == LoginScreen.routeURL) {
             return "/home";
           } else {
@@ -92,6 +93,11 @@ final routeProvider = Provider(
           name: TimelineUploadQuestionScreen.routeName,
           path: TimelineUploadQuestionScreen.routeUrl,
           builder: (context, state) => const TimelineUploadQuestionScreen(),
+        ),
+        GoRoute(
+          name: PrivacyPolicyScreen.routeName,
+          path: PrivacyPolicyScreen.routeURL,
+          builder: (context, state) => const PrivacyPolicyScreen(),
         ),
       ],
     );
