@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 import 'package:golfbu_kun/features/timeline/models/post_comment_model.dart';
 import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
@@ -13,7 +14,7 @@ class TimelineCommentScreen extends ConsumerStatefulWidget {
     required this.comments,
     required this.createdAt,
   });
-  // comment をアップロードする時に必要
+  // videoDataのcreateAt なので UnixTime.
   final int createdAt;
   // commentsをItemBuildする時に必要
   final List<PostCommentModel> comments;
@@ -43,9 +44,11 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
             text: text,
             createdAt: DateTime.now().toString().substring(0, 16),
             createdAtUnix: DateTime.now().millisecondsSinceEpoch,
+            uploaderUid: profile.uid,
           ),
           createdAt: widget.createdAt);
     }
+    context.pop();
   }
 
   @override
@@ -66,10 +69,8 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
           itemBuilder: (context, index) => Stack(
             children: [
               TimelineComment(
-                grade: widget.comments[index].uploaderGrade,
-                name: widget.comments[index].uploaderName,
-                createdAt: widget.comments[index].createdAt,
-                text: widget.comments[index].text,
+                comment: widget.comments[index],
+                videoCreatedAt: widget.createdAt,
               ),
             ],
           ),

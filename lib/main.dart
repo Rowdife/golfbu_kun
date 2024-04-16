@@ -2,9 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/firebase_options.dart';
 import 'package:golfbu_kun/router.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +14,7 @@ void main() async {
   );
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await initializeDateFormatting('ja_JP');
 
   runApp(
     ProviderScope(
@@ -30,6 +31,7 @@ class GolfbukunApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: ref.watch(routeProvider),
       title: 'Golfbukun',
       theme: ThemeData(
@@ -60,6 +62,14 @@ class GolfbukunApp extends ConsumerWidget {
             fontSize: 20,
           ),
           centerTitle: true,
+        ),
+        dialogTheme: DialogTheme(
+          backgroundColor: Colors.grey.shade900,
+          surfaceTintColor: Colors.grey.shade900,
+          titleTextStyle: const TextStyle(fontSize: 16),
+        ),
+        listTileTheme: const ListTileThemeData(
+          textColor: Colors.white,
         ),
       ),
     );

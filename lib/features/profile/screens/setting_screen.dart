@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/authentication/vms/delete_account_vm.dart';
+import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
   static const routeName = "Setting";
@@ -29,8 +31,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
             child: const Text("いいえ"),
           ),
           CupertinoActionSheetAction(
-            onPressed: () => {
-              ref.read(authRepo).signOut(),
+            onPressed: () async => {
+              await ref.read(authRepo).signOut(),
+              ref.read(profileProvider.notifier).resetProfile(),
               context.go("/"),
             },
             isDestructiveAction: true,
@@ -46,7 +49,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
       context: context,
       builder: (context) => CupertinoActionSheet(
         title: const Text(
-          "本当にアカウントを削除してよろしいですか？",
+          "本当にアカウントを削除してよろしいですか？\n 今までアップロードしたデータは全て削除されます。",
           style: TextStyle(color: Colors.black),
         ),
         actions: [
@@ -56,8 +59,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ),
           CupertinoActionSheetAction(
             onPressed: () => {
-              ref.read(deleteAccountProvider.notifier).deleteAccount(),
-              context.go("/"),
+              ref.read(deleteAccountProvider.notifier).deleteAccount(context),
             },
             isDestructiveAction: true,
             child: const Text("アカウント削除"),
@@ -98,11 +100,31 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
               ),
             ),
             Theme(
-              data: ThemeData(
-                  listTileTheme:
-                      const ListTileThemeData(textColor: Colors.white)),
-              child: const AboutListTile(),
-            ),
+                data: ThemeData(
+                    listTileTheme: const ListTileThemeData(
+                  textColor: Colors.white,
+                )),
+                child: ListTile(
+                  title: const Text("About Golfbu-kun"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Theme(
+                          data: Theme.of(context).copyWith(
+                            cardColor: Colors.grey.shade900,
+                          ),
+                          child: LicensePage(
+                            applicationIcon: SvgPicture.asset(
+                              "assets/images/golfbukun_logo.svg",
+                              width: 200,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                )),
           ],
         ),
       ),

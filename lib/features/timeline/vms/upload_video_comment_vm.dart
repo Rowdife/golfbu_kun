@@ -49,6 +49,15 @@ class UploadVideoCommentViewModel extends AsyncNotifier<List<String>> {
   Future<List<PostCommentModel>> fetchCommentsByVideoId(String videoId) async {
     return _repository.fetchCommentsByVideoId(videoId: videoId);
   }
+
+  void deleteVideoComment({
+    required int videoCreatedAt,
+    required int commentCreatedAtUnix,
+  }) {
+    _repository.deleteCommentByCreatedAt(
+        videoCreatedAt: videoCreatedAt,
+        commentCreatedAtUnix: commentCreatedAtUnix);
+  }
 }
 
 final uploadVideoCommentProvider =

@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/vms/log_in_vm.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
+import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 
 class LoginScreen extends ConsumerWidget {
   static const routeName = "Login";
@@ -15,16 +16,20 @@ class LoginScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Map<String, String> formData = {};
+    bool isLoggingIn = false;
 
-    void onLoginTap(BuildContext context) {
+    void onLoginTap(BuildContext context) async {
+      if (isLoggingIn) return;
       if (formKey.currentState != null) {
         if (formKey.currentState!.validate()) {
           formKey.currentState!.save();
+          isLoggingIn = true;
 
-          ref.read(loginProvider.notifier).login(
+          await ref.read(loginProvider.notifier).login(
               email: formData["email"]!,
               password: formData["password"],
               context: context);
+          isLoggingIn = false;
         }
       }
     }
@@ -89,7 +94,10 @@ class LoginScreen extends ConsumerWidget {
               const Gap(50),
               GestureDetector(
                   onTap: () => onLoginTap(context),
-                  child: const AuthButton(color: Colors.green, text: "ログイン"))
+                  child: const AuthButton(
+                    color: Colors.green,
+                    text: "ログイン",
+                  ))
             ],
           ),
         ),

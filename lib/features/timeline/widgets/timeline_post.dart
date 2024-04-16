@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
 import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
 import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_comment_screen.dart';
@@ -17,8 +22,10 @@ class TimelinePost extends ConsumerStatefulWidget {
     super.key,
     required this.videoData,
     required this.index,
+    required this.keyValue,
   });
 
+  final ValueKey keyValue;
   final PostVideoModel videoData;
   final int index;
 
@@ -29,18 +36,9 @@ class TimelinePost extends ConsumerStatefulWidget {
 class _TimelinePostState extends ConsumerState<TimelinePost>
     with SingleTickerProviderStateMixin {
   late VideoPlayerController _videoPlayerController;
+  late ChewieController _chewieController;
 
   bool _isPlaying = false;
-
-  void _initVideoPlayer() async {
-    try {
-      _videoPlayerController =
-          VideoPlayerController.network(widget.videoData.fileUrl);
-      await _videoPlayerController.initialize();
-    } catch (e) {
-      print(widget.videoData.fileUrl);
-    }
-  }
 
   void _onTogglePlay() {
     if (_videoPlayerController.value.isPlaying) {
@@ -62,10 +60,6 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
         .read(timelineProvider.notifier)
         .fetchComments(createdAt: widget.videoData.createdAt);
 
-    if (comments == null) {
-      print(comments);
-      return;
-    }
     showModalBottomSheet(
       context: context,
       scrollControlDisabledMaxHeightRatio: 0.8,
@@ -79,12 +73,20 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
   @override
   void initState() {
     super.initState();
-    _initVideoPlayer();
+    _videoPlayerController =
+        VideoPlayerController.networkUrl(Uri.parse(widget.videoData.fileUrl));
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController,
+      aspectRatio: 9 / 15,
+      allowFullScreen: true,
+      autoInitialize: true,
+    );
   }
 
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _chewieController.dispose();
     super.dispose();
   }
 
@@ -101,7 +103,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
 
     return VisibilityDetector(
       onVisibilityChanged: _onVisibilityChanged,
-      key: Key("${widget.index}"),
+      key: Key(widget.keyValue.toString()),
       child: FractionallySizedBox(
         widthFactor: 0.9,
         child: Container(
@@ -123,55 +125,81 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Gap(10),
-              Row(
-                children: [
-                  const CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: FaIcon(
-                      FontAwesomeIcons.user,
-                      color: Colors.white,
+              GestureDetector(
+                onTap: () {
+                  context.push("/profileinfo/${widget.videoData.uploaderUid}");
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.black,
+                          child: ClipOval(
+                            child: Image.network(
+                                "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${widget.videoData.uploaderUid}?alt=media&token=${Random().nextInt(100)}",
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                              return const FaIcon(
+                                FontAwesomeIcons.user,
+                                color: Colors.white,
+                                size: 15,
+                              );
+                            }),
+                          ),
+                        ),
+                        const Gap(10),
+                        Text(
+                          "${widget.videoData.uploaderGrade} ${widget.videoData.uploaderName}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const Gap(10),
-                  Text(
-                    "${widget.videoData.uploaderGrade} ${widget.videoData.uploaderName}",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
+                    if (widget.videoData.uploaderUid ==
+                        ref.read(authRepo).user?.uid)
+                      PopupMenuButton<String>(
+                        icon: const Icon(
+                          Icons.more_vert,
+                          color: Colors.white,
+                        ),
+                        onSelected: (value) async {
+                          switch (value) {
+                            case 'Delete':
+                              await ref.read(postRepo).deleteVideo(
+                                    createdAt: widget.videoData.createdAt,
+                                  );
+                              await ref
+                                  .read(timelineProvider.notifier)
+                                  .refresh();
+                              break;
+                          }
+                        },
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<String>>[
+                          const PopupMenuItem<String>(
+                            value: 'Delete',
+                            child: Text('Delete'),
+                          ),
+                        ],
+                      )
+                  ],
+                ),
               ),
               const Gap(10),
               Container(
                 height: size.height * 0.6,
-                width: size.width * 0.9,
+                width: size.width * 0.8,
                 color: Colors.grey.shade900,
                 child: Stack(
                   children: [
-                    VideoPlayer(_videoPlayerController),
-                    Positioned(
-                      child: Container(
-                        padding: const EdgeInsets.only(top: 40),
-                        child: _isPlaying
-                            ? null
-                            : const Align(
-                                alignment: Alignment.topCenter,
-                                child: FaIcon(
-                                  FontAwesomeIcons.play,
-                                  color: Colors.white,
-                                ),
-                              ),
-                      ),
-                    ),
-                    Positioned(
-                      child: GestureDetector(
-                        onTap: _onTogglePlay,
-                        child: Container(
-                          decoration:
-                              const BoxDecoration(color: Colors.transparent),
-                        ),
-                      ),
+                    Chewie(
+                      controller: _chewieController,
                     ),
                   ],
                 ),

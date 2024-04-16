@@ -66,14 +66,31 @@ class _TimelineUploadScreenState
     }
   }
 
-  void _onUploadPressed() {
+  void _onUploadPressed(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      ref.read(uploadVideoProvider.notifier).uploadVideo(
+      await ref.read(uploadVideoProvider.notifier).uploadVideo(
             File(widget.video.path),
             description,
             context,
           );
+      await showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text("アップロード完了"),
+          content: const Text("動画のアップロードが完了しました"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                context.pop();
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
+      context.pop();
+      context.pop();
     }
   }
 
@@ -86,7 +103,7 @@ class _TimelineUploadScreenState
             IconButton(
               onPressed: ref.watch(uploadVideoProvider).isLoading
                   ? () {}
-                  : _onUploadPressed,
+                  : () => _onUploadPressed(context),
               icon: ref.watch(uploadVideoProvider).isLoading
                   ? const CircularProgressIndicator()
                   : const FaIcon(FontAwesomeIcons.upload),
@@ -161,7 +178,7 @@ class _TimelineUploadScreenState
                 ],
               )
             : const Center(
-                child: Text("7秒以内の動画を使用してください"),
+                child: Text("5秒以内の動画を使用してください"),
               ));
   }
 }

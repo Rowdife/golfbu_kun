@@ -26,16 +26,16 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
     BuildContext context,
   ) async {
     final user = ref.read(authRepo).user;
-    final profile = await ref
-        .read(profileRepo)
-        .findProfile(uid: user!.uid, universityId: user.displayName);
+    final profile = await ref.read(profileRepo).findProfile(uid: user!.uid);
+    final createdAt = DateTime.now().millisecondsSinceEpoch;
 
     if (profile != null) {
       final profileData = ProfileModel.fromJson(profile);
       state = const AsyncValue.loading();
       state = await AsyncValue.guard(
         () async {
-          final task = await _repository.uploadVideo(video, user.uid);
+          final task = await _repository.uploadVideo(
+              video: video, uid: user.uid, createdAt: createdAt);
 
           if (task.metadata != null) {
             await _repository.saveVideo(
@@ -44,7 +44,7 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
                 fileUrl: await task.ref.getDownloadURL(),
                 uploaderUid: user.uid,
                 comments: 0,
-                createdAt: DateTime.now().millisecondsSinceEpoch,
+                createdAt: createdAt,
                 uploaderName: profileData.name,
                 uploaderGrade: profileData.grade,
                 position: profileData.position,
@@ -53,8 +53,6 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
               profile: profileData,
             );
           }
-          context.pop();
-          context.pop();
           ref.read(timelineProvider.notifier).refresh();
         },
       );

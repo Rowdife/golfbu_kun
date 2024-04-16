@@ -19,9 +19,9 @@ class ProfilesViewModel extends AsyncNotifier<ProfileModel> {
     state = const AsyncValue.loading();
 
     if (_authRepo.isLoggedIn) {
-      final profile = await _profileRepo.findProfile(
-          uid: _authRepo.user!.uid, universityId: _authRepo.user!.displayName);
+      final profile = await _profileRepo.findProfile(uid: _authRepo.user!.uid);
       if (profile != null) {
+        state = AsyncValue.data(ProfileModel.fromJson(profile));
         return ProfileModel.fromJson(profile);
       }
     }
@@ -56,10 +56,23 @@ class ProfilesViewModel extends AsyncNotifier<ProfileModel> {
   }
 
   Future<ProfileModel> fetchProfile() async {
-    final profile = await _profileRepo.findProfile(
-        uid: _authRepo.user!.uid, universityId: _authRepo.user!.displayName);
+    final profile = await _profileRepo.findProfile(uid: _authRepo.user!.uid);
+    if (profile == null) {
+      return ProfileModel.empty();
+    }
+    state = AsyncValue.data(ProfileModel.fromJson(profile));
+    return ProfileModel.fromJson(profile);
+  }
 
-    return ProfileModel.fromJson(profile!);
+  Future<ProfileModel> fetchProfileByUserId(String id) async {
+    final profile = await _profileRepo.findProfile(uid: id);
+    state = AsyncValue.data(ProfileModel.fromJson(profile!));
+    return ProfileModel.fromJson(profile);
+  }
+
+  void resetProfile() async {
+    state = const AsyncValue.loading();
+    state = AsyncValue.data(ProfileModel.empty());
   }
 }
 

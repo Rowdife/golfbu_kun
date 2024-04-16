@@ -13,19 +13,23 @@ class ProfileInfoElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Row(
-        children: [
-          Text(
-            "$category:",
-            style: const TextStyle(color: Colors.white),
-          ),
-          const Gap(10),
-          Text(
-            info,
-            style: const TextStyle(color: Colors.white),
-          ),
-        ],
+    return SizedBox(
+      height: 24,
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+        title: Row(
+          children: [
+            Text(
+              "$category:",
+              style: const TextStyle(color: Colors.white),
+            ),
+            const Gap(10),
+            Text(
+              info,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
       ),
     );
   }
