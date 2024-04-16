@@ -54,7 +54,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       const DropdownMenuEntry(value: "6年", label: "6年"),
     ];
 
-    void onSignUpTap(BuildContext context) {
+    void onSignUpTap(BuildContext context) async {
       bool allMenuesAreSelected = formData["university"] != null &&
           formData["position"] != null &&
           formData["sex"] != null &&
@@ -87,7 +87,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           }
         }
       }
-      ref.read(signUpProvider.notifier).signUp(context);
+      await ref.read(signUpProvider.notifier).signUp(context);
     }
 
     return Scaffold(
@@ -97,9 +97,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       ),
       body: SafeArea(
         child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
+          onTap: () {},
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -160,7 +158,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(color: Colors.cyanAccent),
                       ),
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "名前を入力してください";
@@ -180,7 +178,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(color: Colors.cyanAccent),
                       ),
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "メールアドレスを入力してください";
@@ -202,7 +200,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(color: Colors.cyanAccent),
                       ),
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "パスワードを入力してください";
@@ -228,7 +226,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(color: Colors.cyanAccent),
                       ),
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "パスワードを入力してください";
