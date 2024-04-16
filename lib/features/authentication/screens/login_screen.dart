@@ -34,6 +34,85 @@ class LoginScreen extends ConsumerWidget {
       }
     }
 
+    void resetPassword(BuildContext context) {
+      final _formKey = GlobalKey<FormState>();
+      String? emailAdress;
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('登録しているメールアドレスを入力してください'),
+            content: Form(
+              key: _formKey,
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'メールアドレス';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  emailAdress = value;
+                },
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child:
+                    Text('Cancel', style: TextStyle(color: Colors.greenAccent)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'OK',
+                  style: TextStyle(color: Colors.greenAccent),
+                ),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    if (emailAdress != null) {
+                      await ref
+                          .read(loginProvider.notifier)
+                          .resetPassword(email: emailAdress!, context: context);
+                      await showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text(
+                                  "再設定メールを送信しました",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                content: Text(
+                                  "メールを確認して、再設定を完了してください",
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.grey.shade900,
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text(
+                                      "OK",
+                                      style:
+                                          TextStyle(color: Colors.greenAccent),
+                                    ),
+                                  ),
+                                ],
+                              ));
+                      Navigator.of(context).pop();
+                    }
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("ログイン"),
@@ -91,7 +170,17 @@ class LoginScreen extends ConsumerWidget {
                   }
                 },
               ),
-              const Gap(50),
+              Gap(20),
+              GestureDetector(
+                onTap: () {
+                  resetPassword(context);
+                },
+                child: Text(
+                  "パスワードを忘れた場合はこちら",
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+              const Gap(20),
               GestureDetector(
                   onTap: () => onLoginTap(context),
                   child: const AuthButton(

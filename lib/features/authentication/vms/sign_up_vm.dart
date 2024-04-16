@@ -52,7 +52,6 @@ class SignUpViewModel extends AsyncNotifier<void> {
       const errorSnack = SnackBar(content: Text("該当するメールアドレスはすでに登録されています"));
       ScaffoldMessenger.of(context).showSnackBar(errorSnack);
     } else {
-      // showDialog to ask user to verify email
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
