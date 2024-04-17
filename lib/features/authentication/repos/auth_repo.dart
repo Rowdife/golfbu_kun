@@ -6,6 +6,7 @@ import 'package:golfbu_kun/utils.dart';
 
 class AuthenticationRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   bool get isLoggedIn => user != null;
   User? get user => _firebaseAuth.currentUser;
@@ -54,6 +55,15 @@ class AuthenticationRepository {
 
   Future<void> resetPassword(String email) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<List<Map>> getUniversities() async {
+    final result = await _firestore.collection("university").get();
+    return result.docs.map((doc) {
+      return {
+        doc.id: doc.data()['schoolName'],
+      };
+    }).toList();
   }
 }
 
