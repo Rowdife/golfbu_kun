@@ -193,7 +193,7 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
               ),
               const Gap(10),
               Container(
-                height: size.height * 0.6,
+                height: size.height * 0.57,
                 width: size.width * 0.8,
                 color: Colors.grey.shade900,
                 child: Stack(

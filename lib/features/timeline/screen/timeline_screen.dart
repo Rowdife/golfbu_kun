@@ -39,7 +39,7 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   }
 
   void fetchNextVideos() async {
-    final double previousOffset = _scrollController.offset - 20;
+    final double previousOffset = _scrollController.offset - 150;
     await ref
         .read(timelineProvider.notifier)
         .fetchNextVideos(context, _scrollController, previousOffset);
@@ -49,7 +49,7 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
+      if (_scrollController.position.pixels - 150 >
           _scrollController.position.maxScrollExtent) {
         fetchNextVideos();
       }
