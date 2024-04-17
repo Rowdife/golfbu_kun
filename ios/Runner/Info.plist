@@ -26,6 +26,8 @@
 	<string>1.0.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>コンテンツをアップロードする時やプロフィール画像を設定するために許可が必要です。</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>コンテンツをアップロードする時やプロフィール画像を設定するために許可が必要です。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
