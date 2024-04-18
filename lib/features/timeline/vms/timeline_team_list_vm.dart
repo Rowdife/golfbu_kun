@@ -15,6 +15,12 @@ class TimelineTeamListViewModel extends AsyncNotifier<List<ProfileModel>> {
     state = AsyncValue.data(teamMemberProfileList);
     return teamMemberProfileList;
   }
+
+  Future<void> refresh() async {
+    state = const AsyncValue.loading();
+    final teamMemberProfileList = await _profileRepo.fetchAllProfileInMyTeam();
+    state = AsyncValue.data(teamMemberProfileList);
+  }
 }
 
 final timelineTeamListProvider =

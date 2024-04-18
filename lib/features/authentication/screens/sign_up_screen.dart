@@ -117,8 +117,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         const Gap(10),
                         DropdownMenu(
                           onSelected: (newValue) {
-                            formData["university"] = newValue[0];
-                            formData["universityId"] = newValue[1];
+                            formData["university"] = newValue[1];
+                            formData["universityId"] = newValue[0];
                           },
                           label: const Text(
                             "学校",
