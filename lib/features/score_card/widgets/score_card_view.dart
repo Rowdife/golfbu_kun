@@ -1297,7 +1297,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ScoreCardDataTile(
                         title: "バンカーセーブ率",
                         data:
-                            "${(scoreCard.birdieChanceSuccess / scoreCard.birdieChanceCount * 100).toStringAsFixed(1)}%",
+                            "${(scoreCard.bunkerParSave / scoreCard.bunkerTry * 100).toStringAsFixed(1)}%",
                       ),
                       const Gap(20),
                       const Text(
