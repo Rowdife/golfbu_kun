@@ -141,7 +141,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                   },
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  maxLength: 1,
+                  maxLength: 2,
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     counterText: "",
