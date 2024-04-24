@@ -106,6 +106,7 @@ flutter:
   assets:
     - assets/videos/golf_swing.MOV
     - assets/images/golfbukun_logo.svg
+    - shorebird.yaml
 
   # To add assets to your application, add an assets section, like this:
   # assets:

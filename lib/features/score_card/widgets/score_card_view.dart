@@ -316,7 +316,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                                 ),
                               ),
                             ),
-                            for (int i = 9; i <= 17; i++)
+                            for (int i = 10; i <= 18; i++)
                               Container(
                                 width: widthAndHeight,
                                 height: widthAndHeight,
