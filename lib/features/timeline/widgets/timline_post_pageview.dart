@@ -179,6 +179,10 @@ class _TimelinePostPageViewState extends ConsumerState<TimelinePostPageView>
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      Text(DateTime.fromMillisecondsSinceEpoch(
+                              widget.videoData.createdAt)
+                          .toString()
+                          .substring(0, 16)),
                       Gap(20),
                       SizedBox(
                         width: 300,

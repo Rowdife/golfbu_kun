@@ -363,9 +363,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               ),
                               title: Row(
                                 children: [
-                                  Text(
-                                    _selectedEventsList[index].title,
-                                    style: const TextStyle(color: Colors.white),
+                                  Container(
+                                    width: 220,
+                                    child: Text(
+                                      _selectedEventsList[index].title,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -426,9 +430,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               ),
                               title: Row(
                                 children: [
-                                  Text(
-                                    _todayEventsList[index].title,
-                                    style: const TextStyle(color: Colors.white),
+                                  Container(
+                                    width: 220,
+                                    child: Text(
+                                      _todayEventsList[index].title,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ],
                               ),

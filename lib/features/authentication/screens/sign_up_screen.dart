@@ -116,6 +116,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       children: [
                         const Gap(10),
                         DropdownMenu(
+                          enableFilter: true,
+                          requestFocusOnTap: true,
                           onSelected: (newValue) {
                             formData["university"] = newValue[1];
                             formData["universityId"] = newValue[0];
