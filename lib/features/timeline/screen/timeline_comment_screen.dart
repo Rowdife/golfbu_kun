@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 import 'package:golfbu_kun/features/timeline/models/post_comment_model.dart';
+import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
 import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
 import 'package:golfbu_kun/features/timeline/widgets/timeline_comment.dart';
 
@@ -48,6 +49,26 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
           ),
           createdAt: widget.createdAt);
     }
+    await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text(
+                "コメントを投稿しました。",
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.grey.shade900,
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(color: Colors.greenAccent),
+                  ),
+                ),
+              ],
+            ));
     context.pop();
   }
 
@@ -95,7 +116,6 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 50,
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: Form(
                       key: _formKey,

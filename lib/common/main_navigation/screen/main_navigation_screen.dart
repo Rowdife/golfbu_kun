@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/common/main_navigation/widgets/nav_tap.dart';
-import 'package:golfbu_kun/features/announcement/view/announcement_screen.dart';
 import 'package:golfbu_kun/features/league_relations/screen/chat_screen.dart';
 import 'package:golfbu_kun/features/profile/screens/profile_nav_screen.dart';
 import 'package:golfbu_kun/features/profile/screens/profile_screen.dart';
 import 'package:golfbu_kun/features/schedule_management/screen/calendar_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_screen.dart';
+import 'package:golfbu_kun/features/timeline/screen/timeline_upload_choice_screen.dart';
 
 class MainNavigationScreen extends ConsumerStatefulWidget {
   static const routeURL = "/home";
@@ -37,6 +38,14 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void _onUploadTap(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const TimelineUploadChoiceScreen(),
+      ),
+    );
   }
 
   @override
@@ -80,6 +89,33 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
               icon: FontAwesomeIcons.chartColumn,
               isSelected: _selectedIndex == 1,
               onTap: () => _onTap(1),
+            ),
+            Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 1),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.white24,
+                        offset: Offset(0, 0),
+                        blurRadius: 5.0,
+                        spreadRadius: 0.1,
+                      ),
+                    ],
+                  ),
+                  child: IconButton(
+                    onPressed: () => _onUploadTap(context),
+                    icon: FaIcon(
+                      FontAwesomeIcons.upload,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Gap(10),
+              ],
             ),
             NavTap(
               tapName: 'Calendar',

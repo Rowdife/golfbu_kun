@@ -18,6 +18,7 @@ import 'package:golfbu_kun/features/score_card/vms/score_card_data_vm.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_data_tile.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_history_tile.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_view.dart';
+import 'package:golfbu_kun/features/timeline/screen/timeline_team_list_screen.dart';
 import 'package:golfbu_kun/features/timeline/vms/timeline_by_user_vm.dart';
 import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 import 'package:golfbu_kun/features/timeline/widgets/timeline_post.dart';
@@ -106,6 +107,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
             child: CircularProgressIndicator.adaptive(),
           ),
           data: (data) => Scaffold(
+            drawer: const TimelineTeamListScreen(),
+            backgroundColor: Colors.grey.shade900,
             body: RefreshIndicator(
               onRefresh: _onRefresh,
               child: DefaultTabController(

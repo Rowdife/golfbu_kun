@@ -14,6 +14,7 @@ import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
 
 import 'package:golfbu_kun/features/timeline/widgets/timeline_post.dart';
+import 'package:golfbu_kun/features/timeline/widgets/timline_post_pageview.dart';
 
 class TimelineScreen extends ConsumerStatefulWidget {
   const TimelineScreen({super.key});
@@ -24,36 +25,23 @@ class TimelineScreen extends ConsumerStatefulWidget {
 
 class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   final ScrollController _scrollController = ScrollController();
-
-  void _onUploadTap(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const TimelineUploadChoiceScreen(),
-      ),
-    );
-  }
+  final _pageController = PageController(viewportFraction: 1);
+  int _itemCount = 0;
 
   Future<void> _onRefresh() async {
     await ref.read(timelineProvider.notifier).refresh();
     setState(() {});
   }
 
-  void fetchNextVideos() async {
-    final double previousOffset = _scrollController.offset - 150;
-    await ref
-        .read(timelineProvider.notifier)
-        .fetchNextVideos(context, _scrollController, previousOffset);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels - 150 >
-          _scrollController.position.maxScrollExtent) {
-        fetchNextVideos();
-      }
-    });
+  void _onPageChanged(int page) {
+    print(page);
+    print(_itemCount);
+    if (page == _itemCount - 1) {
+      ref.read(timelineProvider.notifier).fetchNextVideos(
+            context,
+          );
+      setState(() {});
+    }
   }
 
   @override
@@ -65,17 +53,17 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const TimelineTeamListScreen(),
-      backgroundColor: Colors.grey.shade900,
-      appBar: AppBar(
-        title: const Text("Timeline"),
-        actions: [
-          IconButton(
-            onPressed: () => _onUploadTap(context),
-            icon: const FaIcon(FontAwesomeIcons.upload),
-          ),
-        ],
-      ),
+      // drawer: const TimelineTeamListScreen(),
+      // backgroundColor: Colors.grey.shade900,
+      // appBar: AppBar(
+      //   title: const Text("Timeline"),
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () => _onUploadTap(context),
+      //       icon: const FaIcon(FontAwesomeIcons.upload),
+      //     ),
+      //   ],
+      // ),
       body: ref.watch(timelineProvider).when(
           loading: () {
             const Center(
@@ -90,23 +78,19 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
                 ),
               ),
           data: (videos) {
+            _itemCount = videos.length;
             return RefreshIndicator(
               onRefresh: _onRefresh,
-              child: ListView.separated(
-                itemCount: videos.length,
-                controller: _scrollController,
-                separatorBuilder: (context, index) => const Divider(
-                  height: 20,
-                  thickness: 0,
-                  color: Colors.transparent,
-                ),
+              child: PageView.builder(
+                onPageChanged: _onPageChanged,
+                scrollDirection: Axis.vertical,
+                itemCount: _itemCount,
+                controller: _pageController,
                 itemBuilder: (context, index) {
                   final videoData = videos[index];
-
                   return Column(
                     children: [
-                      const Gap(10),
-                      TimelinePost(
+                      TimelinePostPageView(
                         videoData: videoData,
                         index: index,
                         keyValue: ValueKey(videoData.createdAt),

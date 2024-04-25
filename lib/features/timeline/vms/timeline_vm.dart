@@ -25,7 +25,8 @@ class TimelineViewModel extends AsyncNotifier<List<PostVideoModel>> {
       ),
     );
     state = AsyncValue.data(videos.toList());
-    return videos.toList();
+    _list = videos.toList();
+    return _list;
   }
 
   @override
@@ -37,34 +38,18 @@ class TimelineViewModel extends AsyncNotifier<List<PostVideoModel>> {
     return _list;
   }
 
-  fetchNextVideos(BuildContext context, ScrollController controller,
-      double previousOffset) async {
+  fetchNextVideos(
+    BuildContext context,
+  ) async {
     state = const AsyncValue.loading();
-    final nextVideosData =
-        await _fetchVideos(lastItemCreatedAt: _list.last.createdAt);
-    _list = [..._list, ...nextVideosData];
+    final newList = await _fetchVideos(
+      lastItemCreatedAt: _list.last.createdAt,
+    );
+
+    _list = [..._list, ...newList];
+
     state = AsyncValue.data(_list);
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: const Text(
-                "動画を追加でロードしました。\n動画が変わらない場合これが最後の動画です。",
-                style: TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.grey.shade900,
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    controller.jumpTo(previousOffset);
-                  },
-                  child: const Text(
-                    "OK",
-                    style: TextStyle(color: Colors.greenAccent),
-                  ),
-                ),
-              ],
-            ));
+    return _list;
   }
 
   Future<List<PostCommentModel>> fetchComments({required int createdAt}) async {
