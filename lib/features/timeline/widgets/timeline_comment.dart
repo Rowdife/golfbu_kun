@@ -16,14 +16,30 @@ class TimelineComment extends ConsumerWidget {
   const TimelineComment({
     super.key,
     required this.comment,
-    required this.videoCreatedAt,
+    required this.createdAt,
   });
 
   final PostCommentModel comment;
-  final int videoCreatedAt;
+  final int createdAt;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    String text = comment.text;
+    RegExp exp = RegExp(r"\@\w+");
+    List<TextSpan> textSpans = [];
+    text.splitMapJoin(
+      exp,
+      onMatch: (m) {
+        textSpans
+            .add(TextSpan(text: m[0]!, style: TextStyle(color: Colors.blue)));
+        return m[0]!;
+      },
+      onNonMatch: (n) {
+        textSpans.add(TextSpan(text: n, style: TextStyle(color: Colors.black)));
+        return n;
+      },
+    );
+
     return Column(
       children: [
         ListTile(
@@ -79,7 +95,7 @@ class TimelineComment extends ConsumerWidget {
                                 ref
                                     .read(uploadVideoCommentProvider.notifier)
                                     .deleteVideoComment(
-                                        videoCreatedAt: videoCreatedAt,
+                                        createdAt: createdAt,
                                         commentCreatedAtUnix:
                                             comment.createdAtUnix);
                                 context.pop();
@@ -121,10 +137,9 @@ class TimelineComment extends ConsumerWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Text(
-                comment.text,
-                style: const TextStyle(
-                  color: Colors.black,
+              child: RichText(
+                text: TextSpan(
+                  children: textSpans,
                 ),
               ),
             ),

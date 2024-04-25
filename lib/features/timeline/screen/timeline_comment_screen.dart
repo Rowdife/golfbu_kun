@@ -89,9 +89,15 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
           ),
           itemBuilder: (context, index) => Stack(
             children: [
-              TimelineComment(
-                comment: widget.comments[index],
-                videoCreatedAt: widget.createdAt,
+              GestureDetector(
+                onTap: () {
+                  _textEditingController.text =
+                      "@${widget.comments[index].uploaderUid}";
+                },
+                child: TimelineComment(
+                  comment: widget.comments[index],
+                  createdAt: widget.createdAt,
+                ),
               ),
             ],
           ),
@@ -116,13 +122,16 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
+                    height: 60,
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: Form(
                       key: _formKey,
                       child: TextFormField(
+                        style: TextStyle(fontSize: 15),
                         controller: _textEditingController,
                         keyboardType: TextInputType.multiline,
                         textInputAction: TextInputAction.newline,
+                        maxLines: null,
                         validator: (value) {
                           if (value != null && value.isEmpty) {
                             return;
@@ -136,6 +145,7 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
                         },
                         decoration: const InputDecoration(
                           hintText: "コメントを入力してください",
+                          isDense: true,
                           hintStyle:
                               TextStyle(color: Colors.white38, fontSize: 14),
                           border: OutlineInputBorder(
