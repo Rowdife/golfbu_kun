@@ -42,6 +42,7 @@ class ScoreButton extends StatelessWidget {
               child: FaIcon(
                 icon,
                 color: Colors.white,
+                size: 16,
               ),
             ),
           ),

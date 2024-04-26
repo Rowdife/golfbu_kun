@@ -11,6 +11,7 @@ import 'package:golfbu_kun/features/schedule_management/screen/calendar_screen.d
 import 'package:golfbu_kun/features/score_card/screen/score_card_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_choice_screen.dart';
+import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 
 class MainNavigationScreen extends ConsumerStatefulWidget {
   static const routeURL = "/home";
@@ -35,6 +36,7 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
 
   void _onTap(int index) {
     context.go("/${_tabs[index]}");
+    ref.read(timelineProvider.notifier).refresh();
     setState(() {
       _selectedIndex = index;
     });

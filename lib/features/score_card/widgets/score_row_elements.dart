@@ -19,6 +19,10 @@ class ScoreRowElements extends ConsumerStatefulWidget {
 }
 
 class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
+  final TextEditingController strokeController =
+      TextEditingController(text: "4");
+  final TextEditingController puttController = TextEditingController(text: "2");
+
   List<DropdownMenuItem<String>> golfclubs = [
     DropdownMenuItem(value: null, child: Text("選択なし")),
     const DropdownMenuItem(
@@ -118,7 +122,30 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               ),
             ),
           ),
-          const Gap(35),
+          const Gap(15),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black,
+              border: Border.all(
+                color: Colors.green,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                int currentValue = int.parse(strokeController.text);
+                strokeController.text = (currentValue + 1).toString();
+              },
+              icon: Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 34,
+              ),
+            ),
+          ),
           SizedBox(
             width: 45,
             height: 45,
@@ -126,6 +153,8 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               child: SizedBox(
                 height: 100,
                 child: TextFormField(
+                  enabled: false,
+                  controller: strokeController,
                   onSaved: (stroke) {
                     if (stroke != null) {
                       _scoreData["stroke"] = stroke;
@@ -166,12 +195,57 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               ),
             ),
           ),
-          const Gap(28),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black,
+              border: Border.all(
+                color: Colors.green,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IconButton(
+              onPressed: () {
+                int currentValue = int.parse(strokeController.text);
+                strokeController.text = (currentValue - 1).toString();
+              },
+              icon: Icon(
+                Icons.remove,
+                color: Colors.white,
+                size: 34,
+              ),
+            ),
+          ),
+          Gap(20),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black,
+              border: Border.all(
+                color: Colors.green,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IconButton(
+                onPressed: () {
+                  int currentValue = int.parse(puttController.text);
+                  puttController.text = (currentValue + 1).toString();
+                },
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 34,
+                )),
+          ),
           SizedBox(
             width: 45,
             height: 45,
             child: Center(
               child: TextFormField(
+                enabled: false,
+                controller: puttController,
                 onSaved: (putt) {
                   if (putt != null) {
                     _scoreData["putt"] = putt;
@@ -208,6 +282,28 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                   color: Colors.black,
                   fontSize: 28,
                 ),
+              ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black,
+              border: Border.all(
+                color: Colors.green,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IconButton(
+              onPressed: () {
+                int currentValue = int.parse(puttController.text);
+                puttController.text = (currentValue - 1).toString();
+              },
+              icon: Icon(
+                Icons.remove,
+                color: Colors.white,
+                size: 34,
               ),
             ),
           ),
@@ -293,7 +389,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                 DropdownMenuItem(
                   value: "right",
                   child: Text(
-                    "右外し",
+                    "右外し→",
                   ),
                 ),
               ],
@@ -317,12 +413,6 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               },
               items: const [
                 DropdownMenuItem(value: null, child: Text("選択なし")),
-                DropdownMenuItem(
-                  value: "nomiss",
-                  child: Text(
-                    "カップイン",
-                  ),
-                ),
                 DropdownMenuItem(
                   value: "nomiss",
                   child: Text(
@@ -398,30 +488,6 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                         value: "right",
                         child: Text(
                           "右",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "chipping",
-                        child: Text(
-                          "チーピン",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "top",
-                        child: Text(
-                          "トップ",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "tenpura",
-                        child: Text(
-                          "天ぷら",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "duff",
-                        child: Text(
-                          "ダフリ",
                         ),
                       ),
                     ]

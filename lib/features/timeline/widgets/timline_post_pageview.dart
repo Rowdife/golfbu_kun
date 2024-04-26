@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'dart:io';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ import 'package:golfbu_kun/features/timeline/repos/post_repo.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_comment_screen.dart';
 import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
+import 'package:smooth_video_progress/smooth_video_progress.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -66,7 +69,6 @@ class _TimelinePostPageViewState extends ConsumerState<TimelinePostPageView>
         VideoPlayerController.networkUrl(Uri.parse(widget.videoData.fileUrl));
     await _videoPlayerController.initialize();
     _videoPlayerController.setLooping(true);
-    _videoPlayerController.play();
     setState(() {});
   }
 //videoData.createdAt 으로 Comment가져오기.
@@ -143,6 +145,28 @@ class _TimelinePostPageViewState extends ConsumerState<TimelinePostPageView>
                             color: Colors.green,
                           ),
                         ),
+                ),
+                Positioned.fill(
+                  bottom: 500,
+                  child: !_isPlaying
+                      ? Center(
+                          child: Container(
+                            height: 80,
+                            width: 80,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: FaIcon(
+                                FontAwesomeIcons.play,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Center(),
                 ),
                 Positioned.fill(
                   child: GestureDetector(onTap: _onTogglePlay),
@@ -285,18 +309,22 @@ class _TimelinePostPageViewState extends ConsumerState<TimelinePostPageView>
                         child: CircleAvatar(
                           backgroundColor: Colors.black,
                           child: ClipOval(
-                            child: Image.network(
-                                "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${widget.videoData.uploaderUid}?alt=media&token=${Random().nextInt(100)}",
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                              return const FaIcon(
-                                FontAwesomeIcons.user,
-                                color: Colors.white,
-                                size: 15,
-                              );
-                            }),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${widget.videoData.uploaderUid}?alt=media&token=${Random().nextInt(100)}",
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, dynamic error) {
+                                return Center(
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.user,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -304,6 +332,34 @@ class _TimelinePostPageViewState extends ConsumerState<TimelinePostPageView>
                   ),
                 ),
               ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            child: SizedBox(
+              width: size.width,
+              child: SmoothVideoProgress(
+                controller: _videoPlayerController,
+                builder: (context, position, duration, child) => SliderTheme(
+                  data: SliderTheme.of(context).copyWith(
+                    trackHeight:
+                        1, // Set the track height to 0 to remove padding
+                    overlayShape: SliderComponentShape.noThumb,
+                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5),
+                  ),
+                  child: Slider(
+                    onChangeStart: (_) => _videoPlayerController.pause(),
+                    onChangeEnd: (_) => _videoPlayerController.pause(),
+                    onChanged: (value) => _videoPlayerController
+                        .seekTo(Duration(milliseconds: value.toInt())),
+                    value: position.inMilliseconds.toDouble(),
+                    min: 0,
+                    max: duration.inMilliseconds.toDouble(),
+                    activeColor: Colors.green,
+                    inactiveColor: Colors.transparent,
+                  ),
+                ),
+              ),
             ),
           ),
         ],

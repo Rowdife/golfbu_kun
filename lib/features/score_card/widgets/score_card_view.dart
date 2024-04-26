@@ -717,17 +717,6 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                           data:
                               "${(scoreCard.teeShotMissedRight / scoreCard.totalFairwayTry * 100).toStringAsFixed(1)}%"),
 
-                      ScoreCardDataTile(
-                        title: "ティーショットクリティカルミス",
-                        data:
-                            "${scoreCard.teeShotCriticalMiss} / ${scoreCard.totalFairwayTry}",
-                      ),
-                      ScoreCardDataTile(
-                        title: "ティーショットクリティカルミス率",
-                        data:
-                            "${(scoreCard.teeShotCriticalMiss / scoreCard.totalFairwayTry * 100).toStringAsFixed(1)}%",
-                      ),
-
                       const Gap(20),
                       const Text(
                         "クラブ別FWキープ率",

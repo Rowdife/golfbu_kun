@@ -92,7 +92,7 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
               GestureDetector(
                 onTap: () {
                   _textEditingController.text =
-                      "@${widget.comments[index].uploaderUid}";
+                      "@${widget.comments[index].uploaderUid} ";
                 },
                 child: TimelineComment(
                   comment: widget.comments[index],
@@ -127,7 +127,7 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
                     child: Form(
                       key: _formKey,
                       child: TextFormField(
-                        style: TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 14),
                         controller: _textEditingController,
                         keyboardType: TextInputType.multiline,
                         textInputAction: TextInputAction.newline,

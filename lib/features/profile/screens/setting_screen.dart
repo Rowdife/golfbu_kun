@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,8 @@ class SettingScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingScreenState extends ConsumerState<SettingScreen> {
+  FirebaseMessaging _messaging = FirebaseMessaging.instance;
+
   void _onLogoutTap() {
     showCupertinoModalPopup(
       context: context,
@@ -67,6 +70,11 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
