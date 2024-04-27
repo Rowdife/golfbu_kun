@@ -49,9 +49,7 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   void _onVisibilityChanged(VisibilityInfo info) async {
     if (info.visibleFraction == 1.0) {
       if (pageNumber == _itemCount - 2) {
-        await ref.read(timelineProvider.notifier).fetchNextVideos(
-              context,
-            );
+        await ref.read(timelineProvider.notifier).fetchNextVideos();
         _pageController.jumpToPage(pageNumber);
       }
     } else {}

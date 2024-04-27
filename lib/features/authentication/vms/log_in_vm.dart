@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
+import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 import 'package:golfbu_kun/utils.dart';
 
 class LoginViewModel extends AsyncNotifier<void> {
@@ -37,6 +38,7 @@ class LoginViewModel extends AsyncNotifier<void> {
         ScaffoldMessenger.of(context).showSnackBar(errorSnack);
         return;
       }
+      await ref.read(timelineProvider.notifier).refresh();
       context.go("/home");
     }
   }
