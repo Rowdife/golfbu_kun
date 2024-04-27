@@ -44,11 +44,13 @@ class _ProfileEditModalState extends ConsumerState<ProfileEditModal> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Gap(20),
                       Row(
                         children: [
-                          const Gap(20),
+                          const Gap(50),
                           SizedBox(
-                            width: 300,
+                            width: 200,
+                            height: 95,
                             child: TextFormField(
                               initialValue: profile.name,
                               decoration: const InputDecoration(
@@ -68,7 +70,7 @@ class _ProfileEditModalState extends ConsumerState<ProfileEditModal> {
                               },
                             ),
                           ),
-                          const Gap(20),
+                          const Gap(10),
                           SizedBox(
                             width: 70,
                             height: 80,

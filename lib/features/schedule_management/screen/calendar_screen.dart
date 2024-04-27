@@ -364,7 +364,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               title: Row(
                                 children: [
                                   Container(
-                                    width: 220,
+                                    width: 200,
                                     child: Text(
                                       _selectedEventsList[index].title,
                                       style:
@@ -431,7 +431,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               title: Row(
                                 children: [
                                   Container(
-                                    width: 220,
+                                    width: 200,
                                     child: Text(
                                       _todayEventsList[index].title,
                                       style:

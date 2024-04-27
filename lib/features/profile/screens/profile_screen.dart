@@ -169,8 +169,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                         child: CachedNetworkImage(
                                           imageUrl:
                                               "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${profile.uid}?alt=media&token=${Random().nextInt(100)}",
-                                          width: 50,
-                                          height: 50,
                                           fit: BoxFit.cover,
                                           errorWidget:
                                               (context, url, dynamic error) {
