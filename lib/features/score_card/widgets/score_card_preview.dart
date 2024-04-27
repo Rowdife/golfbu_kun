@@ -40,6 +40,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
   int inTotalPutt = 0;
   int totalScore = 0;
   int totalPutt = 0;
+  bool isTapped = false;
   late final ProfileModel profile;
 
   Future<void> _onUploadScoreTap(
@@ -1355,14 +1356,6 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                         title: "フェアウェイより右に外れる確率",
                         data: "$teeShotRightPercentage%",
                       ),
-                      ScoreCardDataTile(
-                        title: "ティーショットクリティカルミス",
-                        data: "$teeShotCriticalMissCount / $teeShotResultCount",
-                      ),
-                      ScoreCardDataTile(
-                        title: "ティーショットクリティカルミス率",
-                        data: "$teeShotCriticalMissPercentage%",
-                      ),
                       const Gap(20),
                       const Text(
                         "クラブ別FWキープ率",
@@ -1813,7 +1806,8 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       ScoreCardDataTile(title: "ペナルティ数", data: "$penaltyCount"),
                       const Gap(40),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          if (isTapped) return;
                           final scoreCardData = ScoreCardDataModel(
                             uploaderName: profile.name,
                             uploaderId: profile.uid,
@@ -1933,11 +1927,13 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                             teeShotMissedRight: teeShotRightCount,
                             teeShotCriticalMiss: teeShotCriticalMissCount,
                           );
-                          _onUploadScoreTap(scoreCardData, context);
+                          isTapped = true;
+                          await _onUploadScoreTap(scoreCardData, context);
                         },
-                        child: const Center(
-                          child:
-                              AuthButton(color: Colors.green, text: "スコアを登録する"),
+                        child: Center(
+                          child: AuthButton(
+                              color: isTapped ? Colors.grey : Colors.green,
+                              text: "スコアを登録する"),
                         ),
                       ),
                       const Gap(40),

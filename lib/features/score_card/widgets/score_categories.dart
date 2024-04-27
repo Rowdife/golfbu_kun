@@ -17,7 +17,7 @@ class ScoreCategories extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
@@ -33,7 +33,7 @@ class ScoreCategories extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
@@ -44,12 +44,12 @@ class ScoreCategories extends StatelessWidget {
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            const Gap(20),
+            const Gap(48),
             Container(
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
@@ -60,12 +60,12 @@ class ScoreCategories extends StatelessWidget {
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            const Gap(10),
+            const Gap(104),
             Container(
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
@@ -76,35 +76,35 @@ class ScoreCategories extends StatelessWidget {
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            const Gap(10),
+            const Gap(90),
             Container(
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Text(
-                "Putt remained",
+                "Putt残距離",
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            const Gap(40),
+            const Gap(35),
             Container(
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Text(
-                "Putt L/R",
+                "Putt結果",
                 style: TextStyle(fontSize: 24),
               ),
             ),
@@ -113,30 +113,14 @@ class ScoreCategories extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Text(
-                "Putt distance",
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-            const Gap(10),
-            Container(
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white,
-                  width: 1,
-                  style: BorderStyle.solid,
-                ),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: const Text(
-                "Tee shot club",
+                "Putt距離感",
                 style: TextStyle(fontSize: 24),
               ),
             ),
@@ -145,14 +129,30 @@ class ScoreCategories extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Text(
-                " Tee shot ",
+                "T.Shotクラブ",
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            const Gap(5),
+            Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.green,
+                  width: 1,
+                  style: BorderStyle.solid,
+                ),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: const Text(
+                "T.Shot結果",
                 style: TextStyle(fontSize: 24),
               ),
             ),
@@ -161,14 +161,14 @@ class ScoreCategories extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Text(
-                "Par on distance",
+                "Par on残距離",
                 style: TextStyle(fontSize: 24),
               ),
             ),
@@ -177,14 +177,14 @@ class ScoreCategories extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Text(
-                "Par on shot club",
+                "Par onクラブ",
                 style: TextStyle(fontSize: 24),
               ),
             ),
@@ -193,14 +193,14 @@ class ScoreCategories extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Text(
-                "Green side bunker",
+                "GreenBunker",
                 style: TextStyle(fontSize: 24),
               ),
             ),
@@ -209,7 +209,7 @@ class ScoreCategories extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
@@ -225,7 +225,7 @@ class ScoreCategories extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),
@@ -241,7 +241,7 @@ class ScoreCategories extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white,
+                  color: Colors.green,
                   width: 1,
                   style: BorderStyle.solid,
                 ),

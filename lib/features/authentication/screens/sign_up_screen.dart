@@ -27,6 +27,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   Map<String, String> formData = {};
   Map<String, String> passwordConfirmation = {};
   void onSignUpTap(BuildContext context) async {
+    if (isButtonDisabled) {
+      return;
+    }
     bool allMenuesAreSelected = formData["university"] != null &&
         formData["position"] != null &&
         formData["sex"] != null &&
@@ -60,6 +63,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       }
     }
     await ref.read(signUpProvider.notifier).signUp(context);
+    setState(() {
+      isButtonDisabled = false;
+    });
   }
 
   @override
@@ -116,6 +122,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       children: [
                         const Gap(10),
                         DropdownMenu(
+                          enableFilter: true,
+                          requestFocusOnTap: true,
                           onSelected: (newValue) {
                             formData["university"] = newValue[1];
                             formData["universityId"] = newValue[0];
@@ -307,9 +315,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         const Gap(30),
                         Center(
                           child: GestureDetector(
-                              onTap: () => onSignUpTap(context),
-                              child: const AuthButton(
-                                color: Colors.green,
+                              onTap: () {
+                                if (!isButtonDisabled) {
+                                  onSignUpTap(context);
+                                }
+                              },
+                              child: AuthButton(
+                                color: isButtonDisabled
+                                    ? Colors.grey
+                                    : Colors.green,
                                 text: "会員登録",
                               )),
                         ),

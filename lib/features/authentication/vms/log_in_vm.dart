@@ -30,8 +30,10 @@ class LoginViewModel extends AsyncNotifier<void> {
       }
     } else {
       if (!_repository.user!.emailVerified) {
+        await _repository.user!.sendEmailVerification();
         await _repository.signOut();
-        const errorSnack = SnackBar(content: Text("メール認証が完了していません"));
+        const errorSnack =
+            SnackBar(content: Text("メール認証が完了していません、メール認証を再度送ります。"));
         ScaffoldMessenger.of(context).showSnackBar(errorSnack);
         return;
       }

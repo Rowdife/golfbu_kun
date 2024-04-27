@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.2</string>
+	<string>1.0.5</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.2</string>
+	<string>1.0.5</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -32,8 +32,15 @@
 	<string>コンテンツをアップロードする時やプロフィール画像を設定するために許可が必要です。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>コンテンツをアップロードする時やプロフィール画像を設定するために許可が必要です。</string>
+	<key>NSUserNotificationUsageDescription</key>
+	<string>コメントが来た時に通知されるために許可が必要です。</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>

@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
 import 'package:golfbu_kun/features/timeline/models/post_comment_model.dart';
+import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
 import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
 import 'package:golfbu_kun/features/timeline/widgets/timeline_comment.dart';
 
@@ -48,6 +49,26 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
           ),
           createdAt: widget.createdAt);
     }
+    await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text(
+                "コメントを投稿しました。",
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.grey.shade900,
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(color: Colors.greenAccent),
+                  ),
+                ),
+              ],
+            ));
     context.pop();
   }
 
@@ -68,9 +89,15 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
           ),
           itemBuilder: (context, index) => Stack(
             children: [
-              TimelineComment(
-                comment: widget.comments[index],
-                videoCreatedAt: widget.createdAt,
+              GestureDetector(
+                onTap: () {
+                  _textEditingController.text =
+                      "@${widget.comments[index].uploaderUid} ";
+                },
+                child: TimelineComment(
+                  comment: widget.comments[index],
+                  createdAt: widget.createdAt,
+                ),
               ),
             ],
           ),
@@ -95,14 +122,16 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 50,
+                    height: 60,
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: Form(
                       key: _formKey,
                       child: TextFormField(
+                        style: TextStyle(fontSize: 14),
                         controller: _textEditingController,
                         keyboardType: TextInputType.multiline,
                         textInputAction: TextInputAction.newline,
+                        maxLines: null,
                         validator: (value) {
                           if (value != null && value.isEmpty) {
                             return;
@@ -116,6 +145,7 @@ class _TimelineCommentScreenState extends ConsumerState<TimelineCommentScreen> {
                         },
                         decoration: const InputDecoration(
                           hintText: "コメントを入力してください",
+                          isDense: true,
                           hintStyle:
                               TextStyle(color: Colors.white38, fontSize: 14),
                           border: OutlineInputBorder(

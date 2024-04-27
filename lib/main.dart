@@ -1,14 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golfbu_kun/firebase_options.dart';
+import 'package:golfbu_kun/notification/notifications_provider.dart';
 import 'package:golfbu_kun/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  FlutterAppBadger.removeBadge();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -30,6 +32,8 @@ class GolfbukunApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(notificationsProvider);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: ref.watch(routeProvider),

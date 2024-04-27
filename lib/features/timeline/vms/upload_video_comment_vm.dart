@@ -51,12 +51,11 @@ class UploadVideoCommentViewModel extends AsyncNotifier<List<String>> {
   }
 
   void deleteVideoComment({
-    required int videoCreatedAt,
+    required int createdAt,
     required int commentCreatedAtUnix,
   }) {
     _repository.deleteCommentByCreatedAt(
-        videoCreatedAt: videoCreatedAt,
-        commentCreatedAtUnix: commentCreatedAtUnix);
+        createdAt: createdAt, commentCreatedAtUnix: commentCreatedAtUnix);
   }
 }
 
