@@ -510,10 +510,8 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
           }
         }
       }
-
       if (putt == 1) {
         if (stroke == course.parValues[i - 1]) {
-          approachCount += 1;
           approachParSaveCount += 1;
         }
       }

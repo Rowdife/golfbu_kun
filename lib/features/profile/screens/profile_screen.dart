@@ -507,12 +507,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                                     "${(scoreCardData.teeShotMissedRight / scoreCardData.totalFairwayTry * 100).toStringAsFixed(1)}%",
                                               ),
                                               ScoreCardDataTile(
-                                                title:
-                                                    "1ラウンド平均Teeshot critical miss(チーピン、天ぷら、トップ、ダフリ)数",
-                                                data:
-                                                    "${(scoreCardData.teeShotCriticalMiss / scoreCardData.totalFairwayTry * 100).toStringAsFixed(1)}%",
-                                              ),
-                                              ScoreCardDataTile(
                                                 title: "DriverのFwキープ率",
                                                 data:
                                                     "${(scoreCardData.driverFairwayFind / scoreCardData.driverFairwayTry * 100).toStringAsFixed(1)}%",
@@ -638,9 +632,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                                     "${(scoreCardData.puttIn10mHoleIn / scoreCardData.puttIn10mTry * 100).toStringAsFixed(1)}%",
                                               ),
                                               ScoreCardDataTile(
-                                                title: "アプローチセーブ率",
+                                                title: "1ラウンド平均アプローチセーブ数",
                                                 data:
-                                                    "${(scoreCardData.approachParSave / scoreCardData.approachTry * 100).toStringAsFixed(1)}%",
+                                                    "${(scoreCardData.approachParSave / roundCount).toStringAsFixed(1)}",
                                               ),
                                               ScoreCardDataTile(
                                                 title: "バンカーセーブ率",

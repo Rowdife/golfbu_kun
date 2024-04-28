@@ -168,9 +168,6 @@ class _TimelinePostPageViewState extends ConsumerState<TimelinePostPageView>
                         )
                       : Center(),
                 ),
-                Positioned.fill(
-                  child: GestureDetector(onTap: _onTogglePlay),
-                ),
                 Positioned(
                   bottom: 0,
                   child: Container(
@@ -189,18 +186,27 @@ class _TimelinePostPageViewState extends ConsumerState<TimelinePostPageView>
                     child: const Text(''),
                   ),
                 ),
+                Positioned.fill(
+                  child: GestureDetector(onTap: _onTogglePlay),
+                ),
                 Positioned(
                   bottom: 15,
                   left: 15,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "@${widget.videoData.uploaderName}",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: () {
+                          context.push(
+                              "/profileinfo/${widget.videoData.uploaderUid}");
+                        },
+                        child: Text(
+                          "@${widget.videoData.uploaderName}",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       Text(DateTime.fromMillisecondsSinceEpoch(

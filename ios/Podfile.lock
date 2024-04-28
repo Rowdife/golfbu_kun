@@ -986,7 +986,7 @@ SPEC CHECKSUMS:
   FirebaseMessagingInterop: d0b1a0e097a2a3af04ac9eae597779493dd061f3
   FirebaseSharedSwift: 48076404e6e52372290d15a07d2ed1d2f1754023
   FirebaseStorage: bc7bddc743548a89cfb896843a77cf4bdde2c231
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_app_badger: b87fc231847b03b92ce1412aa351842e7e97932f
   flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
   gal: 61e868295d28fe67ffa297fae6dacebf56fd53e1

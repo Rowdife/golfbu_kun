@@ -134,13 +134,12 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               borderRadius: BorderRadius.circular(5),
             ),
             child: IconButton(
-              padding: EdgeInsets.zero,
               onPressed: () {
                 int currentValue = int.parse(strokeController.text);
-                strokeController.text = (currentValue + 1).toString();
+                strokeController.text = (currentValue - 1).toString();
               },
               icon: Icon(
-                Icons.add,
+                Icons.remove,
                 color: Colors.white,
                 size: 34,
               ),
@@ -206,12 +205,13 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               borderRadius: BorderRadius.circular(5),
             ),
             child: IconButton(
+              padding: EdgeInsets.zero,
               onPressed: () {
                 int currentValue = int.parse(strokeController.text);
-                strokeController.text = (currentValue - 1).toString();
+                strokeController.text = (currentValue + 1).toString();
               },
               icon: Icon(
-                Icons.remove,
+                Icons.add,
                 color: Colors.white,
                 size: 34,
               ),
@@ -229,15 +229,16 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               borderRadius: BorderRadius.circular(5),
             ),
             child: IconButton(
-                onPressed: () {
-                  int currentValue = int.parse(puttController.text);
-                  puttController.text = (currentValue + 1).toString();
-                },
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 34,
-                )),
+              onPressed: () {
+                int currentValue = int.parse(puttController.text);
+                puttController.text = (currentValue - 1).toString();
+              },
+              icon: Icon(
+                Icons.remove,
+                color: Colors.white,
+                size: 34,
+              ),
+            ),
           ),
           SizedBox(
             width: 45,
@@ -296,16 +297,15 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               borderRadius: BorderRadius.circular(5),
             ),
             child: IconButton(
-              onPressed: () {
-                int currentValue = int.parse(puttController.text);
-                puttController.text = (currentValue - 1).toString();
-              },
-              icon: Icon(
-                Icons.remove,
-                color: Colors.white,
-                size: 34,
-              ),
-            ),
+                onPressed: () {
+                  int currentValue = int.parse(puttController.text);
+                  puttController.text = (currentValue + 1).toString();
+                },
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 34,
+                )),
           ),
           const Gap(20),
           SizedBox(
@@ -383,7 +383,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                 DropdownMenuItem(
                   value: "left",
                   child: Text(
-                    "左外し",
+                    "左外し←",
                   ),
                 ),
                 DropdownMenuItem(
@@ -455,7 +455,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
           ),
           const Gap(20),
           SizedBox(
-            width: 120,
+            width: 130,
             height: 60,
             child: DropdownButtonFormField<String?>(
               onSaved: (teeShotResult) {
@@ -481,13 +481,13 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                       DropdownMenuItem(
                         value: "left",
                         child: Text(
-                          "左",
+                          "左←",
                         ),
                       ),
                       DropdownMenuItem(
                         value: "right",
                         child: Text(
-                          "右",
+                          "右→",
                         ),
                       ),
                     ]
@@ -502,25 +502,25 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                       const DropdownMenuItem(
                         value: "greenShort",
                         child: Text(
-                          "ショート",
+                          "ショート↓",
                         ),
                       ),
                       const DropdownMenuItem(
                         value: "greenOver",
                         child: Text(
-                          "オーバー",
+                          "オーバー↑",
                         ),
                       ),
                       const DropdownMenuItem(
                         value: "greenLeft",
                         child: Text(
-                          "グリーン左",
+                          "グリーン左←",
                         ),
                       ),
                       const DropdownMenuItem(
                         value: "greenRight",
                         child: Text(
-                          "グリーン右",
+                          "グリーン右→",
                         ),
                       ),
                     ],

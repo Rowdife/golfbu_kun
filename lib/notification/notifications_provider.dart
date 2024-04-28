@@ -64,10 +64,10 @@ class NotificationsProvider extends AsyncNotifier {
 
   @override
   FutureOr build() async {
+    await initListeners();
     final token = await _messaging.getToken();
     if (token == null) return;
     await updateToken(token);
-    await initListeners();
     _messaging.onTokenRefresh.listen((newToken) async {
       await updateToken(newToken);
     });

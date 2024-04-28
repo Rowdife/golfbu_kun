@@ -1259,18 +1259,12 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ),
                       ScoreCardDataTile(
                         title: "パーセーブ数",
-                        data:
-                            "${scoreCard.approachParSave} / ${scoreCard.approachTry}",
+                        data: "${scoreCard.approachTry}",
                       ),
-                      ScoreCardDataTile(
-                        title: "パーセーブ率",
-                        data:
-                            "${(scoreCard.approachParSave / scoreCard.approachTry * 100).toStringAsFixed(1)}%",
-                      ),
+
                       ScoreCardDataTile(
                         title: "チップイン数",
-                        data:
-                            "${scoreCard.approachChipIn} / ${scoreCard.approachTry}",
+                        data: "${scoreCard.approachChipIn}",
                       ),
                       const Gap(20),
                       const Text(
