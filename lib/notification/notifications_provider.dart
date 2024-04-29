@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -70,16 +71,13 @@ class NotificationsProvider extends AsyncNotifier {
           .read(getSchoolListProvider.notifier)
           .getUniversityNameList();
       final universityName = universityMap[userUniversityId];
-      _scheduleNotification(universityName);
-      print("通知が設定されました!");
-    } else {
-      print("通知が設定されませんでした。");
-    }
+      _promoteVideoUploadNotification(universityName);
+      _aguCalendarNotification();
+    } else {}
   }
 
-//agu calendar
-  void _scheduleNotification(String universityName) async {
-    final everySaturdayEightPm = tz.TZDateTime(tz.local, 2024, 4, 22, 20, 0, 0);
+  void _promoteVideoUploadNotification(String universityName) async {
+    final everySaturdayEightPm = tz.TZDateTime(tz.local, 2024, 4, 22, 21, 0, 0);
     final notificationDetails = NotificationDetails(
       iOS: DarwinNotificationDetails(
         presentAlert: true,
@@ -98,6 +96,54 @@ class NotificationsProvider extends AsyncNotifier {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+    );
+  }
+
+  void _aguCalendarNotification() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final querySnapshot =
+        await firestore.collection('university/agu/calendar').get();
+
+    for (var doc in querySnapshot.docs) {
+      DateTime date = DateTime.parse(doc['date']);
+      String title = doc['title'];
+
+      _scheduleNotification(date.subtract(Duration(days: 3)), '$titleの3日前です');
+      _scheduleNotification(date.subtract(Duration(days: 1)), '$titleの前日です');
+    }
+  }
+
+  void _scheduleNotification(DateTime date, String message) async {
+    if (date.isBefore(DateTime.now().subtract(Duration(days: 1)))) return;
+    final scheduledTzTime = tz.TZDateTime(
+      tz.local,
+      date.year,
+      date.month,
+      date.day,
+      20,
+      00,
+    );
+
+    final notificationDetails = NotificationDetails(
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+        badgeNumber: 0,
+      ),
+    );
+
+    print(scheduledTzTime);
+    print(message);
+
+    await _notificationsPlugin.zonedSchedule(
+      Random().nextInt(100),
+      '部内カレンダー通知',
+      message,
+      scheduledTzTime,
+      notificationDetails,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
