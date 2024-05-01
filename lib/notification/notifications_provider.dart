@@ -137,7 +137,7 @@ class NotificationsProvider extends AsyncNotifier {
     print(message);
 
     await _notificationsPlugin.zonedSchedule(
-      Random().nextInt(100),
+      int.parse(message),
       '部内カレンダー通知',
       message,
       scheduledTzTime,
