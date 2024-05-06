@@ -315,6 +315,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                       ),
                                       data: (videos) {
                                         return ListView.separated(
+                                          reverse: true,
                                           shrinkWrap: true,
                                           physics:
                                               const NeverScrollableScrollPhysics(),
@@ -392,7 +393,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                       },
                                       error: (error, stackTrace) => Center(
                                         child: Text(
-                                          '投稿をロードできません $error',
+                                          'スコアをロードできません $error',
                                           style: const TextStyle(
                                               color: Colors.white),
                                         ),

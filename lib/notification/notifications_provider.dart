@@ -133,11 +133,8 @@ class NotificationsProvider extends AsyncNotifier {
       ),
     );
 
-    print(scheduledTzTime);
-    print(message);
-
     await _notificationsPlugin.zonedSchedule(
-      int.parse(message),
+      date.microsecondsSinceEpoch,
       '部内カレンダー通知',
       message,
       scheduledTzTime,
