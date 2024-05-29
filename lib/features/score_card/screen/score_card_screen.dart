@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_my_history_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_team_screen.dart';
+import 'package:golfbu_kun/features/score_card/widgets/new_scorecard.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_button.dart';
 
 class ScoreCardScreen extends ConsumerStatefulWidget {
@@ -34,7 +35,21 @@ class _ScoreCardScreenState extends ConsumerState<ScoreCardScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("スコア管理")),
+      appBar: AppBar(
+        title: const Text("スコア管理"),
+        actions: [
+          // IconButton(
+          //   onPressed: () {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //         builder: (context) => const NewScorecard(),
+          //       ),
+          //     );
+          //   },
+          //   icon: FaIcon(FontAwesomeIcons.barsProgress),
+          // ),
+        ],
+      ),
       body: SafeArea(
         child: Center(
           child: Container(

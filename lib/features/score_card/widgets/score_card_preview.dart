@@ -227,6 +227,11 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int birdieChanceCount = 0;
     int birdieChanceHoleInCount = 0;
 
+    //
+    int obCount = 0;
+    int hazardCount = 0;
+    int penaltyCount = 0;
+
 // 重複するForの処理をまとめる
 
     for (int i = 1; i <= 9; i++) {
@@ -272,11 +277,9 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
       bunkerShot ??= false;
       guardBunker.add(bunkerShot);
 
-      String obShot = widget.scorecard.scorecard['hole$i']?['ob'];
-      ob.add(obShot);
-
-      String hzShot = widget.scorecard.scorecard['hole$i']?['hazard'];
-      hazard.add(hzShot);
+      obCount += int.parse(widget.scorecard.scorecard['hole$i']!['ob']);
+      // hazardCount += widget.scorecard.scorecard['hole$i']!['hazard'] as int;
+      // penaltyCount += widget.scorecard.scorecard['hole$i']!['penalty'] as int;
 
       String penaltyShot = widget.scorecard.scorecard['hole$i']?['penalty'];
       penalty.add(penaltyShot);
@@ -536,9 +539,6 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
       }
     }
 
-    int obCount = ob.where((shot) => shot.isNotEmpty).length;
-    int hazardCount = hazard.where((shot) => shot.isNotEmpty).length;
-    int penaltyCount = penalty.where((shot) => shot.isNotEmpty).length;
     int teeShotResultCount = teeShotResult
         .where((shot) =>
             shot.isNotEmpty &&
@@ -1741,12 +1741,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                       ScoreCardDataTile(
-                          title: "パーセーブ数",
-                          data: "$approachParSaveCount / $approachCount"),
-                      ScoreCardDataTile(
-                          title: "パーセーブ率",
-                          data:
-                              "${approachParSaveCount / approachCount * 100}%"),
+                          title: "パーセーブ数", data: "$approachParSaveCount"),
                       ScoreCardDataTile(
                           title: "チップイン数", data: "$approachChipInCount"),
                       const Gap(20),
