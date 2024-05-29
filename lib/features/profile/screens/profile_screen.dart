@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,6 +19,7 @@ import 'package:golfbu_kun/features/score_card/vms/score_card_data_vm.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_data_tile.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_history_tile.dart';
 import 'package:golfbu_kun/features/score_card/widgets/score_card_view.dart';
+import 'package:golfbu_kun/features/timeline/screen/timeline_team_list_screen.dart';
 import 'package:golfbu_kun/features/timeline/vms/timeline_by_user_vm.dart';
 import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 import 'package:golfbu_kun/features/timeline/widgets/timeline_post.dart';
@@ -106,6 +108,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
             child: CircularProgressIndicator.adaptive(),
           ),
           data: (data) => Scaffold(
+            drawer: const TimelineTeamListScreen(),
+            backgroundColor: Colors.grey.shade900,
             body: RefreshIndicator(
               onRefresh: _onRefresh,
               child: DefaultTabController(
@@ -162,18 +166,21 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                       radius: 50,
                                       backgroundColor: Colors.black,
                                       child: ClipOval(
-                                        child: Image.network(
-                                            "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${data.uid}?alt=media&token=${Random().nextInt(100)}",
-                                            width: 100,
-                                            height: 100,
-                                            fit: BoxFit.cover, errorBuilder:
-                                                (context, error, stackTrace) {
-                                          return const FaIcon(
-                                            FontAwesomeIcons.user,
-                                            color: Colors.white,
-                                            size: 50,
-                                          );
-                                        }),
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${profile.uid}?alt=media&token=${Random().nextInt(100)}",
+                                          fit: BoxFit.cover,
+                                          errorWidget:
+                                              (context, url, dynamic error) {
+                                            return Center(
+                                              child: const FaIcon(
+                                                FontAwesomeIcons.user,
+                                                color: Colors.white,
+                                                size: 40,
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ),
                               Positioned(
@@ -308,6 +315,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                       ),
                                       data: (videos) {
                                         return ListView.separated(
+                                          reverse: true,
                                           shrinkWrap: true,
                                           physics:
                                               const NeverScrollableScrollPhysics(),
@@ -385,7 +393,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                       },
                                       error: (error, stackTrace) => Center(
                                         child: Text(
-                                          '投稿をロードできません $error',
+                                          'スコアをロードできません $error',
                                           style: const TextStyle(
                                               color: Colors.white),
                                         ),
@@ -498,12 +506,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                                 title: "Fwより右のミス率",
                                                 data:
                                                     "${(scoreCardData.teeShotMissedRight / scoreCardData.totalFairwayTry * 100).toStringAsFixed(1)}%",
-                                              ),
-                                              ScoreCardDataTile(
-                                                title:
-                                                    "1ラウンド平均Teeshot critical miss(チーピン、天ぷら、トップ、ダフリ)数",
-                                                data:
-                                                    "${(scoreCardData.teeShotCriticalMiss / scoreCardData.totalFairwayTry * 100).toStringAsFixed(1)}%",
                                               ),
                                               ScoreCardDataTile(
                                                 title: "DriverのFwキープ率",
@@ -631,9 +633,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                                     "${(scoreCardData.puttIn10mHoleIn / scoreCardData.puttIn10mTry * 100).toStringAsFixed(1)}%",
                                               ),
                                               ScoreCardDataTile(
-                                                title: "アプローチセーブ率",
+                                                title: "1ラウンド平均アプローチセーブ数",
                                                 data:
-                                                    "${(scoreCardData.approachParSave / scoreCardData.approachTry * 100).toStringAsFixed(1)}%",
+                                                    "${(scoreCardData.approachParSave / roundCount).toStringAsFixed(1)}",
                                               ),
                                               ScoreCardDataTile(
                                                 title: "バンカーセーブ率",

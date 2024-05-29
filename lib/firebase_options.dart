@@ -60,10 +60,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA34Ephg9lPIARNfGuxU3z8qRxugRKKqV8',
-    appId: '1:386850279649:ios:bdb890d3ec02209bbe27a0',
+    appId: '1:386850279649:ios:e7b06270cd170ca1be27a0',
     messagingSenderId: '386850279649',
     projectId: 'golfbukun',
     storageBucket: 'golfbukun.appspot.com',
-    iosBundleId: 'com.example.golfbuKun',
+    iosBundleId: 'com.difetmrow.golfbukunapptest',
   );
 }

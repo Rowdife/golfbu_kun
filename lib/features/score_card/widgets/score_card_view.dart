@@ -316,7 +316,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                                 ),
                               ),
                             ),
-                            for (int i = 9; i <= 17; i++)
+                            for (int i = 10; i <= 18; i++)
                               Container(
                                 width: widthAndHeight,
                                 height: widthAndHeight,
@@ -716,17 +716,6 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                           title: "フェアウェイより右に外れる確率",
                           data:
                               "${(scoreCard.teeShotMissedRight / scoreCard.totalFairwayTry * 100).toStringAsFixed(1)}%"),
-
-                      ScoreCardDataTile(
-                        title: "ティーショットクリティカルミス",
-                        data:
-                            "${scoreCard.teeShotCriticalMiss} / ${scoreCard.totalFairwayTry}",
-                      ),
-                      ScoreCardDataTile(
-                        title: "ティーショットクリティカルミス率",
-                        data:
-                            "${(scoreCard.teeShotCriticalMiss / scoreCard.totalFairwayTry * 100).toStringAsFixed(1)}%",
-                      ),
 
                       const Gap(20),
                       const Text(
@@ -1270,18 +1259,12 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ),
                       ScoreCardDataTile(
                         title: "パーセーブ数",
-                        data:
-                            "${scoreCard.approachParSave} / ${scoreCard.approachTry}",
+                        data: "${scoreCard.approachTry}",
                       ),
-                      ScoreCardDataTile(
-                        title: "パーセーブ率",
-                        data:
-                            "${(scoreCard.approachParSave / scoreCard.approachTry * 100).toStringAsFixed(1)}%",
-                      ),
+
                       ScoreCardDataTile(
                         title: "チップイン数",
-                        data:
-                            "${scoreCard.approachChipIn} / ${scoreCard.approachTry}",
+                        data: "${scoreCard.approachChipIn}",
                       ),
                       const Gap(20),
                       const Text(

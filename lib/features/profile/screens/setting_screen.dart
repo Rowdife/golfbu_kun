@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,8 @@ class SettingScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingScreenState extends ConsumerState<SettingScreen> {
+  FirebaseMessaging _messaging = FirebaseMessaging.instance;
+
   void _onLogoutTap() {
     showCupertinoModalPopup(
       context: context,
@@ -70,6 +73,11 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -79,6 +87,12 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: ListView(
           children: [
+            ListTile(
+              title: const Text(
+                "お手数ですが、通知のOn-Offは\n「設定→ゴルフ部くん」から操作してください。",
+                style: TextStyle(fontSize: 12),
+              ),
+            ),
             ListTile(
               onTap: _onLogoutTap,
               title: const Text(

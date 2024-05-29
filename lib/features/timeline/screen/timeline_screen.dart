@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
+import 'package:golfbu_kun/features/timeline/models/post_video_model.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_team_list_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_choice_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_question_screen.dart';
@@ -14,6 +15,8 @@ import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';
 import 'package:golfbu_kun/features/timeline/vms/upload_video_comment_vm.dart';
 
 import 'package:golfbu_kun/features/timeline/widgets/timeline_post.dart';
+import 'package:golfbu_kun/features/timeline/widgets/timline_post_pageview.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class TimelineScreen extends ConsumerStatefulWidget {
   const TimelineScreen({super.key});
@@ -24,99 +27,80 @@ class TimelineScreen extends ConsumerStatefulWidget {
 
 class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   final ScrollController _scrollController = ScrollController();
-
-  void _onUploadTap(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const TimelineUploadChoiceScreen(),
-      ),
-    );
-  }
+  final PageController _pageController = PageController(viewportFraction: 1);
+  final VisibilityDetectorController _visibilityDetectorController =
+      VisibilityDetectorController();
+  int _itemCount = 0;
+  int pageNumber = 0;
+  bool hasData = false;
 
   Future<void> _onRefresh() async {
     await ref.read(timelineProvider.notifier).refresh();
+    _pageController.jumpToPage(0);
     setState(() {});
   }
 
-  void fetchNextVideos() async {
-    final double previousOffset = _scrollController.offset - 150;
-    await ref
-        .read(timelineProvider.notifier)
-        .fetchNextVideos(context, _scrollController, previousOffset);
+  void _onPageChanged(int page) async {
+    if (pageNumber != page) {
+      pageNumber = page;
+    }
+  }
+
+  void _onVisibilityChanged(VisibilityInfo info) async {
+    if (info.visibleFraction == 1.0) {
+      if (pageNumber == _itemCount - 2) {
+        await ref.read(timelineProvider.notifier).fetchNextVideos();
+        _pageController.jumpToPage(pageNumber);
+      }
+    } else {}
   }
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels - 150 >
-          _scrollController.position.maxScrollExtent) {
-        fetchNextVideos();
-      }
-    });
   }
 
   @override
   void dispose() {
+    _pageController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final videos = ref.watch(timelineProvider).when(
+          data: (data) => data,
+          loading: () => [],
+          error: (_, __) => [],
+        );
+    _itemCount = videos.length;
     return Scaffold(
-      drawer: const TimelineTeamListScreen(),
-      backgroundColor: Colors.grey.shade900,
-      appBar: AppBar(
-        title: const Text("Timeline"),
-        actions: [
-          IconButton(
-            onPressed: () => _onUploadTap(context),
-            icon: const FaIcon(FontAwesomeIcons.upload),
-          ),
-        ],
-      ),
-      body: ref.watch(timelineProvider).when(
-          loading: () {
-            const Center(
-              child: CircularProgressIndicator(),
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: PageView.builder(
+          onPageChanged: _onPageChanged,
+          scrollDirection: Axis.vertical,
+          itemCount: _itemCount,
+          controller: _pageController,
+          itemBuilder: (context, index) {
+            final videoData = videos[index];
+            return Column(
+              children: [
+                VisibilityDetector(
+                  onVisibilityChanged: _onVisibilityChanged,
+                  key: ValueKey(videoData.createdAt),
+                  child: TimelinePostPageView(
+                    videoData: videoData,
+                    index: index,
+                    keyValue: ValueKey(videoData.createdAt),
+                  ),
+                ),
+              ],
             );
-            return null;
           },
-          error: (error, stackTrace) => Center(
-                child: Text(
-                  '投稿をロードできません $error',
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-          data: (videos) {
-            return RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: ListView.separated(
-                itemCount: videos.length,
-                controller: _scrollController,
-                separatorBuilder: (context, index) => const Divider(
-                  height: 20,
-                  thickness: 0,
-                  color: Colors.transparent,
-                ),
-                itemBuilder: (context, index) {
-                  final videoData = videos[index];
-
-                  return Column(
-                    children: [
-                      const Gap(10),
-                      TimelinePost(
-                        videoData: videoData,
-                        index: index,
-                        keyValue: ValueKey(videoData.createdAt),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            );
-          }),
+        ),
+      ),
     );
   }
 }

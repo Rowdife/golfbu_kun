@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -137,18 +138,22 @@ class _TimelinePostState extends ConsumerState<TimelinePost>
                         CircleAvatar(
                           backgroundColor: Colors.black,
                           child: ClipOval(
-                            child: Image.network(
-                                "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${widget.videoData.uploaderUid}?alt=media&token=${Random().nextInt(100)}",
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                              return const FaIcon(
-                                FontAwesomeIcons.user,
-                                color: Colors.white,
-                                size: 15,
-                              );
-                            }),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${widget.videoData.uploaderUid}?alt=media&token=${Random().nextInt(100)}",
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, dynamic error) {
+                                return Center(
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.user,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                         const Gap(10),

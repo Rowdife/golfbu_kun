@@ -40,6 +40,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
   int inTotalPutt = 0;
   int totalScore = 0;
   int totalPutt = 0;
+  bool isTapped = false;
   late final ProfileModel profile;
 
   Future<void> _onUploadScoreTap(
@@ -226,6 +227,11 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int birdieChanceCount = 0;
     int birdieChanceHoleInCount = 0;
 
+    //
+    int obCount = 0;
+    int hazardCount = 0;
+    int penaltyCount = 0;
+
 // 重複するForの処理をまとめる
 
     for (int i = 1; i <= 9; i++) {
@@ -271,11 +277,9 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
       bunkerShot ??= false;
       guardBunker.add(bunkerShot);
 
-      String obShot = widget.scorecard.scorecard['hole$i']?['ob'];
-      ob.add(obShot);
-
-      String hzShot = widget.scorecard.scorecard['hole$i']?['hazard'];
-      hazard.add(hzShot);
+      obCount += int.parse(widget.scorecard.scorecard['hole$i']!['ob']);
+      // hazardCount += widget.scorecard.scorecard['hole$i']!['hazard'] as int;
+      // penaltyCount += widget.scorecard.scorecard['hole$i']!['penalty'] as int;
 
       String penaltyShot = widget.scorecard.scorecard['hole$i']?['penalty'];
       penalty.add(penaltyShot);
@@ -509,10 +513,8 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
           }
         }
       }
-
       if (putt == 1) {
         if (stroke == course.parValues[i - 1]) {
-          approachCount += 1;
           approachParSaveCount += 1;
         }
       }
@@ -537,9 +539,6 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
       }
     }
 
-    int obCount = ob.where((shot) => shot.isNotEmpty).length;
-    int hazardCount = hazard.where((shot) => shot.isNotEmpty).length;
-    int penaltyCount = penalty.where((shot) => shot.isNotEmpty).length;
     int teeShotResultCount = teeShotResult
         .where((shot) =>
             shot.isNotEmpty &&
@@ -1355,14 +1354,6 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                         title: "フェアウェイより右に外れる確率",
                         data: "$teeShotRightPercentage%",
                       ),
-                      ScoreCardDataTile(
-                        title: "ティーショットクリティカルミス",
-                        data: "$teeShotCriticalMissCount / $teeShotResultCount",
-                      ),
-                      ScoreCardDataTile(
-                        title: "ティーショットクリティカルミス率",
-                        data: "$teeShotCriticalMissPercentage%",
-                      ),
                       const Gap(20),
                       const Text(
                         "クラブ別FWキープ率",
@@ -1750,12 +1741,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                       ScoreCardDataTile(
-                          title: "パーセーブ数",
-                          data: "$approachParSaveCount / $approachCount"),
-                      ScoreCardDataTile(
-                          title: "パーセーブ率",
-                          data:
-                              "${approachParSaveCount / approachCount * 100}%"),
+                          title: "パーセーブ数", data: "$approachParSaveCount"),
                       ScoreCardDataTile(
                           title: "チップイン数", data: "$approachChipInCount"),
                       const Gap(20),
@@ -1813,7 +1799,8 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       ScoreCardDataTile(title: "ペナルティ数", data: "$penaltyCount"),
                       const Gap(40),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          if (isTapped) return;
                           final scoreCardData = ScoreCardDataModel(
                             uploaderName: profile.name,
                             uploaderId: profile.uid,
@@ -1933,11 +1920,13 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                             teeShotMissedRight: teeShotRightCount,
                             teeShotCriticalMiss: teeShotCriticalMissCount,
                           );
-                          _onUploadScoreTap(scoreCardData, context);
+                          isTapped = true;
+                          await _onUploadScoreTap(scoreCardData, context);
                         },
-                        child: const Center(
-                          child:
-                              AuthButton(color: Colors.green, text: "スコアを登録する"),
+                        child: Center(
+                          child: AuthButton(
+                              color: isTapped ? Colors.grey : Colors.green,
+                              text: "スコアを登録する"),
                         ),
                       ),
                       const Gap(40),

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,18 +47,22 @@ class TimelineTeamListScreen extends ConsumerWidget {
                               leading: CircleAvatar(
                                 backgroundColor: Colors.black,
                                 child: ClipOval(
-                                  child: Image.network(
-                                      "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${profile.uid}?alt=media&token=${Random().nextInt(100)}",
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover, errorBuilder:
-                                          (context, error, stackTrace) {
-                                    return const FaIcon(
-                                      FontAwesomeIcons.user,
-                                      color: Colors.white,
-                                      size: 20,
-                                    );
-                                  }),
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        "https://firebasestorage.googleapis.com/v0/b/golfbukun.appspot.com/o/avatars%2F${profile.uid}?alt=media&token=${Random().nextInt(100)}",
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, dynamic error) {
+                                      return Center(
+                                        child: const FaIcon(
+                                          FontAwesomeIcons.user,
+                                          color: Colors.white,
+                                          size: 15,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             );

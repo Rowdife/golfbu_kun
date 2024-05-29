@@ -19,7 +19,12 @@ class ScoreRowElements extends ConsumerStatefulWidget {
 }
 
 class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
+  final TextEditingController strokeController =
+      TextEditingController(text: "4");
+  final TextEditingController puttController = TextEditingController(text: "2");
+
   List<DropdownMenuItem<String>> golfclubs = [
+    DropdownMenuItem(value: null, child: Text("選択なし")),
     const DropdownMenuItem(
       value: "driver",
       child: Text(
@@ -117,7 +122,29 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               ),
             ),
           ),
-          const Gap(35),
+          const Gap(15),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black,
+              border: Border.all(
+                color: Colors.green,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IconButton(
+              onPressed: () {
+                int currentValue = int.parse(strokeController.text);
+                strokeController.text = (currentValue - 1).toString();
+              },
+              icon: Icon(
+                Icons.remove,
+                color: Colors.white,
+                size: 34,
+              ),
+            ),
+          ),
           SizedBox(
             width: 45,
             height: 45,
@@ -125,6 +152,8 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               child: SizedBox(
                 height: 100,
                 child: TextFormField(
+                  enabled: false,
+                  controller: strokeController,
                   onSaved: (stroke) {
                     if (stroke != null) {
                       _scoreData["stroke"] = stroke;
@@ -165,12 +194,59 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               ),
             ),
           ),
-          const Gap(28),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black,
+              border: Border.all(
+                color: Colors.green,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                int currentValue = int.parse(strokeController.text);
+                strokeController.text = (currentValue + 1).toString();
+              },
+              icon: Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 34,
+              ),
+            ),
+          ),
+          Gap(20),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black,
+              border: Border.all(
+                color: Colors.green,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IconButton(
+              onPressed: () {
+                int currentValue = int.parse(puttController.text);
+                puttController.text = (currentValue - 1).toString();
+              },
+              icon: Icon(
+                Icons.remove,
+                color: Colors.white,
+                size: 34,
+              ),
+            ),
+          ),
           SizedBox(
             width: 45,
             height: 45,
             child: Center(
               child: TextFormField(
+                enabled: false,
+                controller: puttController,
                 onSaved: (putt) {
                   if (putt != null) {
                     _scoreData["putt"] = putt;
@@ -210,11 +286,32 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               ),
             ),
           ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black,
+              border: Border.all(
+                color: Colors.green,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IconButton(
+                onPressed: () {
+                  int currentValue = int.parse(puttController.text);
+                  puttController.text = (currentValue + 1).toString();
+                },
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 34,
+                )),
+          ),
           const Gap(20),
           SizedBox(
             width: 160,
             height: 60,
-            child: DropdownButtonFormField(
+            child: DropdownButtonFormField<String?>(
               onSaved: (puttRemained) {
                 if (puttRemained != null) {
                   _scoreData["puttRemained"] = puttRemained;
@@ -227,6 +324,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                 setState(() {});
               },
               items: const [
+                DropdownMenuItem(value: null, child: Text("選択なし")),
                 DropdownMenuItem(
                   // Change the type of DropdownMenuItem to int
                   value: "pin", // Change the value type to int
@@ -258,11 +356,11 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               ],
             ),
           ),
-          const Gap(40),
+          const Gap(20),
           SizedBox(
             width: 120,
             height: 60,
-            child: DropdownButtonFormField(
+            child: DropdownButtonFormField<String?>(
               onSaved: (puttMissed) {
                 if (puttMissed != null) {
                   _scoreData["puttMissed"] = puttMissed;
@@ -275,32 +373,33 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                 setState(() {});
               },
               items: const [
+                DropdownMenuItem(value: null, child: Text("選択なし")),
                 DropdownMenuItem(
                   value: "nomiss",
                   child: Text(
-                    "ワンパット",
+                    "カップイン",
                   ),
                 ),
                 DropdownMenuItem(
                   value: "left",
                   child: Text(
-                    "左外し",
+                    "左外し←",
                   ),
                 ),
                 DropdownMenuItem(
                   value: "right",
                   child: Text(
-                    "右外し",
+                    "右外し→",
                   ),
                 ),
               ],
             ),
           ),
-          const Gap(40),
+          const Gap(20),
           SizedBox(
             width: 130,
             height: 60,
-            child: DropdownButtonFormField(
+            child: DropdownButtonFormField<String?>(
               onSaved: (putt) {
                 if (putt != null) {
                   _scoreData["puttDistance"] = putt;
@@ -313,6 +412,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                 setState(() {});
               },
               items: const [
+                DropdownMenuItem(value: null, child: Text("選択なし")),
                 DropdownMenuItem(
                   value: "nomiss",
                   child: Text(
@@ -334,11 +434,11 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               ],
             ),
           ),
-          const Gap(30),
+          const Gap(20),
           SizedBox(
             width: 130,
             height: 60,
-            child: DropdownButtonFormField(
+            child: DropdownButtonFormField<String?>(
               onSaved: (teeShotClub) {
                 if (teeShotClub != null) {
                   _scoreData["teeShotClub"] = teeShotClub;
@@ -353,11 +453,11 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               items: golfclubs,
             ),
           ),
-          const Gap(30),
+          const Gap(20),
           SizedBox(
-            width: 120,
+            width: 130,
             height: 60,
-            child: DropdownButtonFormField(
+            child: DropdownButtonFormField<String?>(
               onSaved: (teeShotResult) {
                 if (teeShotResult != null) {
                   _scoreData["teeShotResult"] = teeShotResult;
@@ -371,6 +471,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
               },
               items: widget.parNumber != 3
                   ? const [
+                      DropdownMenuItem(value: null, child: Text("選択なし")),
                       DropdownMenuItem(
                         value: "fw",
                         child: Text(
@@ -380,41 +481,18 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                       DropdownMenuItem(
                         value: "left",
                         child: Text(
-                          "左",
+                          "左←",
                         ),
                       ),
                       DropdownMenuItem(
                         value: "right",
                         child: Text(
-                          "右",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "chipping",
-                        child: Text(
-                          "チーピン",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "top",
-                        child: Text(
-                          "トップ",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "tenpura",
-                        child: Text(
-                          "天ぷら",
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "duff",
-                        child: Text(
-                          "ダフリ",
+                          "右→",
                         ),
                       ),
                     ]
                   : [
+                      DropdownMenuItem(value: null, child: Text("選択なし")),
                       const DropdownMenuItem(
                         value: "greenOn",
                         child: Text(
@@ -424,31 +502,31 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                       const DropdownMenuItem(
                         value: "greenShort",
                         child: Text(
-                          "ショート",
+                          "ショート↓",
                         ),
                       ),
                       const DropdownMenuItem(
                         value: "greenOver",
                         child: Text(
-                          "オーバー",
+                          "オーバー↑",
                         ),
                       ),
                       const DropdownMenuItem(
                         value: "greenLeft",
                         child: Text(
-                          "グリーン左",
+                          "グリーン左←",
                         ),
                       ),
                       const DropdownMenuItem(
                         value: "greenRight",
                         child: Text(
-                          "グリーン右",
+                          "グリーン右→",
                         ),
                       ),
                     ],
             ),
           ),
-          const Gap(30),
+          const Gap(10),
           const Text("残り"),
           const Gap(5),
           SizedBox(
@@ -479,7 +557,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
           ),
           const Gap(5),
           const Text("ヤード"),
-          const Gap(30),
+          const Gap(10),
           SizedBox(
             width: 130,
             height: 60,
@@ -487,7 +565,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                 ? const Center(
                     child: Text("Par3は入力不要"),
                   )
-                : DropdownButtonFormField(
+                : DropdownButtonFormField<String?>(
                     onSaved: (parOnShotClub) {
                       if (parOnShotClub != null) {
                         _scoreData["parOnShotClub"] = parOnShotClub;
@@ -502,7 +580,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                     items: golfclubs,
                   ),
           ),
-          const Gap(130),
+          const Gap(65),
           Transform.scale(
             scale: 2,
             child: Checkbox(
@@ -514,7 +592,7 @@ class _ScoreRowElementsState extends ConsumerState<ScoreRowElements> {
                   _scoreData["guardBunker"] = _guardBunker;
                 }),
           ),
-          const Gap(92),
+          const Gap(65),
           SizedBox(
             width: 45,
             height: 45,

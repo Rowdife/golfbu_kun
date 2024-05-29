@@ -97,7 +97,7 @@ class PostRepository {
         .doc(universityId)
         .collection("videos")
         .orderBy("createdAt", descending: true)
-        .limit(5);
+        .limit(7);
 
     if (lastItemCreatedAt == null) {
       return query.get();
@@ -206,7 +206,7 @@ class PostRepository {
   /// If a video is found, it queries the comments collection of that video to find the comment with the same creation timestamp.
   /// If a comment is found, it prints the information of the comment.
   Future<void> deleteCommentByCreatedAt({
-    required int videoCreatedAt,
+    required int createdAt,
     required int commentCreatedAtUnix,
   }) async {
     final universityId = _authRepo.user!.displayName;
@@ -214,7 +214,7 @@ class PostRepository {
         .collection("university")
         .doc(universityId)
         .collection("videos")
-        .where("createdAt", isEqualTo: videoCreatedAt)
+        .where("createdAt", isEqualTo: createdAt)
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {

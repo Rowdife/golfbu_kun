@@ -49,7 +49,7 @@ class SignUpViewModel extends AsyncNotifier<void> {
       },
     );
     if (state.hasError) {
-      const errorSnack = SnackBar(content: Text("該当するメールアドレスはすでに登録されています"));
+      const errorSnack = SnackBar(content: Text("すでに登録されたメールアドレスです。"));
       ScaffoldMessenger.of(context).showSnackBar(errorSnack);
     } else {
       showDialog(
