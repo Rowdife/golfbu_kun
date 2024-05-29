@@ -315,6 +315,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                       ),
                                       data: (videos) {
                                         return ListView.separated(
+                                          reverse: true,
                                           shrinkWrap: true,
                                           physics:
                                               const NeverScrollableScrollPhysics(),
@@ -392,7 +393,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                       },
                                       error: (error, stackTrace) => Center(
                                         child: Text(
-                                          '投稿をロードできません $error',
+                                          'スコアをロードできません $error',
                                           style: const TextStyle(
                                               color: Colors.white),
                                         ),
@@ -505,12 +506,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                                 title: "Fwより右のミス率",
                                                 data:
                                                     "${(scoreCardData.teeShotMissedRight / scoreCardData.totalFairwayTry * 100).toStringAsFixed(1)}%",
-                                              ),
-                                              ScoreCardDataTile(
-                                                title:
-                                                    "1ラウンド平均Teeshot critical miss(チーピン、天ぷら、トップ、ダフリ)数",
-                                                data:
-                                                    "${(scoreCardData.teeShotCriticalMiss / scoreCardData.totalFairwayTry * 100).toStringAsFixed(1)}%",
                                               ),
                                               ScoreCardDataTile(
                                                 title: "DriverのFwキープ率",
@@ -638,9 +633,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                                     "${(scoreCardData.puttIn10mHoleIn / scoreCardData.puttIn10mTry * 100).toStringAsFixed(1)}%",
                                               ),
                                               ScoreCardDataTile(
-                                                title: "アプローチセーブ率",
+                                                title: "1ラウンド平均アプローチセーブ数",
                                                 data:
-                                                    "${(scoreCardData.approachParSave / scoreCardData.approachTry * 100).toStringAsFixed(1)}%",
+                                                    "${(scoreCardData.approachParSave / roundCount).toStringAsFixed(1)}",
                                               ),
                                               ScoreCardDataTile(
                                                 title: "バンカーセーブ率",

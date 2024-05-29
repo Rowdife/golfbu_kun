@@ -155,6 +155,59 @@ exports.notifyNewVideoInMyUniversity = functions.firestore
     }
   });
 
+exports.notifyCalendarEventBefore1dayAnd3daysAt8pm = functions.firestore
+  .document("/university/{universityId}/calendar/{eventId}")
+  .onCreate(async (snapshot, context) => {
+    const universityId = context.params.universityId;
+    const event = snapshot.data();
+    const eventDate = new Date(event.date);
+    const oneDayBefore = new Date(eventDate);
+    oneDayBefore.setDate(oneDayBefore.getDate() - 1);
+    oneDayBefore.setHours(20);
+    oneDayBefore.setMinutes(0);
+    const threeDaysBefore = new Date(eventDate);
+    threeDaysBefore.setDate(threeDaysBefore.getDate() - 3);
+    threeDaysBefore.setHours(20);
+    threeDaysBefore.setMinutes(0);
+
+    const usersSnapshot = await admin
+      .firestore()
+      .collection(`/university/${universityId}/users`)
+      .where("token", "!=", null)
+      .get();
+    const tokensInMySchool: string[] = [];
+    usersSnapshot.forEach((userDoc) => {
+      const userData = userDoc.data();
+      const userToken = userData.token;
+      tokensInMySchool.push(userToken);
+    });
+
+    for (const token of tokensInMySchool) {
+      const payload1 = {
+        token: token,
+        notification: {
+          title: "イベントの前日です",
+          body: `${event.title}が明日開催されます。`,
+        },
+        data: {
+          body: `${event.title}が明日開催されます。`,
+        },
+      };
+      const payload2 = {
+        token: token,
+        notification: {
+          title: "イベントの3日前です",
+          body: `${event.title}が3日後に開催されます。`,
+        },
+        data: {
+          body: `${event.title}が3日後に開催されます。`,
+        },
+      };
+      await admin.messaging().send(payload1);
+      await admin.messaging().send(payload2);
+    }
+  });
+
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 

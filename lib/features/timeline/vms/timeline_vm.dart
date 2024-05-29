@@ -38,9 +38,7 @@ class TimelineViewModel extends AsyncNotifier<List<PostVideoModel>> {
     return _list;
   }
 
-  Future<List<PostVideoModel>> fetchNextVideos(
-    BuildContext context,
-  ) async {
+  Future<List<PostVideoModel>> fetchNextVideos() async {
     state = const AsyncValue.loading();
     final newList = await _repository.fetchVideos(
       lastItemCreatedAt: _list.last.createdAt,

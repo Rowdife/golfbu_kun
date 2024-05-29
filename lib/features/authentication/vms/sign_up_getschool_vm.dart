@@ -30,6 +30,15 @@ class GetSchoolListViewModel extends AsyncNotifier<List<DropdownMenuEntry>> {
     state = AsyncValue.data(schoolNameList);
     return schoolNameList;
   }
+
+  Future<Map> getUniversityNameList() async {
+    final universities = await _authRepo.getUniversities();
+    final Map dic = {};
+    for (int i = 0; i < universities.length; i++) {
+      dic.addAll({universities[i].keys.first: universities[i].values.last});
+    }
+    return dic;
+  }
 }
 
 final getSchoolListProvider =

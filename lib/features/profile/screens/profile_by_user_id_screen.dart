@@ -342,6 +342,7 @@ class _ProfileByUserIdScreenState extends ConsumerState<ProfileByUserIdScreen>
                                         ),
                                         data: (videos) {
                                           return ListView.separated(
+                                            reverse: true,
                                             shrinkWrap: true,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),

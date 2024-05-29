@@ -88,6 +88,12 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         child: ListView(
           children: [
             ListTile(
+              title: const Text(
+                "お手数ですが、通知のOn-Offは\n「設定→ゴルフ部くん」から操作してください。",
+                style: TextStyle(fontSize: 12),
+              ),
+            ),
+            ListTile(
               onTap: _onLogoutTap,
               title: const Text(
                 "ログアウト",

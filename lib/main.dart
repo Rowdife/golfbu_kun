@@ -39,7 +39,8 @@ class GolfbukunApp extends ConsumerWidget {
       routerConfig: ref.watch(routeProvider),
       title: 'Golfbukun',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.white, primary: Colors.green),
         scaffoldBackgroundColor: Colors.grey.shade900,
         useMaterial3: true,
         textTheme: Typography.whiteMountainView,
