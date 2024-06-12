@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golfbu_kun/features/authentication/repos/auth_repo.dart';
+import 'package:golfbu_kun/features/score_card/models/new_scorecard_model.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_data_model.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_course_model.dart';
+import 'package:golfbu_kun/features/score_card/widgets/new_scorecard.dart';
 
 class ScoreCardRepository {
   // Implement your repository methods and functionality here
@@ -24,7 +26,7 @@ class ScoreCardRepository {
   }
 
   Future<void> uploadScoreCard(
-      {required ScoreCardDataModel scoreCardData}) async {
+      {required NewScoreCardDataModel scoreCardData}) async {
     final universityId = _authRepo.user!.displayName;
     final scoreCardJson = scoreCardData.toJson();
     await _db

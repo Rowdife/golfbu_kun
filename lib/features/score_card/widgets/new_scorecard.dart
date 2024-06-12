@@ -373,125 +373,417 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                     ],
                                   ),
                                   Gap(10),
-                                  ExpansionTileTheme(
-                                    data: ExpansionTileThemeData(
-                                      textColor: Colors.white,
-                                      collapsedTextColor: Colors.white,
-                                      iconColor: Colors.white,
-                                      collapsedIconColor: Colors.white,
-                                    ),
-                                    child: ExpansionTile(
-                                      title: Text(
-                                        "ショット詳細入力",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      children: [
-                                        Row(
-                                          children: [
-                                            ScoreDataCategory(
-                                                text: "T.Shotクラブ",
-                                                width: 150,
-                                                height: 50),
-                                            Gap(10),
-                                            SizedBox(
-                                              width: 130,
-                                              height: 60,
-                                              child: DropdownButtonFormField<
-                                                  String?>(
-                                                onSaved: (teeShotClub) {
-                                                  if (teeShotClub != null) {
-                                                    _scoreData[index]
-                                                            ["teeShotClub"] =
-                                                        teeShotClub;
-                                                  }
-                                                },
-                                                iconEnabledColor: Colors.white,
-                                                dropdownColor:
-                                                    Colors.grey.shade900,
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                                onChanged: (String? value) {
-                                                  setState(() {});
-                                                },
-                                                items: golfclubs,
-                                              ),
+                                  widget.course.parValues[index] != 3
+                                      ? ExpansionTileTheme(
+                                          data: ExpansionTileThemeData(
+                                            textColor: Colors.white,
+                                            collapsedTextColor: Colors.white,
+                                            iconColor: Colors.white,
+                                            collapsedIconColor: Colors.white,
+                                          ),
+                                          child: ExpansionTile(
+                                            title: Text(
+                                              "ショット詳細入力",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                          ],
-                                        ),
-                                        Gap(10),
-                                        SizedBox(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: Expanded(
-                                            child: Row(
-                                              children: [
-                                                ScoreDataCategory(
-                                                  text: "T.Shot結果",
-                                                  width: 150,
-                                                  height: 50,
-                                                ),
-                                                Gap(10),
-                                                Expanded(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  ScoreDataCategory(
+                                                      text: "T.Shotクラブ",
+                                                      width: 150,
+                                                      height: 50),
+                                                  Gap(10),
+                                                  SizedBox(
+                                                    width: 130,
+                                                    height: 60,
+                                                    child:
+                                                        DropdownButtonFormField<
+                                                            String?>(
+                                                      onSaved: (teeShotClub) {
+                                                        if (teeShotClub !=
+                                                            null) {
+                                                          _scoreData[index][
+                                                                  "teeShotClub"] =
+                                                              teeShotClub;
+                                                        }
+                                                      },
+                                                      iconEnabledColor:
+                                                          Colors.white,
+                                                      dropdownColor:
+                                                          Colors.grey.shade900,
+                                                      style: const TextStyle(
+                                                          color: Colors.white),
+                                                      onChanged:
+                                                          (String? value) {
+                                                        setState(() {});
+                                                      },
+                                                      items: golfclubs,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Gap(10),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: Expanded(
                                                   child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
+                                                    children: [
+                                                      ScoreDataCategory(
+                                                        text: "T.Shot結果",
+                                                        width: 150,
+                                                        height: 50,
+                                                      ),
+                                                      Gap(10),
+                                                      Expanded(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            Column(
+                                                              children: [
+                                                                Text("左"),
+                                                                Radio<String>(
+                                                                  toggleable:
+                                                                      true,
+                                                                  value: "left",
+                                                                  groupValue: _scoreData[
+                                                                          index]
+                                                                      [
+                                                                      "teeShotResult"],
+                                                                  onChanged:
+                                                                      (String?
+                                                                          value) {
+                                                                    setState(
+                                                                        () {
+                                                                      _scoreData[index]
+                                                                              [
+                                                                              "teeShotResult"] =
+                                                                          value;
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                Text("Fairway"),
+                                                                Radio<String>(
+                                                                  toggleable:
+                                                                      true,
+                                                                  value: "fw",
+                                                                  groupValue: _scoreData[
+                                                                          index]
+                                                                      [
+                                                                      "teeShotResult"],
+                                                                  onChanged:
+                                                                      (String?
+                                                                          value) {
+                                                                    setState(
+                                                                        () {
+                                                                      _scoreData[index]
+                                                                              [
+                                                                              "teeShotResult"] =
+                                                                          value;
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                Text("右"),
+                                                                Radio<String>(
+                                                                  toggleable:
+                                                                      true,
+                                                                  value:
+                                                                      "right",
+                                                                  groupValue: _scoreData[
+                                                                          index]
+                                                                      [
+                                                                      "teeShotResult"],
+                                                                  onChanged:
+                                                                      (String?
+                                                                          value) {
+                                                                    setState(
+                                                                        () {
+                                                                      _scoreData[index]
+                                                                              [
+                                                                              "teeShotResult"] =
+                                                                          value;
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  ScoreDataCategory(
+                                                    text: "ParOn残距離",
+                                                    width: 150,
+                                                    height: 50,
+                                                  ),
+                                                  Gap(10),
+                                                  SizedBox(
+                                                    width: 100,
+                                                    height: 45,
+                                                    child: Center(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            parOnShotDistanceControllers[
+                                                                index],
+                                                        onSaved:
+                                                            (parOnShotDistance) {
+                                                          if (parOnShotDistance !=
+                                                              null) {
+                                                            _scoreData[index][
+                                                                    "parOnShotDistance"] =
+                                                                parOnShotDistance;
+                                                          }
+                                                        },
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        maxLength: 3,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          fillColor:
+                                                              Colors.white,
+                                                          counterText: "",
+                                                          border:
+                                                              const OutlineInputBorder(),
+                                                          contentPadding:
+                                                              const EdgeInsets
+                                                                  .all(4),
+                                                          errorStyle:
+                                                              const TextStyle(
+                                                                  fontSize:
+                                                                      0.01),
+                                                          errorBorder:
+                                                              OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            borderSide:
+                                                                const BorderSide(
+                                                              color: Colors.red,
+                                                              width: 1,
+                                                              style: BorderStyle
+                                                                  .solid,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 28,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Gap(10),
+                                                  Text("ヤード"),
+                                                ],
+                                              ),
+                                              Gap(10),
+                                              Row(
+                                                children: [
+                                                  ScoreDataCategory(
+                                                    text: "ParOnクラブ",
+                                                    width: 150,
+                                                    height: 50,
+                                                  ),
+                                                  Gap(10),
+                                                  SizedBox(
+                                                    width: 130,
+                                                    height: 60,
+                                                    child:
+                                                        DropdownButtonFormField<
+                                                            String?>(
+                                                      onSaved: (parOnShotClub) {
+                                                        if (parOnShotClub !=
+                                                            null) {
+                                                          _scoreData[index][
+                                                                  "parOnShotClub"] =
+                                                              parOnShotClub;
+                                                        }
+                                                      },
+                                                      iconEnabledColor:
+                                                          Colors.white,
+                                                      dropdownColor:
+                                                          Colors.grey.shade900,
+                                                      style: const TextStyle(
+                                                          color: Colors.white),
+                                                      onChanged:
+                                                          (String? value) {
+                                                        setState(() {});
+                                                      },
+                                                      items: golfclubs,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Gap(10),
+                                              Row(
+                                                children: [
+                                                  ScoreDataCategory(
+                                                    text: "parOn結果",
+                                                    width: 120,
+                                                    height: 50,
+                                                  ),
+                                                  Gap(10),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Column(
                                                         children: [
-                                                          Text("左"),
+                                                          Text("オーバー"),
                                                           Radio<String>(
-                                                            value: "left",
+                                                            toggleable: true,
+                                                            value: "over",
                                                             groupValue: _scoreData[
                                                                     index][
-                                                                "teeShotResult"],
+                                                                "parOnShotResult"],
                                                             onChanged: (String?
                                                                 value) {
                                                               setState(() {
                                                                 _scoreData[index]
                                                                         [
-                                                                        "teeShotResult"] =
+                                                                        "parOnShotResult"] =
                                                                     value;
                                                               });
                                                             },
                                                           ),
                                                         ],
                                                       ),
-                                                      Column(
+                                                      Row(
                                                         children: [
-                                                          Text("Fairway"),
-                                                          Radio<String>(
-                                                            value: "fw",
-                                                            groupValue: _scoreData[
-                                                                    index][
-                                                                "teeShotResult"],
-                                                            onChanged: (String?
-                                                                value) {
-                                                              setState(() {
-                                                                _scoreData[index]
-                                                                        [
-                                                                        "teeShotResult"] =
-                                                                    value;
-                                                              });
-                                                            },
+                                                          Row(
+                                                            children: [
+                                                              Column(
+                                                                children: [
+                                                                  Text("左"),
+                                                                  Radio<String>(
+                                                                    toggleable:
+                                                                        true,
+                                                                    value:
+                                                                        "left",
+                                                                    groupValue:
+                                                                        _scoreData[index]
+                                                                            [
+                                                                            "parOnShotResult"],
+                                                                    onChanged:
+                                                                        (String?
+                                                                            value) {
+                                                                      setState(
+                                                                          () {
+                                                                        _scoreData[index]["parOnShotResult"] =
+                                                                            value;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                        border: Border
+                                                                            .all(
+                                                                          color:
+                                                                              Colors.green,
+                                                                          width:
+                                                                              1,
+                                                                        ),
+                                                                        shape: BoxShape
+                                                                            .circle),
+                                                                child: SizedBox(
+                                                                  width: 100,
+                                                                  height: 100,
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
+                                                                          "グリーン"),
+                                                                      Radio<
+                                                                          String>(
+                                                                        value:
+                                                                            "onGreen",
+                                                                        groupValue:
+                                                                            _scoreData[index]["parOnShotResult"],
+                                                                        onChanged:
+                                                                            (String?
+                                                                                value) {
+                                                                          setState(
+                                                                              () {
+                                                                            _scoreData[index]["parOnShotResult"] =
+                                                                                value;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Column(
+                                                                children: [
+                                                                  Text("右"),
+                                                                  Radio<String>(
+                                                                    toggleable:
+                                                                        true,
+                                                                    value:
+                                                                        "right",
+                                                                    groupValue:
+                                                                        _scoreData[index]
+                                                                            [
+                                                                            "parOnShotResult"],
+                                                                    onChanged:
+                                                                        (String?
+                                                                            value) {
+                                                                      setState(
+                                                                          () {
+                                                                        _scoreData[index]["parOnShotResult"] =
+                                                                            value;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
                                                       Column(
                                                         children: [
-                                                          Text("右"),
+                                                          Text("ショート"),
                                                           Radio<String>(
-                                                            value: "right",
+                                                            toggleable: true,
+                                                            value: "short",
                                                             groupValue: _scoreData[
                                                                     index][
-                                                                "teeShotResult"],
+                                                                "parOnShotResult"],
                                                             onChanged: (String?
                                                                 value) {
                                                               setState(() {
                                                                 _scoreData[index]
                                                                         [
-                                                                        "teeShotResult"] =
+                                                                        "parOnShotResult"] =
                                                                     value;
                                                               });
                                                             },
@@ -500,263 +792,297 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                       ),
                                                     ],
                                                   ),
-                                                ),
-                                              ],
-                                            ),
+                                                ],
+                                              ),
+                                              Gap(10),
+                                            ],
                                           ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            ScoreDataCategory(
-                                              text: "ParOn残距離",
-                                              width: 150,
-                                              height: 50,
+                                        )
+                                      : ExpansionTileTheme(
+                                          data: ExpansionTileThemeData(
+                                            textColor: Colors.white,
+                                            collapsedTextColor: Colors.white,
+                                            iconColor: Colors.white,
+                                            collapsedIconColor: Colors.white,
+                                          ),
+                                          child: ExpansionTile(
+                                            title: Text(
+                                              "ショット詳細入力",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                            Gap(10),
-                                            SizedBox(
-                                              width: 100,
-                                              height: 45,
-                                              child: Center(
-                                                child: TextFormField(
-                                                  controller:
-                                                      parOnShotDistanceControllers[
-                                                          index],
-                                                  onSaved: (parOnShotDistance) {
-                                                    if (parOnShotDistance !=
-                                                        null) {
-                                                      _scoreData[index][
-                                                              "parOnShotDistance"] =
-                                                          parOnShotDistance;
-                                                    }
-                                                  },
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  textAlign: TextAlign.center,
-                                                  maxLength: 3,
-                                                  decoration: InputDecoration(
-                                                    fillColor: Colors.white,
-                                                    counterText: "",
-                                                    border:
-                                                        const OutlineInputBorder(),
-                                                    contentPadding:
-                                                        const EdgeInsets.all(4),
-                                                    errorStyle: const TextStyle(
-                                                        fontSize: 0.01),
-                                                    errorBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      borderSide:
-                                                          const BorderSide(
-                                                        color: Colors.red,
-                                                        width: 1,
-                                                        style:
-                                                            BorderStyle.solid,
-                                                      ),
-                                                    ),
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  ScoreDataCategory(
+                                                    text: "ParOn残距離",
+                                                    width: 150,
+                                                    height: 50,
                                                   ),
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 28,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Gap(10),
-                                            Text("ヤード"),
-                                          ],
-                                        ),
-                                        Gap(10),
-                                        Row(
-                                          children: [
-                                            ScoreDataCategory(
-                                              text: "ParOnクラブ",
-                                              width: 150,
-                                              height: 50,
-                                            ),
-                                            Gap(10),
-                                            SizedBox(
-                                              width: 130,
-                                              height: 60,
-                                              child: DropdownButtonFormField<
-                                                  String?>(
-                                                onSaved: (parOnShotClub) {
-                                                  if (parOnShotClub != null) {
-                                                    _scoreData[index]
-                                                            ["parOnShotClub"] =
-                                                        parOnShotClub;
-                                                  }
-                                                },
-                                                iconEnabledColor: Colors.white,
-                                                dropdownColor:
-                                                    Colors.grey.shade900,
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                                onChanged: (String? value) {
-                                                  setState(() {});
-                                                },
-                                                items: golfclubs,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Gap(10),
-                                        Row(
-                                          children: [
-                                            ScoreDataCategory(
-                                              text: "parOn結果",
-                                              width: 120,
-                                              height: 50,
-                                            ),
-                                            Gap(10),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Text("オーバー"),
-                                                    Radio<String>(
-                                                      value: "over",
-                                                      groupValue: _scoreData[
-                                                              index]
-                                                          ["parOnShotResult"],
-                                                      onChanged:
-                                                          (String? value) {
-                                                        setState(() {
-                                                          _scoreData[index][
-                                                                  "parOnShotResult"] =
-                                                              value;
-                                                        });
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Column(
-                                                          children: [
-                                                            Text("左"),
-                                                            Radio<String>(
-                                                              value: "left",
-                                                              groupValue:
-                                                                  _scoreData[
-                                                                          index]
-                                                                      [
-                                                                      "parOnShotResult"],
-                                                              onChanged:
-                                                                  (String?
-                                                                      value) {
-                                                                setState(() {
-                                                                  _scoreData[index]
-                                                                          [
-                                                                          "parOnShotResult"] =
-                                                                      value;
-                                                                });
-                                                              },
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  border: Border
-                                                                      .all(
-                                                                    color: Colors
-                                                                        .green,
-                                                                    width: 1,
-                                                                  ),
-                                                                  shape: BoxShape
-                                                                      .circle),
-                                                          child: SizedBox(
-                                                            width: 100,
-                                                            height: 100,
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Text("グリーン"),
-                                                                Radio<String>(
-                                                                  value:
-                                                                      "onGreen",
-                                                                  groupValue: _scoreData[
-                                                                          index]
-                                                                      [
-                                                                      "parOnShotResult"],
-                                                                  onChanged:
-                                                                      (String?
-                                                                          value) {
-                                                                    setState(
-                                                                        () {
-                                                                      _scoreData[index]
-                                                                              [
-                                                                              "parOnShotResult"] =
-                                                                          value;
-                                                                    });
-                                                                  },
-                                                                ),
-                                                              ],
+                                                  Gap(10),
+                                                  SizedBox(
+                                                    width: 100,
+                                                    height: 45,
+                                                    child: Center(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            parOnShotDistanceControllers[
+                                                                index],
+                                                        onSaved:
+                                                            (parOnShotDistance) {
+                                                          if (parOnShotDistance !=
+                                                              null) {
+                                                            _scoreData[index][
+                                                                    "parOnShotDistance"] =
+                                                                parOnShotDistance;
+                                                          }
+                                                        },
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        maxLength: 3,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          fillColor:
+                                                              Colors.white,
+                                                          counterText: "",
+                                                          border:
+                                                              const OutlineInputBorder(),
+                                                          contentPadding:
+                                                              const EdgeInsets
+                                                                  .all(4),
+                                                          errorStyle:
+                                                              const TextStyle(
+                                                                  fontSize:
+                                                                      0.01),
+                                                          errorBorder:
+                                                              OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            borderSide:
+                                                                const BorderSide(
+                                                              color: Colors.red,
+                                                              width: 1,
+                                                              style: BorderStyle
+                                                                  .solid,
                                                             ),
                                                           ),
                                                         ),
-                                                        Column(
-                                                          children: [
-                                                            Text("右"),
-                                                            Radio<String>(
-                                                              value: "right",
-                                                              groupValue:
-                                                                  _scoreData[
-                                                                          index]
-                                                                      [
-                                                                      "parOnShotResult"],
-                                                              onChanged:
-                                                                  (String?
-                                                                      value) {
-                                                                setState(() {
-                                                                  _scoreData[index]
-                                                                          [
-                                                                          "parOnShotResult"] =
-                                                                      value;
-                                                                });
-                                                              },
-                                                            ),
-                                                          ],
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 28,
                                                         ),
-                                                      ],
+                                                      ),
                                                     ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text("ショート"),
-                                                    Radio<String>(
-                                                      value: "short",
-                                                      groupValue: _scoreData[
-                                                              index]
-                                                          ["parOnShotResult"],
+                                                  ),
+                                                  Gap(10),
+                                                  Text("ヤード"),
+                                                ],
+                                              ),
+                                              Gap(10),
+                                              Row(
+                                                children: [
+                                                  ScoreDataCategory(
+                                                    text: "ParOnクラブ",
+                                                    width: 150,
+                                                    height: 50,
+                                                  ),
+                                                  Gap(10),
+                                                  SizedBox(
+                                                    width: 130,
+                                                    height: 60,
+                                                    child:
+                                                        DropdownButtonFormField<
+                                                            String?>(
+                                                      onSaved: (parOnShotClub) {
+                                                        if (parOnShotClub !=
+                                                            null) {
+                                                          _scoreData[index][
+                                                                  "parOnShotClub"] =
+                                                              parOnShotClub;
+                                                        }
+                                                      },
+                                                      iconEnabledColor:
+                                                          Colors.white,
+                                                      dropdownColor:
+                                                          Colors.grey.shade900,
+                                                      style: const TextStyle(
+                                                          color: Colors.white),
                                                       onChanged:
                                                           (String? value) {
-                                                        setState(() {
-                                                          _scoreData[index][
-                                                                  "parOnShotResult"] =
-                                                              value;
-                                                        });
+                                                        setState(() {});
                                                       },
+                                                      items: golfclubs,
                                                     ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                  ),
+                                                ],
+                                              ),
+                                              Gap(10),
+                                              Row(
+                                                children: [
+                                                  ScoreDataCategory(
+                                                    text: "parOn結果",
+                                                    width: 120,
+                                                    height: 50,
+                                                  ),
+                                                  Gap(10),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Column(
+                                                        children: [
+                                                          Text("オーバー"),
+                                                          Radio<String>(
+                                                            toggleable: true,
+                                                            value: "over",
+                                                            groupValue: _scoreData[
+                                                                    index][
+                                                                "parOnShotResult"],
+                                                            onChanged: (String?
+                                                                value) {
+                                                              setState(() {
+                                                                _scoreData[index]
+                                                                        [
+                                                                        "parOnShotResult"] =
+                                                                    value;
+                                                              });
+                                                            },
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Column(
+                                                                children: [
+                                                                  Text("左"),
+                                                                  Radio<String>(
+                                                                    toggleable:
+                                                                        true,
+                                                                    value:
+                                                                        "left",
+                                                                    groupValue:
+                                                                        _scoreData[index]
+                                                                            [
+                                                                            "parOnShotResult"],
+                                                                    onChanged:
+                                                                        (String?
+                                                                            value) {
+                                                                      setState(
+                                                                          () {
+                                                                        _scoreData[index]["parOnShotResult"] =
+                                                                            value;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                        border: Border
+                                                                            .all(
+                                                                          color:
+                                                                              Colors.green,
+                                                                          width:
+                                                                              1,
+                                                                        ),
+                                                                        shape: BoxShape
+                                                                            .circle),
+                                                                child: SizedBox(
+                                                                  width: 100,
+                                                                  height: 100,
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
+                                                                          "グリーン"),
+                                                                      Radio<
+                                                                          String>(
+                                                                        value:
+                                                                            "onGreen",
+                                                                        groupValue:
+                                                                            _scoreData[index]["parOnShotResult"],
+                                                                        onChanged:
+                                                                            (String?
+                                                                                value) {
+                                                                          setState(
+                                                                              () {
+                                                                            _scoreData[index]["parOnShotResult"] =
+                                                                                value;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Column(
+                                                                children: [
+                                                                  Text("右"),
+                                                                  Radio<String>(
+                                                                    toggleable:
+                                                                        true,
+                                                                    value:
+                                                                        "right",
+                                                                    groupValue:
+                                                                        _scoreData[index]
+                                                                            [
+                                                                            "parOnShotResult"],
+                                                                    onChanged:
+                                                                        (String?
+                                                                            value) {
+                                                                      setState(
+                                                                          () {
+                                                                        _scoreData[index]["parOnShotResult"] =
+                                                                            value;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Column(
+                                                        children: [
+                                                          Text("ショート"),
+                                                          Radio<String>(
+                                                            toggleable: true,
+                                                            value: "short",
+                                                            groupValue: _scoreData[
+                                                                    index][
+                                                                "parOnShotResult"],
+                                                            onChanged: (String?
+                                                                value) {
+                                                              setState(() {
+                                                                _scoreData[index]
+                                                                        [
+                                                                        "parOnShotResult"] =
+                                                                    value;
+                                                              });
+                                                            },
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              Gap(10),
+                                            ],
+                                          ),
                                         ),
-                                        Gap(10),
-                                      ],
-                                    ),
-                                  ),
                                   Gap(10),
                                   Row(
                                     children: [
@@ -859,6 +1185,7 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                     children: [
                                                       Text("1pin以内"),
                                                       Radio<String>(
+                                                        toggleable: true,
                                                         value: "pin",
                                                         groupValue: _scoreData[
                                                                 index]
@@ -878,6 +1205,7 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                     children: [
                                                       Text("5m以内"),
                                                       Radio<String>(
+                                                        toggleable: true,
                                                         value: "short",
                                                         groupValue: _scoreData[
                                                                 index]
@@ -897,6 +1225,7 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                     children: [
                                                       Text("10m以内"),
                                                       Radio<String>(
+                                                        toggleable: true,
                                                         value: "middle",
                                                         groupValue: _scoreData[
                                                                 index]
@@ -916,6 +1245,7 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                     children: [
                                                       Text("10m以上"),
                                                       Radio<String>(
+                                                        toggleable: true,
                                                         value: "long",
                                                         groupValue: _scoreData[
                                                                 index]
@@ -954,6 +1284,7 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                     children: [
                                                       Text("左"),
                                                       Radio<String>(
+                                                        toggleable: true,
                                                         value: "left",
                                                         groupValue:
                                                             _scoreData[index]
@@ -971,8 +1302,9 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                   ),
                                                   Column(
                                                     children: [
-                                                      Text("カップイン"),
+                                                      Text("ワンパット"),
                                                       Radio<String>(
+                                                        toggleable: true,
                                                         value: "nomiss",
                                                         groupValue:
                                                             _scoreData[index]
@@ -992,6 +1324,7 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                     children: [
                                                       Text("右"),
                                                       Radio<String>(
+                                                        toggleable: true,
                                                         value: "right",
                                                         groupValue:
                                                             _scoreData[index]
@@ -1047,6 +1380,7 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                     children: [
                                                       Text("ショート"),
                                                       Radio<String>(
+                                                        toggleable: true,
                                                         value: "short",
                                                         groupValue: _scoreData[
                                                                 index]
@@ -1066,6 +1400,7 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                     children: [
                                                       Text("半径1m以内"),
                                                       Radio<String>(
+                                                        toggleable: true,
                                                         value: "nomiss",
                                                         groupValue: _scoreData[
                                                                 index]
@@ -1085,6 +1420,7 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
                                                     children: [
                                                       Text("ロング"),
                                                       Radio<String>(
+                                                        toggleable: true,
                                                         value: "long",
                                                         groupValue: _scoreData[
                                                                 index]

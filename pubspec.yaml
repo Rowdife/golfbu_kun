@@ -109,7 +109,6 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/videos/golf_swing.MOV
     - assets/images/golfbukun_logo.svg
     - shorebird.yaml
 

@@ -764,62 +764,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                             "${(scoreCard.ironFairwayFind / scoreCard.ironFairwayTry * 100).toStringAsFixed(1)}%",
                       ),
                       const Gap(20),
-                      const Text(
-                        "Par3 ティーショット分析",
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
-                      const Gap(20),
-                      ScoreCardDataTile(
-                        title: "グリーン乗せ成功数",
-                        data:
-                            "${scoreCard.parThreeGreenInRegulation} / ${scoreCard.parThreeTeeshotTry}",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーン乗せ成功率",
-                        data:
-                            "${(scoreCard.parThreeGreenInRegulation / scoreCard.parThreeTeeshotTry * 100).toStringAsFixed(1)}%",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーン左外し",
-                        data:
-                            "${scoreCard.parThreeGreenMissedLeft} / ${scoreCard.parThreeTeeshotTry}",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーン左外し率",
-                        data:
-                            "${(scoreCard.parThreeGreenMissedLeft / scoreCard.parThreeTeeshotTry * 100).toStringAsFixed(1)}%",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーン右外し",
-                        data:
-                            "${scoreCard.parThreeGreenMissedRight} / ${scoreCard.parThreeTeeshotTry}",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーン右外し率",
-                        data:
-                            "${(scoreCard.parThreeGreenMissedRight / scoreCard.parThreeTeeshotTry * 100).toStringAsFixed(1)}%",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーンショート",
-                        data:
-                            "${scoreCard.parThreeGreenMissedShort} / ${scoreCard.parThreeTeeshotTry}",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーンショート率",
-                        data:
-                            "${(scoreCard.parThreeGreenMissedShort / scoreCard.parThreeTeeshotTry * 100).toStringAsFixed(1)}%",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーンオーバー",
-                        data:
-                            "${scoreCard.parThreeGreenMissedOver} / ${scoreCard.parThreeTeeshotTry}",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーンオーバー率",
-                        data:
-                            "${(scoreCard.parThreeGreenMissedOver / scoreCard.parThreeTeeshotTry * 100).toStringAsFixed(1)}%",
-                      ),
+
                       const Text(
                         "パーオン分析",
                         style: TextStyle(
@@ -1259,7 +1204,7 @@ class _ScoreCardViewState extends ConsumerState<ScoreCardView> {
                       ),
                       ScoreCardDataTile(
                         title: "パーセーブ数",
-                        data: "${scoreCard.approachTry}",
+                        data: "${scoreCard.approachParSave}",
                       ),
 
                       ScoreCardDataTile(

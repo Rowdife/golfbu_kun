@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:golfbu_kun/features/authentication/widgets/auth_button.dart';
 import 'package:golfbu_kun/features/profile/models/profile_model.dart';
 import 'package:golfbu_kun/features/profile/vms/profiles_vm.dart';
+import 'package:golfbu_kun/features/score_card/models/new_scorecard_model.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_data_model.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_model.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_course_model.dart';
@@ -44,7 +45,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
   late final ProfileModel profile;
 
   Future<void> _onUploadScoreTap(
-      ScoreCardDataModel scoreCardData, BuildContext context) async {
+      NewScoreCardDataModel scoreCardData, BuildContext context) async {
     await ref.read(scoreCardRepo).uploadScoreCard(scoreCardData: scoreCardData);
     await showDialog(
         context: context,
@@ -98,6 +99,8 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
 
     List<String> parOnShotClub = [];
 
+    List<String> parOnShotResult = [];
+
     List<bool> guardBunker = [];
 
     List<String> ob = [];
@@ -105,14 +108,6 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     List<String> hazard = [];
 
     List<String> penalty = [];
-
-    int puttRemainedCount =
-        puttRemained.where((putt) => putt.isNotEmpty).length;
-    int teeShotClubCount = teeShotClub.where((shot) => shot.isNotEmpty).length;
-
-    int parOnShotDistanceCount =
-        parOnShotDistance.where((shot) => shot.isNotEmpty).length;
-
     double widthAndHeight = MediaQuery.of(context).size.width / 10;
     double totalScoreWidth = MediaQuery.of(context).size.width / 6;
     double totalScoreHeight = 100;
@@ -137,7 +132,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int par5Count = 0;
     int par5TotalScore = 0;
 
-    // teeShotResult分析
+    // par on 分析
 
     //teeShot Club分析
     int teeShotDriverCount = 0;
@@ -272,6 +267,10 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
 
       String pShotClub = widget.scorecard.scorecard['hole$i']?['parOnShotClub'];
       parOnShotClub.add(pShotClub);
+
+      String pShotResult =
+          widget.scorecard.scorecard['hole$i']?['parOnShotResult'];
+      parOnShotResult.add(pShotResult);
 
       bool? bunkerShot = widget.scorecard.scorecard['hole$i']?['guardBunker'];
       bunkerShot ??= false;
@@ -607,6 +606,20 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
         puttDistance.where((putt) => putt == 'short').length;
     int puttDistanceLongCount =
         puttDistance.where((putt) => putt == 'long').length;
+
+    int parOnShotResultCount = parOnShotResult
+        .where((shot) => shot.isNotEmpty && shot != "onGreen")
+        .length;
+    int parOnShotResultGreenOnCount =
+        parOnShotResult.where((shot) => shot == 'onGreen').length;
+    int parOnShotResultGreenOverCount =
+        parOnShotResult.where((shot) => shot == 'over').length;
+    int parOnShotResultGreenShortCount =
+        parOnShotResult.where((shot) => shot == 'short').length;
+    int parOnShotResultGreenLeftCount =
+        parOnShotResult.where((shot) => shot == 'left').length;
+    int parOnShotResultGreenRightCount =
+        parOnShotResult.where((shot) => shot == 'right').length;
 
     int parOnShotClubCount =
         parOnShotClub.where((shot) => shot.isNotEmpty).length;
@@ -1393,57 +1406,6 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       ),
                       const Gap(20),
                       const Text(
-                        "Par3 ティーショット分析",
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
-                      const Gap(20),
-                      ScoreCardDataTile(
-                        title: "グリーン乗せ成功数",
-                        data:
-                            "$parThreeTeeShotGreenOnCount / $parThreeTeeShotCount",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーン乗せ成功率",
-                        data: "$parThreeTeeShotGreenOnPercentage%",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーン左外し",
-                        data:
-                            "$parThreeTeeShotGreenLeftCount / $parThreeTeeShotCount",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーン左外し率",
-                        data: "$parThreeTeeShotGreenLeftPercentage%",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーン右外し",
-                        data:
-                            "$parThreeTeeShotGreenRightCount / $parThreeTeeShotCount",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーン右外し率",
-                        data: "$parThreeTeeShotGreenRightPercentage%",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーンショート",
-                        data:
-                            "$parThreeTeeShotGreenShortCount / $parThreeTeeShotCount",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーンショート率",
-                        data: "$parThreeTeeShotGreenShortPercentage%",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーンオーバー",
-                        data:
-                            "$parThreeTeeShotGreenOverCount / $parThreeTeeShotCount",
-                      ),
-                      ScoreCardDataTile(
-                        title: "グリーンオーバー率",
-                        data: "$parThreeTeeShotGreenOverPercentage%",
-                      ),
-                      const Text(
                         "パーオン分析",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
@@ -1454,6 +1416,22 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                           title: "パーオン率",
                           data:
                               "${(parOnCount / 18 * 100).toStringAsFixed(1)}%"),
+                      ScoreCardDataTile(
+                          title: "オーバー数",
+                          data:
+                              "$parOnShotResultGreenOverCount / $parOnShotResultCount"),
+                      ScoreCardDataTile(
+                          title: "ショート数",
+                          data:
+                              "$parOnShotResultGreenShortCount / $parOnShotResultCount"),
+                      ScoreCardDataTile(
+                          title: "左外し数",
+                          data:
+                              "$parOnShotResultGreenLeftCount / $parOnShotResultCount"),
+                      ScoreCardDataTile(
+                          title: "右外し数",
+                          data:
+                              "$parOnShotResultGreenRightCount / $parOnShotResultCount"),
                       const Gap(20),
                       const Text(
                         "パーオン距離別分析",
@@ -1801,7 +1779,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                       GestureDetector(
                         onTap: () async {
                           if (isTapped) return;
-                          final scoreCardData = ScoreCardDataModel(
+                          final scoreCardData = NewScoreCardDataModel(
                             uploaderName: profile.name,
                             uploaderId: profile.uid,
                             uploadDate: widget.date,
@@ -1859,6 +1837,14 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                             parOnByShortIronTry: parOnShortIronTryCount,
                             parOnByWedge: parOnWedgeCount,
                             parOnByWedgeTry: parOnWedgeTryCount,
+                            parOnResultCount: parOnShotResultCount,
+                            parOnShotOnGreen: parOnShotResultGreenOnCount,
+                            parOnShotMissedLeft: parOnShotResultGreenLeftCount,
+                            parOnShotMissedRight:
+                                parOnShotResultGreenRightCount,
+                            parOnShotMissedShort:
+                                parOnShotResultGreenShortCount,
+                            parOnShotMissedOver: parOnShotResultGreenOverCount,
                             puttTry: puttTryCount,
                             puttHoleIn: puttNoMissCount,
                             puttMissedLeft: puttLeftCount,
