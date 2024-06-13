@@ -1411,7 +1411,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                       ScoreCardDataTile(
-                          title: "パーオン", data: "$parOnCount / 18ホール"),
+                          title: "パーオン数", data: "$parOnCount / 18ホール"),
                       ScoreCardDataTile(
                           title: "パーオン率",
                           data:

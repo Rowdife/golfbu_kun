@@ -52,12 +52,12 @@ class NewScoreCardDataModel {
   final int greenInRegulationOver200Try;
 
 // parOnShot Result
-  final int parOnResultCount;
-  final int parOnShotOnGreen;
-  final int parOnShotMissedLeft;
-  final int parOnShotMissedRight;
-  final int parOnShotMissedShort;
-  final int parOnShotMissedOver;
+  final int? parOnResultCount;
+  final int? parOnShotOnGreen;
+  final int? parOnShotMissedLeft;
+  final int? parOnShotMissedRight;
+  final int? parOnShotMissedShort;
+  final int? parOnShotMissedOver;
 
   //parOnInTotal
 
@@ -139,12 +139,12 @@ class NewScoreCardDataModel {
   final double averagePar5Score;
 
   NewScoreCardDataModel({
-    required this.parOnResultCount,
-    required this.parOnShotOnGreen,
-    required this.parOnShotMissedLeft,
-    required this.parOnShotMissedRight,
-    required this.parOnShotMissedShort,
-    required this.parOnShotMissedOver,
+    this.parOnResultCount,
+    this.parOnShotOnGreen,
+    this.parOnShotMissedLeft,
+    this.parOnShotMissedRight,
+    this.parOnShotMissedShort,
+    this.parOnShotMissedOver,
     required this.uploaderName,
     required this.uploaderId,
     required this.uploadDate,
@@ -604,12 +604,12 @@ class NewScoreCardDataModel {
       teeShotMissedRight: 0,
       teeShotCriticalMiss: 0,
       totalParOn: 0,
-      parOnShotOnGreen: 0,
-      parOnShotMissedLeft: 0,
-      parOnShotMissedRight: 0,
-      parOnShotMissedShort: 0,
-      parOnShotMissedOver: 0,
-      parOnResultCount: 0,
+      parOnShotOnGreen: null,
+      parOnShotMissedLeft: null,
+      parOnShotMissedRight: null,
+      parOnShotMissedShort: null,
+      parOnShotMissedOver: null,
+      parOnResultCount: null,
     );
   }
 }

@@ -460,7 +460,7 @@ class ScoreCardRepository {
     return scoreCardList;
   }
 
-  Future<List<ScoreCardDataModel>> fetchTeamScoreCardsData() async {
+  Future<List<NewScoreCardDataModel>> fetchTeamScoreCardsData() async {
     final universityId = _authRepo.user!.displayName;
     final scoreCards = await _db
         .collection("university")
@@ -469,7 +469,7 @@ class ScoreCardRepository {
         .orderBy("uploadDate", descending: true)
         .get();
     final scoreCardList = scoreCards.docs
-        .map((e) => ScoreCardDataModel.fromJson(e.data()))
+        .map((e) => NewScoreCardDataModel.fromJson(e.data()))
         .toList();
     return scoreCardList;
   }

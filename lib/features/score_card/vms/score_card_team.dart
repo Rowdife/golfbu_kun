@@ -1,20 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:golfbu_kun/features/score_card/models/new_scorecard_model.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_data_model.dart';
 import 'package:golfbu_kun/features/score_card/repos/score_card_repo.dart';
 
-class ScoreCardTeamViewModel extends AsyncNotifier<List<ScoreCardDataModel>> {
+class ScoreCardTeamViewModel
+    extends AsyncNotifier<List<NewScoreCardDataModel>> {
   late ScoreCardRepository _repository;
 
-  Future<List<ScoreCardDataModel>> fetchTeamScoreCardsData() async {
+  Future<List<NewScoreCardDataModel>> fetchTeamScoreCardsData() async {
     final teamScoreCardsData = await _repository.fetchTeamScoreCardsData();
     state = AsyncValue.data(teamScoreCardsData);
     return teamScoreCardsData;
   }
 
   @override
-  FutureOr<List<ScoreCardDataModel>> build() async {
+  FutureOr<List<NewScoreCardDataModel>> build() async {
     _repository = ref.read(scoreCardRepo);
     state = const AsyncValue.loading();
     final scoreCardsData = await fetchTeamScoreCardsData();
@@ -24,6 +26,6 @@ class ScoreCardTeamViewModel extends AsyncNotifier<List<ScoreCardDataModel>> {
 }
 
 final scoreCardTeamProvider =
-    AsyncNotifierProvider<ScoreCardTeamViewModel, List<ScoreCardDataModel>>(
+    AsyncNotifierProvider<ScoreCardTeamViewModel, List<NewScoreCardDataModel>>(
   () => ScoreCardTeamViewModel(),
 );

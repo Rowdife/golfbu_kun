@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:golfbu_kun/features/score_card/models/new_scorecard_model.dart';
 import 'package:golfbu_kun/features/score_card/models/score_card_data_model.dart';
+import 'package:golfbu_kun/features/score_card/screen/new_scorecard_view.dart';
 
 import 'package:golfbu_kun/features/score_card/vms/score_card__my_history_vm.dart';
 import 'package:golfbu_kun/features/score_card/vms/score_card_team.dart';
@@ -18,10 +20,10 @@ class ScoreCardTeamScreen extends ConsumerStatefulWidget {
 }
 
 class _ScoreCardTeamScreenState extends ConsumerState<ScoreCardTeamScreen> {
-  void _onScoreCardTap(ScoreCardDataModel scoreCardData) {
+  void _onScoreCardTap(NewScoreCardDataModel scoreCardData) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => ScoreCardView(
+        builder: (context) => NewScoreCardView(
           scoreCardData: scoreCardData,
         ),
       ),
