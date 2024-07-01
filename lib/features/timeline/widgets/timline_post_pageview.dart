@@ -46,7 +46,7 @@ class _TimelinePostPageViewState extends ConsumerState<TimelinePostPageView>
   bool _isPlaying = false;
   bool _isFullCaptionShowed = false;
 
-  int _captionLengthLimit = 100;
+  int _captionLengthLimit = 30;
 
   final TextStyle _textButton = const TextStyle(color: Colors.white60);
 
