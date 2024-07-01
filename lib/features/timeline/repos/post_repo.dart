@@ -97,7 +97,7 @@ class PostRepository {
         .doc(universityId)
         .collection("videos")
         .orderBy("createdAt", descending: true)
-        .limit(7);
+        .limit(4);
 
     if (lastItemCreatedAt == null) {
       return query.get();

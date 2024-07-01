@@ -33,6 +33,8 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   int _itemCount = 0;
   int pageNumber = 0;
   bool hasData = false;
+  bool _canScroll = true;
+  bool _isScrolling = false;
 
   Future<void> _onRefresh() async {
     await ref.read(timelineProvider.notifier).refresh();
@@ -41,18 +43,28 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   }
 
   void _onPageChanged(int page) async {
-    if (pageNumber != page) {
-      pageNumber = page;
+    if (page == _itemCount - 1) {
+      setState(() {
+        pageNumber = page;
+        _canScroll = false;
+      });
     }
   }
 
   void _onVisibilityChanged(VisibilityInfo info) async {
-    if (info.visibleFraction == 1.0) {
-      if (pageNumber == _itemCount - 2) {
-        await ref.read(timelineProvider.notifier).fetchNextVideos();
-        _pageController.jumpToPage(pageNumber);
-      }
-    } else {}
+    if (!_isScrolling) {
+      setState(() {
+        _canScroll = info.visibleFraction == 1.0;
+      });
+    }
+
+    if (info.visibleFraction == 1.0 && pageNumber == _itemCount - 1) {
+      await ref.read(timelineProvider.notifier).fetchNextVideos();
+      _pageController.jumpToPage(pageNumber);
+      setState(() {
+        _canScroll = true;
+      });
+    }
   }
 
   @override
@@ -76,29 +88,43 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
         );
     _itemCount = videos.length;
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: PageView.builder(
-          onPageChanged: _onPageChanged,
-          scrollDirection: Axis.vertical,
-          itemCount: _itemCount,
-          controller: _pageController,
-          itemBuilder: (context, index) {
-            final videoData = videos[index];
-            return Column(
-              children: [
-                VisibilityDetector(
-                  onVisibilityChanged: _onVisibilityChanged,
-                  key: ValueKey(videoData.createdAt),
-                  child: TimelinePostPageView(
-                    videoData: videoData,
-                    index: index,
-                    keyValue: ValueKey(videoData.createdAt),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification notification) {
+          if (notification is ScrollStartNotification) {
+            _isScrolling = true;
+          } else if (notification is ScrollEndNotification) {
+            _isScrolling = false;
+          }
+          return false;
+        },
+        child: RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: PageView.builder(
+            padEnds: false,
+            onPageChanged: _onPageChanged,
+            scrollDirection: Axis.vertical,
+            physics: _canScroll
+                ? AlwaysScrollableScrollPhysics()
+                : NeverScrollableScrollPhysics(),
+            itemCount: _itemCount,
+            controller: _pageController,
+            itemBuilder: (context, index) {
+              final videoData = videos[index];
+              return Column(
+                children: [
+                  VisibilityDetector(
+                    onVisibilityChanged: _onVisibilityChanged,
+                    key: ValueKey(videoData.createdAt),
+                    child: TimelinePostPageView(
+                      videoData: videoData,
+                      index: index,
+                      keyValue: ValueKey(videoData.createdAt),
+                    ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
