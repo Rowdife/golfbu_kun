@@ -619,25 +619,6 @@ class _NewScoreCardViewState extends ConsumerState<NewScoreCardView> {
                 ],
               ),
               const Gap(10),
-              DefaultTextStyle(
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "天気: ${scoreCard.weather}",
-                    ),
-                    Text(
-                      "最大風速: ${scoreCard.wind}m/s",
-                    ),
-                    Text(
-                      "気温: ${scoreCard.temperature}",
-                    ),
-                  ],
-                ),
-              ),
-              const Gap(10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: DefaultTextStyle(

@@ -47,10 +47,6 @@ class _ScoreCardByCourseState extends ConsumerState<ScoreCardByCourse> {
         builder: (context) => ScoreCardPreview(
           scorecard: scorecard,
           course: widget.course,
-          weather: selectedWeather!,
-          wind: maxWindPerSecond!,
-          temperature: selectedTemperature!,
-          date: date,
         ),
       ),
     );

@@ -144,7 +144,6 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
       ref.read(scoreCardForm.notifier).state.addAll({
         "hole${_tabController!.index + 1}": _scoreData[_tabController!.index]
       });
-      print(ref.read(scoreCardForm.notifier).state);
     }
     List unenteredHoles = [];
     final scoredata = ref.read(scoreCardForm.notifier).state;
@@ -161,10 +160,6 @@ class _NewScorecardState extends ConsumerState<NewScorecard>
           builder: (context) => ScoreCardPreview(
             scorecard: scorecard,
             course: widget.course,
-            weather: "晴れ",
-            wind: 1,
-            temperature: "fd",
-            date: "2024-05-05",
           ),
         ),
       );

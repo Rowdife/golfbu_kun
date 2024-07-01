@@ -17,17 +17,9 @@ class ScoreCardPreview extends ConsumerStatefulWidget {
     super.key,
     required this.scorecard,
     required this.course,
-    required this.date,
-    required this.weather,
-    required this.wind,
-    required this.temperature,
   });
   final ScoreCardModel scorecard;
   final ScoreCardCourseModel course;
-  final String date;
-  final String weather;
-  final int wind;
-  final String temperature;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -35,9 +27,9 @@ class ScoreCardPreview extends ConsumerStatefulWidget {
 }
 
 class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
-  int outTotalScroe = 0;
+  int outTotalScore = 0;
   int outTotalPutt = 0;
-  int inTotalScroe = 0;
+  int inTotalScore = 0;
   int inTotalPutt = 0;
   int totalScore = 0;
   int totalPutt = 0;
@@ -77,6 +69,8 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     super.initState();
     _getProfile();
   }
+
+  String date = DateTime.now().toString().substring(0, 10);
 
   @override
   Widget build(BuildContext context) {
@@ -228,20 +222,25 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     int penaltyCount = 0;
 
 // 重複するForの処理をまとめる
+    setState(() {
+      inTotalPutt = 0;
+      inTotalScore = 0;
+      outTotalPutt = 0;
+      outTotalScore = 0;
+      for (int i = 1; i <= 9; i++) {
+        outTotalScore +=
+            int.parse(widget.scorecard.scorecard['hole$i']?['stroke'] ?? '0');
+        outTotalPutt +=
+            int.parse(widget.scorecard.scorecard['hole$i']?['putt'] ?? '0');
+      }
 
-    for (int i = 1; i <= 9; i++) {
-      outTotalScroe +=
-          int.parse(widget.scorecard.scorecard['hole$i']?['stroke'] ?? '0');
-      outTotalPutt +=
-          int.parse(widget.scorecard.scorecard['hole$i']?['putt'] ?? '0');
-    }
-
-    for (int i = 10; i <= 18; i++) {
-      inTotalScroe +=
-          int.parse(widget.scorecard.scorecard['hole$i']?['stroke'] ?? '0');
-      inTotalPutt +=
-          int.parse(widget.scorecard.scorecard['hole$i']?['putt'] ?? '0');
-    }
+      for (int i = 10; i <= 18; i++) {
+        inTotalScore +=
+            int.parse(widget.scorecard.scorecard['hole$i']?['stroke'] ?? '0');
+        inTotalPutt +=
+            int.parse(widget.scorecard.scorecard['hole$i']?['putt'] ?? '0');
+      }
+    });
 
     for (int i = 1; i <= 18; i++) {
       scoreList.add(int.parse(scorecard['hole$i']?['stroke']));
@@ -755,8 +754,8 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
     String puttInLongTwoPutPercentage =
         ((puttInLongTwoPuttCount / puttInLongCount) * 100).toStringAsFixed(1);
 
-    totalScore = outTotalScroe + inTotalScroe;
-    totalPutt = outTotalPutt + inTotalPutt;
+    final totalScore = outTotalScore + inTotalScore;
+    final totalPutt = outTotalPutt + inTotalPutt;
 
     return Scaffold(
       appBar: AppBar(
@@ -775,9 +774,47 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                     "コース名: ${widget.course.courseName}",
                     style: const TextStyle(fontSize: 20),
                   ),
-                  Text(
-                    "日付: ${widget.date}",
-                    style: const TextStyle(fontSize: 20),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          final selectedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2021),
+                            lastDate: DateTime(2030),
+                            builder: (context, child) =>
+                                Theme(data: ThemeData.dark(), child: child!),
+                          );
+                          if (selectedDate != null) {
+                            setState(() {
+                              date = selectedDate.toString().substring(0, 10);
+                            });
+                          }
+                        },
+                        child: Container(
+                          width: 80,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade800,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 1,
+                            ),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "日付選択",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Gap(20),
+                      Text("プレイ日: $date"),
+                    ],
                   ),
                 ],
               ),
@@ -1139,7 +1176,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                         decoration: BoxDecoration(color: Colors.grey.shade800),
                         child: Center(
                           child: Text(
-                            "$outTotalScroe",
+                            "$outTotalScore",
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 20),
                           ),
@@ -1163,7 +1200,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                         decoration: BoxDecoration(color: Colors.grey.shade800),
                         child: Center(
                           child: Text(
-                            "$inTotalScroe",
+                            "$inTotalScore",
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 20),
                           ),
@@ -1187,7 +1224,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                         decoration: BoxDecoration(color: Colors.grey.shade800),
                         child: Center(
                           child: Text(
-                            "${inTotalScroe + outTotalScroe}",
+                            "${totalScore}",
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 20),
                           ),
@@ -1268,7 +1305,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                         decoration: BoxDecoration(color: Colors.grey.shade800),
                         child: Center(
                           child: Text(
-                            "${inTotalPutt + outTotalPutt}",
+                            "${totalPutt}",
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 20),
                           ),
@@ -1284,11 +1321,7 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text("天気: ${widget.weather}"),
-                    Text("最大風速: ${widget.wind}m/s"),
-                    Text("気温: ${widget.temperature}"),
-                  ],
+                  children: [],
                 ),
               ),
               const Gap(10),
@@ -1782,12 +1815,9 @@ class _ScoreCardPreviewState extends ConsumerState<ScoreCardPreview> {
                           final scoreCardData = NewScoreCardDataModel(
                             uploaderName: profile.name,
                             uploaderId: profile.uid,
-                            uploadDate: widget.date,
+                            uploadDate: date,
                             courseName: course.courseName,
                             createAtUnix: DateTime.now().millisecondsSinceEpoch,
-                            weather: widget.weather,
-                            wind: widget.wind,
-                            temperature: widget.temperature,
                             scoreList: scoreList,
                             puttsList: puttList,
                             parValueList: parValueList,

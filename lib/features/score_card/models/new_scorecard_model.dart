@@ -4,9 +4,6 @@ class NewScoreCardDataModel {
   final String uploadDate;
   final String courseName;
   final int createAtUnix;
-  final String weather;
-  final int wind;
-  final String temperature;
 
   final List<int> scoreList;
   final List<int> puttsList;
@@ -150,9 +147,6 @@ class NewScoreCardDataModel {
     required this.uploadDate,
     required this.courseName,
     required this.createAtUnix,
-    required this.weather,
-    required this.wind,
-    required this.temperature,
     required this.scoreList,
     required this.puttsList,
     required this.parValueList,
@@ -263,9 +257,6 @@ class NewScoreCardDataModel {
       uploadDate: json['uploadDate'],
       courseName: json['courseName'],
       createAtUnix: json['createAtUnix'],
-      weather: json['weather'],
-      wind: json['wind'],
-      temperature: json['temperature'],
       totalScore: json['totalScore'],
       totalPutts: json['totalPutts'],
       totalFairwayFind: json['totalFairwayFind'],
@@ -382,9 +373,6 @@ class NewScoreCardDataModel {
       'uploadDate': uploadDate,
       'courseName': courseName,
       'createAtUnix': createAtUnix,
-      'weather': weather,
-      'wind': wind,
-      'temperature': temperature,
       'totalScore': totalScore,
       'totalPutts': totalPutts,
       'totalFairwayFind': totalFairwayFind,
@@ -500,9 +488,6 @@ class NewScoreCardDataModel {
       uploadDate: '',
       courseName: '',
       createAtUnix: 0,
-      weather: '',
-      wind: 0,
-      temperature: "",
       totalScore: 0,
       totalPutts: 0,
       totalFairwayFind: 0,
