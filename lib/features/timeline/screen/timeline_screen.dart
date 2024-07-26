@@ -35,6 +35,7 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   bool hasData = false;
   bool _canScroll = true;
   bool _isScrolling = false;
+  double visibility = 0.0;
 
   Future<void> _onRefresh() async {
     await ref.read(timelineProvider.notifier).refresh();
@@ -52,11 +53,8 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   }
 
   void _onVisibilityChanged(VisibilityInfo info) async {
-    if (!_isScrolling) {
-      setState(() {
-        _canScroll = info.visibleFraction == 1.0;
-      });
-    }
+    print("is scrolling:${_isScrolling}");
+    visibility = info.visibleFraction;
 
     if (info.visibleFraction == 1.0 && pageNumber == _itemCount - 1) {
       await ref.read(timelineProvider.notifier).fetchNextVideos();
@@ -81,6 +79,7 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(_canScroll);
     final videos = ref.watch(timelineProvider).when(
           data: (data) => data,
           loading: () => [],
