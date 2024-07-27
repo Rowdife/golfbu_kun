@@ -113,7 +113,8 @@ class PostRepository {
         .collection("university")
         .doc(universityId)
         .collection("videos")
-        .where("uploaderUid", isEqualTo: id);
+        .where("uploaderUid", isEqualTo: id)
+        .orderBy("createdAt", descending: false);
 
     return query.get();
   }
