@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +9,7 @@ import 'package:golfbu_kun/firebase_options.dart';
 import 'package:golfbu_kun/notification/notifications_provider.dart';
 import 'package:golfbu_kun/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +21,13 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await initializeDateFormatting('ja_JP');
 
+  // アプリ起動時に　temporary_scorecardが存在する場合、そのtemporary_scorecardのデータを入れてnew_scorecardに渡したい
+
+  final prefs = await SharedPreferences.getInstance();
+  String? jsonData = prefs.getString("temporary_scorecard");
+  if (jsonData != null) {
+    print(jsonDecode(jsonData));
+  }
   runApp(
     ProviderScope(
       overrides: [routeProvider],

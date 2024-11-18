@@ -12,6 +12,7 @@ import 'package:golfbu_kun/features/profile/screens/setting_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_add_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_my_history_screen.dart';
 import 'package:golfbu_kun/features/score_card/screen/score_card_team_screen.dart';
+import 'package:golfbu_kun/features/score_card/widgets/new_scorecard.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_question_screen.dart';
 import 'package:golfbu_kun/features/timeline/screen/timeline_upload_video_screen.dart';
 import 'package:golfbu_kun/features/timeline/vms/timeline_vm.dart';

@@ -78,30 +78,30 @@ class LoginScreen extends ConsumerWidget {
                           .read(loginProvider.notifier)
                           .resetPassword(email: emailAdress!, context: context);
                       await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                                title: const Text(
-                                  "再設定メールを送信しました",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                content: Text(
-                                  "メールを確認して、再設定を完了してください",
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: Colors.grey.shade900,
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text(
-                                      "OK",
-                                      style:
-                                          TextStyle(color: Colors.greenAccent),
-                                    ),
-                                  ),
-                                ],
-                              ));
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text(
+                            "再設定メールを送信しました",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          content: Text(
+                            "メールを確認して、再設定を完了してください",
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.grey.shade900,
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                "OK",
+                                style: TextStyle(color: Colors.greenAccent),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                       Navigator.of(context).pop();
                     }
                   }
