@@ -1,0 +1,15 @@
+{
+  "" : {
+    "const-values" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/gal.build/Objects-normal/arm64/gal-master.swiftconstvalues",
+    "dependencies" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/gal.build/Objects-normal/arm64/gal-master.d",
+    "diagnostics" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/gal.build/Objects-normal/arm64/gal-master.dia",
+    "emit-module-dependencies" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/gal.build/Objects-normal/arm64/gal-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/gal.build/Objects-normal/arm64/gal-master-emit-module.dia",
+    "swift-dependencies" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/gal.build/Objects-normal/arm64/gal-master.swiftdeps"
+  },
+  "/Users/parker/.pub-cache/hosted/pub.dev/gal-2.3.0/darwin/Classes/GalPlugin.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/gal.build/Objects-normal/arm64/GalPlugin.o",
+    "llvm-bc" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/gal.build/Objects-normal/arm64/GalPlugin.bc",
+    "object" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/gal.build/Objects-normal/arm64/GalPlugin.o"
+  }
+}

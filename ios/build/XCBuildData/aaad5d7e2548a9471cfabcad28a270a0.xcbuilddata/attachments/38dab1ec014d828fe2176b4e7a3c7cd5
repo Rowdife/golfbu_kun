@@ -1,0 +1,30 @@
+{
+  "" : {
+    "const-values" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/url_launcher_ios-master.swiftconstvalues",
+    "dependencies" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/url_launcher_ios-master.d",
+    "diagnostics" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/url_launcher_ios-master.dia",
+    "emit-module-dependencies" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/url_launcher_ios-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/url_launcher_ios-master-emit-module.dia",
+    "swift-dependencies" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/url_launcher_ios-master.swiftdeps"
+  },
+  "/Users/parker/.pub-cache/hosted/pub.dev/url_launcher_ios-6.2.4/ios/Classes/Launcher.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/Launcher.o",
+    "llvm-bc" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/Launcher.bc",
+    "object" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/Launcher.o"
+  },
+  "/Users/parker/.pub-cache/hosted/pub.dev/url_launcher_ios-6.2.4/ios/Classes/URLLaunchSession.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/URLLaunchSession.o",
+    "llvm-bc" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/URLLaunchSession.bc",
+    "object" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/URLLaunchSession.o"
+  },
+  "/Users/parker/.pub-cache/hosted/pub.dev/url_launcher_ios-6.2.4/ios/Classes/URLLauncherPlugin.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/URLLauncherPlugin.o",
+    "llvm-bc" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/URLLauncherPlugin.bc",
+    "object" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/URLLauncherPlugin.o"
+  },
+  "/Users/parker/.pub-cache/hosted/pub.dev/url_launcher_ios-6.2.4/ios/Classes/messages.g.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/messages.g.o",
+    "llvm-bc" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/messages.g.bc",
+    "object" : "/Users/parker/sideprojects/golfbu_kun/ios/build/Pods.build/Release-iphoneos/url_launcher_ios.build/Objects-normal/arm64/messages.g.o"
+  }
+}

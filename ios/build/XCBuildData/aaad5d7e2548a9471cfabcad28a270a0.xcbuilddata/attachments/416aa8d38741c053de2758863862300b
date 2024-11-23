@@ -1,0 +1,5 @@
+ extern const unsigned char galVersionString[];
+ extern const double galVersionNumber;
+
+ const unsigned char galVersionString[] __attribute__ ((used)) = "@(#)PROGRAM:gal  PROJECT:Pods-1" "\n";
+ const double galVersionNumber __attribute__ ((used)) = (double)1.;
