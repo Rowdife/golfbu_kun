@@ -21,7 +21,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await initializeDateFormatting('ja_JP');
 
-  // アプリ起動時に　temporary_scorecardが存在する場合、そのtemporary_scorecardのデータを入れてnew_scorecardに渡したい
+  // アプリ起動時に　temporary_scorecardが存在する場合、そのtemporary_scorecardのデータを入れてnew_scorecardに渡したい。
 
   final prefs = await SharedPreferences.getInstance();
   String? jsonData = prefs.getString("temporary_scorecard");
